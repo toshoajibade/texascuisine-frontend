@@ -16,6 +16,8 @@
 </template>
 
 <script>
+  import pdfMake from 'pdfmake/build/pdfmake'
+  import font from 'pdfmake/build/vfs_fonts'
 export default {
   name: "OrdersTab",
   data() {
@@ -32,11 +34,12 @@ export default {
   },
   methods: {
     viewOrder() {
-      console.log(`I am about to be clicked`);
       this.$router.push(`vieworder`);
     },
     print() {
-      console.log(`printing`);
+      pdfMake.vfs = font.pdfMake.vfs
+      let docDefinition = {content: `This is a sample of the pdf to make`}
+      pdfMake.createPdf(docDefinition).download();
     }
   }
 };
