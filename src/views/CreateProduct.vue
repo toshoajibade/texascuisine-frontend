@@ -23,7 +23,7 @@
               <p>{{state.errors.image}}</p>
             </div>
           </div>
-        <v-btn type="submit" v-on:click.prevent="addProduct" class="btn btn-primary">Submit</v-btn>
+        <v-btn type="submit" v-on:click.prevent="addProduct" class="btn-primary">Submit</v-btn>
     </form>
 </template>
 
@@ -48,8 +48,8 @@ export default {
         name: "",
         price: "",
         category: [
-        { label: "FOOD", value: "food" },
-        { label: "DRINK", value: "drinks" }
+          { label: "FOOD", value: "food" },
+          { label: "DRINK", value: "drinks" }
         ],
         description: "",
         image: null,
@@ -61,26 +61,31 @@ export default {
   methods: {
     async addProduct() {
       try {
-      let req = { name: this.state.name, price: this.state.price, category: this.selectedCategory, description: this.state.description, image: this.state.image  };
-      let isValid;
-      const { errors } = await validations.validateNewProduct(req);
-      if( req.image === null) errors.image = `Please upload product picture`;
-      isValid = isNothing(errors)
-      if(!isValid) {
-        this.state.errors = errors;
-        return
+        let req = {
+          name: this.state.name,
+          price: this.state.price,
+          category: this.selectedCategory,
+          description: this.state.description,
+          image: this.state.image
+        };
+        let isValid;
+        const { errors } = await validations.validateNewProduct(req);
+        if (req.image === null) errors.image = `Please upload product picture`;
+        isValid = isNothing(errors);
+        if (!isValid) {
+          this.state.errors = errors;
+          return;
+        }
+        let formdata = new FormData();
+        formdata.append("name", this.state.name);
+        formdata.append("price", this.state.price);
+        formdata.append("category", this.selectedCategory);
+        formdata.append("description", this.state.description);
+        formdata.append("image", this.state.image);
+        Api.postPicture().post(`items/create`, formdata);
+      } catch (error) {
+        console.log(error);
       }
-      let formdata = new FormData();
-      formdata.append("name", this.state.name);
-      formdata.append("price", this.state.price);
-      formdata.append("category", this.selectedCategory);
-      formdata.append("description", this.state.description);
-      formdata.append("image", this.state.image);
-      Api.postPicture().post(`items/create`, formdata);
-      } catch(error) {
-        console.log(error)
-      }
-      
     },
     clicked(value) {
       this.state.image = value;
@@ -88,7 +93,7 @@ export default {
   },
   watch: {
     selectedCategory(result) {
-      console.log(result)
+      console.log(result);
     }
   }
 };
@@ -99,7 +104,7 @@ export default {
   display: flex;
   flex-direction: row;
   flex: 1fr 2rem 1fr;
-  justify-content: space-between
+  justify-content: space-between;
 }
 .create-product-page {
   width: 100%;
@@ -111,7 +116,7 @@ export default {
   justify-content: space-between;
 }
 .select-first {
-  width: 48%
+  width: 48%;
 }
 .product-name {
   width: 100%;
@@ -119,19 +124,21 @@ export default {
 .btn-primary {
   margin-top: 3rem;
   margin-bottom: 3rem;
-  background-color: #00472e;
-  height: 36px;
+  border: 1px solid #00472e;
+  color: #00472e !important;
+}
+.btn-primary:hover {
+  background-color: #00472e !important;
+  color: white !important;
 }
 .picture {
-  width: 48%
+  width: 48%;
 }
 .picture-label {
   margin-bottom: 0.5rem;
 }
 
-
 .textarea {
-
   width: 48%;
   margin-right: 2rem;
 }
@@ -140,7 +147,7 @@ textarea {
   height: 100%;
   padding: 12px;
   position: absolute;
-  top: 0px
+  top: 0px;
 }
 .textarea-field {
   border: 1px solid;
@@ -148,7 +155,6 @@ textarea {
   width: 100%;
   position: relative;
   padding-top: 75%;
-  
 }
 .textarea-picture-container {
   display: flex;

@@ -11,34 +11,34 @@
             <p>{{order.address}}</p>
         </div>
         <p class="order-status">{{order.status}}</p>
-        <v-btn class="view-button" type="button" v-on:click.stop="print">PRINT</v-btn>
+        <v-icon class="view-button" v-on:click.stop="print">printer</v-icon>
     </div>
 </template>
 
 <script>
-  import pdfMake from 'pdfmake/build/pdfmake'
-  import font from 'pdfmake/build/vfs_fonts'
+import pdfMake from "pdfmake/build/pdfmake";
+import font from "pdfmake/build/vfs_fonts";
 export default {
   name: "OrdersTab",
   data() {
     return {
       order: {
         status: `PENDING`,
-        number:  `FA5GJH7889907J767`,
+        number: `FA5GJH7889907J767`,
         products: `Fried and Jollof Rice, 1/2 Chicken, Table Water`,
         customerName: `Pastor Andrew Okon`,
         address: `No 12, Gwarimpa Street, Onike, Lagos`,
         phoneNumber: `08097937583`
       }
-    }
+    };
   },
   methods: {
     viewOrder() {
       this.$router.push(`vieworder`);
     },
     print() {
-      pdfMake.vfs = font.pdfMake.vfs
-      let docDefinition = {content: `This is a sample of the pdf to make`}
+      pdfMake.vfs = font.pdfMake.vfs;
+      let docDefinition = { content: `This is a sample of the pdf to make` };
       pdfMake.createPdf(docDefinition).download();
     }
   }
@@ -55,6 +55,11 @@ export default {
   padding: 1rem;
   justify-content: space-between;
   margin-bottom: 1.5rem;
+}
+@media (max-width: 960px) {
+  .order-tab {
+    flex-direction: column;
+  }
 }
 .order-details {
   display: flex;
@@ -76,27 +81,16 @@ export default {
   visibility: visible;
 }
 .view-button {
-  font-size: 0.875rem;
-  background-color: transparent;
-  line-height: 1.5;
-  border: 1px solid;
-  border-radius: 0.2rem;
-  height: 2rem;
-  border-color: #00472e;
-  visibility: hidden;
-  color: #00472e;
   align-self: center;
+}
+.view-button:hover {
+  color: #00472e;
 }
 .order-status {
   align-self: center;
   margin-bottom: 0px;
 }
 
-.view-button:hover {
-  background-color: #00472e;
-  border-color: #00472e;
-  color: white;
-}
 .update-button-container {
   display: flex;
   justify-content: center;

@@ -67,8 +67,8 @@ export default {
   margin-bottom: 0;
 }
 .logout-button {
-  background-color: transparent;
-  color: white;
+  background-color: transparent !important;
+  color: white !important;
   border: 1px solid white;
 }
 </style>

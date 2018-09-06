@@ -9,13 +9,13 @@
               </div>
               <v-spacer></v-spacer>
                 <router-link to="createproduct">
-            <v-btn class="btn-secondary">CREATE PRODUCT</v-btn></router-link>
+            <v-btn class="btn-secondary">ADD PRODUCT</v-btn></router-link>
         </v-layout>
             
         <div class="product-selection-list">
        <table class="table">
         <thead>
-        <tr>
+        <tr class="table-header">
           <th scope="column">Picture</th>
           <th scope="column">Name</th>
           <th scope="column">Price</th>
@@ -29,9 +29,16 @@
           <td>{{product.name}}</td>
           <td>{{product.price}}</td>
           
-          <td><router-link :to="{ name: 'edit', params: { productId: product.productId }}"> <v-btn class="btn btn-outline-secondary" :value="product.productId">EDIT</v-btn></router-link></td>
-          <td v-if="product.status === 'active'"> <v-btn class="btn btn-outline-secondary" :value="product.productId" v-on:click="changeProductStatus" >PAUSE</v-btn></td>
-          <td v-else> <v-btn class="btn btn-outline-secondary" :value="product.productId" v-on:click="changeProductStatus">ACTIVATE</v-btn></td>
+          <td><router-link :to="{ name: 'edit', params: { productId: product.productId }}"> <p class="edit-icon" :value="product.productId"><v-icon>edit</v-icon><span> EDIT</span></p></router-link></td>
+          <td v-if="product.status === 'active'" >
+            <p class="product-status" v-on:click="changeProductStatus(product.productId)">
+            <v-icon  style="color:red"  >pause</v-icon>PAUSE
+            </p>
+          </td>  
+          <td v-else-if="product.status === 'inactive'"> 
+              <p class="product-status" v-on:click="changeProductStatus(product.productId)"><v-icon  style="color:green" >play_arrow</v-icon>ACTIVATE
+              </p>
+          </td>
         </tr>
         </tbody>
       </table>
@@ -75,14 +82,13 @@ export default {
       });
   },
   methods: {
-    changeProductStatus() {
-      let productId = event.target.value;
+    changeProductStatus(value) {
       Api.instance()
-        .put(`product/changestatus/${productId}`)
+        .put(`product/changestatus/${value}`)
         .then(res => {
           if (res.status === 200) {
             let products = this.state.products.filter(
-              product => product.productId !== productId
+              product => product.productId !== value
             );
             products.unshift(res.data);
             this.state.products = products;
@@ -136,16 +142,25 @@ export default {
 </script>
 
 <style scoped>
-
 .select-slot {
   width: 200px;
 }
 .select-slot:first-child {
-  margin-right: 2rem
+  margin-right: 2rem;
 }
 .btn-secondary {
-  background-color: #00472e;
-  height: 2rem;
+  color: #00472e;
+  border: 1px solid #00472e;
+}
+.btn-secondary:hover {
+  background-color: #00472e !important;
+  color: white;
+}
+.table-header {
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+  background-color: #f2f2f2;
+  height: 3rem;
 }
 .my-auto {
   margin-right: 0.5rem;
@@ -161,14 +176,17 @@ export default {
 }
 table {
   margin-top: 50px;
-  width: 100%
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0px;
 }
-th, td {
+th,
+td {
   text-align: left;
-  padding: 0.5rem
+  padding: 0.5rem;
 }
 .user-tab {
-  border: 0px 0px 1px solid grey;
+  border-bottom: 1px solid grey;
 }
 .table td {
   vertical-align: middle;
@@ -184,5 +202,10 @@ th, td {
   color: white;
   background-color: #00472e;
 }
-
+.product-status:hover {
+  cursor: pointer;
+}
+.edit-icon:hover > * {
+  color: rgb(83, 83, 241)
+}
 </style>

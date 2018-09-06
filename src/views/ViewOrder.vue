@@ -140,7 +140,7 @@ th {
   text-align: left;
   font-weight: normal;
   font-style: italic;
-  text-transform: uppercase
+  text-transform: uppercase;
 }
 
 .print-button-container {
@@ -154,19 +154,20 @@ th {
 }
 .payment-status {
   font-size: 1.5rem;
-  
 }
-.pending, .shipped, .delivered, .failed {
+.pending,
+.shipped,
+.delivered,
+.failed {
   text-transform: uppercase;
-  
 }
 .shipped {
   color: blue;
 }
 .delivered {
-  color: green
+  color: green;
 }
 .failed {
-  color: red
+  color: red;
 }
 </style>

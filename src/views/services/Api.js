@@ -13,7 +13,7 @@ let Api = {
   },
   postPicture() {
     let postPicture = axios.create({
-      baseURL: `http://localhost:3000/`,
+      baseURL: `https://shielded-brushlands-80745.herokuapp.com/`,
       headers: {
         Authorization: `Bearer ${store.state.token}`,
         "Content-Type": `application/x-www-form-urlencoded`

@@ -53,6 +53,11 @@ export default {
   justify-content: center;
   align-items: center;
 }
+@media (max-width: 960px) {
+  .sales-data {
+    flex-direction: column;
+  }
+}
 .data {
   font-size: 2rem;
   font-weight: 500;

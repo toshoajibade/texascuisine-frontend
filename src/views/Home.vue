@@ -146,5 +146,4 @@ export default {
   color: white !important;
   margin: 2rem 0 0 0;
 }
-
 </style>

@@ -18,14 +18,14 @@
         </div>
         
         
-        <v-btn type="submit" class="btn btn-primary" v-on:click.prevent="addUser">CREATE</v-btn>
+        <v-btn type="submit" class="btn-primary" v-on:click.prevent="addUser">CREATE</v-btn>
     </form>
     <section>
-      <P style="font-weight:bold">CURRENT ADMINS</P>
+      <P style="font-weight:bold" class="current-admins">CURRENT ADMINS</P>
       <table class="table">
         <thead>
-        <tr>
-          <th scope="column">First Name</th>
+        <tr class="table-header">
+          <th class="first-child" scope="column">First Name</th>
           <th scope="column">Last Name</th>
           <th scope="column">Email Address</th>
           <th scope="column">Phone Number</th>
@@ -34,11 +34,11 @@
         </thead>
         <tbody>
         <tr scope="row" v-for="user in state.users" class="user-tab" v-bind:key="user.userId">
-          <td>{{user.firstName}}</td>
+          <td class="first-child">{{user.firstName}}</td>
           <td>{{user.lastName}}</td>
           <td>{{user.email}}</td>
           <td>{{user.phoneNumber}}</td>
-          <td> <v-btn small class="btn-outline-secondary" v-on:click="deleteUser(user.userId)">Delete</v-btn></td>
+          <td> <v-icon small class="delete-user" v-on:click="deleteUser(user.userId)">delete</v-icon></td>
         </tr>
         </tbody>
       </table>
@@ -81,64 +81,86 @@ export default {
       .then(res => {
         if (res.status === 200) {
           this.state.users = res.data.reverse();
+          console.log(this.state.users);
         }
       });
   },
   methods: {
     addUser() {
       const { errors, isValid } = validations.validateNewUser(this.newUser);
-      if(!isValid) {
+      if (!isValid) {
         this.state.errors = errors;
-        return
+        return;
       }
-      Api.instance().post(`user/create`, this.newUser).then(res => this.state.users.unshift(res.data))
-      .then(this.newUser = {});
+      Api.instance()
+        .post(`user/create`, this.newUser)
+        .then(res => this.state.users.unshift(res.data))
+        .then((this.newUser = {}));
     },
     deleteUser(value) {
       console.log(value);
-      Api.instance().delete(`user/delete/${value}`);
+      Api.instance()
+        .delete(`user/delete/${value}`)
+        .then(res => {
+          let users = this.state.users.filter(user => user.userId !== value);
+          this.state.users = users;
+        });
     }
   }
 };
 </script>
 
 <style scoped>
+form {
+  margin-bottom: 3rem;
+}
 .select-first {
-  margin-right: 2rem
+  margin-right: 2rem;
 }
 .create-product-page {
   width: 100%;
   height: 100%;
 }
-
+.current-admins {
+  margin-bottom: 1rem !important;
+}
 .create-user-label {
   margin-bottom: 1rem;
 }
 .product-name-price {
   width: 100%;
-  display: flex
+  display: flex;
 }
-.btn-primary {
-  margin-top: 1.5rem;
-  margin-bottom: 3rem;
-  background-color: #00472e;
-  height: 36px;
-}
+
 table {
   width: 100%;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+.user-tab {
+  height: 3rem;
+  border-bottom: 1px solid grey !important;
 }
 
 .user-tab:hover {
   background-color: #f2f2f2;
 }
-.btn-outline-secondary {
-  visibility: hidden;
-}
-.user-tab:hover .btn-outline-secondary{
-  visibility: visible
+
+.delete-user:hover {
+  color: red;
 }
 th {
   text-align: left;
-  font-weight: normal
+  font-weight: initial;
+  color: rgb(43, 42, 42);
+}
+.table-header {
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+  background-color: #f2f2f2;
+  height: 3rem;
+}
+.first-child {
+  padding-left: 1rem;
 }
 </style>

@@ -12,6 +12,9 @@
   font-size: 16px;
   color: rgb(43, 42, 42);
 }
+html {
+  overflow-y: hidden !important;
+}
 .btn-outline-secondary {
   font-size: 0.875rem;
   background-color: transparent;
@@ -24,7 +27,15 @@
   font-size: 12px;
 }
 .btn-primary {
-  color: #00472e;
+  margin-top: 1.5rem;
+  margin-bottom: 3rem;
+  border: 1px solid #00472e;
+  height: 36px;
+  color: #00472e !important;
+}
+.btn-primary:hover {
+  background-color: #00472e !important;
+  color: white !important;
 }
 .btn-secondary {
   font-size: 0.75rem;

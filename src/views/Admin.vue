@@ -2,7 +2,7 @@
     <div>
         <Header></Header>
         <div class="homepage">
-          <side-bar></side-bar>
+          <side-bar class="hidden-sm-and-down"></side-bar>
           <div class="content-section">
               <router-view></router-view>
           </div>
@@ -48,8 +48,8 @@ p {
 }
 .content-section {
   height: calc(100vh - 4rem);
-  width: calc(100vw - 250px);
-  padding: 50px 100px;
+  width: 100%;
+  padding: 50px 5vw;
   overflow: auto;
 }
 .v-messages__message {
@@ -58,5 +58,4 @@ p {
 .v-btn {
   border-radius: 5px;
 }
-
 </style>
