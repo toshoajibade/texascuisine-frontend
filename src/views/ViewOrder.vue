@@ -10,7 +10,7 @@
             <div class="select">
           <p>UPDATE TO</p>
        <v-select v-model="order.status" class="select-field-input" :items="deliveryStatus" item-text="label"  item-value="value"></v-select></div>
-            <v-btn class="print-button btn">PRINT</v-btn>
+            <v-icon class="print-icon" @click="print">print</v-icon>
         </div>
         <div class="delivery-details">
             <div class="customer-details">
@@ -21,6 +21,7 @@
                 <p>No 1, Gwarimpa Road, Aso Rock, Onike,Yaba, Kwara State</p>
             </div>
             <div class="order-status">
+                <p class="customer-heading">Order Details</p>
                 <p>Order#: <span class="order-number">F5HEU6HGUTUJHTY</span></p>
                 <p>Date Ordered: 21-08-2018</p>
                 <p class="payment-status">PAID</p>
@@ -38,7 +39,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <items-ordered></items-ordered>
+                    <items-ordered class="first-child"></items-ordered>
                      <items-ordered></items-ordered>
                       <items-ordered></items-ordered>
                     <items-ordered></items-ordered>
@@ -62,6 +63,8 @@
 
 <script>
 import ItemsOrdered from "@/components/common/ItemsOrdered";
+import pdfMake from "pdfmake/build/pdfmake";
+import font from "pdfmake/build/vfs_fonts";
 export default {
   name: "ViewOrder",
   components: {
@@ -80,6 +83,13 @@ export default {
         status: `Pending`
       }
     };
+  },
+  methods: {
+    print() {
+      pdfMake.vfs = font.pdfMake.vfs;
+      let docDefinition = { content: `This is a sample of the pdf to make` };
+      pdfMake.createPdf(docDefinition).download();
+    }
   }
 };
 </script>
@@ -105,22 +115,13 @@ export default {
   margin: 0px 0px 0px 1rem;
   width: 200px;
 }
-.print-button {
-  font-size: 0.875rem;
-  background-color: transparent;
-  line-height: 1.5;
-  border: 1px solid;
-  border-radius: 0.2rem;
-  height: 2rem;
-  color: #00472e;
+.print-icon {
+  color: #00472e !important;
+  font-size: 3rem;
 }
 
-.print-button:hover {
-  color: white;
-  background-color: #00472e;
-}
 .total > * {
-  font-size: 1rem;
+  font-weight: bold;
 }
 .delivery-details {
   display: flex;
@@ -135,11 +136,13 @@ export default {
 table {
   width: 100%;
   margin-top: 2rem;
+  border-spacing: 0px;
+  border-collapse: collapse;
 }
 th {
   text-align: left;
+  font-size: 1.2em;
   font-weight: normal;
-  font-style: italic;
   text-transform: uppercase;
 }
 
@@ -150,7 +153,7 @@ th {
   margin-bottom: 2rem;
 }
 .customer-heading {
-  font-size: 1rem;
+  font-size: 1.2rem;
 }
 .payment-status {
   font-size: 1.5rem;
@@ -169,5 +172,12 @@ th {
 }
 .failed {
   color: red;
+}
+tbody > * {
+  height: 3rem;
+  border-bottom: 1px solid grey;
+}
+.first-child {
+  border-top: 1px solid grey !important;
 }
 </style>

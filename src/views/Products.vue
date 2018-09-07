@@ -13,7 +13,7 @@
         </v-layout>
             
         <div class="product-selection-list">
-       <table class="table">
+       <table class="table"  v-if="state.products.length !== 0">
         <thead>
         <tr class="table-header">
           <th scope="column">Picture</th>
@@ -158,8 +158,7 @@ export default {
 }
 .table-header {
   border-bottom: 1px solid black;
-  border-top: 1px solid black;
-  background-color: #f2f2f2;
+
   height: 3rem;
 }
 .my-auto {
@@ -206,6 +205,6 @@ td {
   cursor: pointer;
 }
 .edit-icon:hover > * {
-  color: rgb(83, 83, 241)
+  color: rgb(83, 83, 241);
 }
 </style>

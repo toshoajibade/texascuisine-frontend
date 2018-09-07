@@ -20,9 +20,9 @@
         
         <v-btn type="submit" class="btn-primary" v-on:click.prevent="addUser">CREATE</v-btn>
     </form>
-    <section>
+    <section v-if="state.users.length !== 0">
       <P style="font-weight:bold" class="current-admins">CURRENT ADMINS</P>
-      <table class="table">
+      <table class="table" >
         <thead>
         <tr class="table-header">
           <th class="first-child" scope="column">First Name</th>
@@ -92,7 +92,7 @@ export default {
         this.state.errors = errors;
         return;
       }
-      Api.instance()
+      Api.local()
         .post(`user/create`, this.newUser)
         .then(res => this.state.users.unshift(res.data))
         .then((this.newUser = {}));
@@ -123,9 +123,11 @@ form {
 }
 .current-admins {
   margin-bottom: 1rem !important;
+  font-size: 1.2em;
 }
 .create-user-label {
   margin-bottom: 1rem;
+  font-size: 1.2em;
 }
 .product-name-price {
   width: 100%;
@@ -151,13 +153,12 @@ table {
 }
 th {
   text-align: left;
-  font-weight: initial;
-  color: rgb(43, 42, 42);
+  font-weight: normal;
+  font-size: 1.2em;
+  text-transform: uppercase;
 }
 .table-header {
   border-bottom: 1px solid black;
-  border-top: 1px solid black;
-  background-color: #f2f2f2;
   height: 3rem;
 }
 .first-child {

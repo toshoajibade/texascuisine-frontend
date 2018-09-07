@@ -9,7 +9,6 @@
 @import url("https://fonts.googleapis.com/css?family=Chela+One|Lobster|Dancing+Script|Raleway");
 * {
   font-family: "Raleway", cursive;
-  font-size: 16px;
   color: rgb(43, 42, 42);
 }
 html {

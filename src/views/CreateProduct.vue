@@ -18,8 +18,20 @@
             </div>
             <v-spacer></v-spacer>
             <div class="picture">
-              <p class="picture-label">Picture</p>
-              <image-uploader @clicked="clicked" />
+              <p>Picture</p>
+              <div class="image-upload">
+                <div class="image-placeholder" v-if="state.url">
+                   <label for="editImage"><v-icon class="edit-image-label">edit</v-icon></label>
+                    <input type="file"  id="editImage" @change='clicked' class="upload-button">
+                    <img class="image-preview" :src="state.url" alt="" srcset="">
+                </div>
+                <div class="image-placeholder" v-else>
+                    <label for="file"><v-icon class="image-label">add_a_photo</v-icon></label>
+                    <input type="file"  id="file" @change='clicked' class="upload-button">
+                    <p>Click to add product image</p>
+                </div>
+               
+              </div>
               <p>{{state.errors.image}}</p>
             </div>
           </div>
@@ -53,6 +65,7 @@ export default {
         ],
         description: "",
         image: null,
+        url: ``,
         errors: {}
       },
       selectedCategory: ``
@@ -87,8 +100,11 @@ export default {
         console.log(error);
       }
     },
-    clicked(value) {
-      this.state.image = value;
+    clicked(event) {
+      console.log(`I am clicked`);
+      const file = event.target.files[0];
+      this.state.url = URL.createObjectURL(file);
+      // this.state.image = value;
     }
   },
   watch: {
@@ -118,6 +134,15 @@ export default {
 .select-first {
   width: 48%;
 }
+.image-label {
+  color: grey !important;
+  padding: 1rem !important;
+  font-size: 6rem;
+  cursor: pointer;
+}
+.image-label:hover {
+  color: #00472e !important;
+}
 .product-name {
   width: 100%;
 }
@@ -133,11 +158,29 @@ export default {
 }
 .picture {
   width: 48%;
+  display: flex;
+  flex-direction: column;
 }
 .picture-label {
   margin-bottom: 0.5rem;
 }
-
+.upload-button {
+  display: none;
+}
+.edit-image-label {
+  z-index: 2;
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  font-size: 3rem;
+  color: #00472e !important;
+  background-color: white;
+  border-radius: 10%;
+}
+.edit-image-label:hover {
+  color: white !important;
+  background-color: #00472e;
+}
 .textarea {
   width: 48%;
   margin-right: 2rem;
@@ -159,5 +202,33 @@ textarea {
 .textarea-picture-container {
   display: flex;
   flex-direction: row;
+}
+.image-upload {
+  border: 1px solid;
+  border-radius: 4px;
+  width: 100%;
+  position: relative;
+  padding-top: 75%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.image-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+}
+.image-preview {
+  object-fit: cover;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
 }
 </style>
