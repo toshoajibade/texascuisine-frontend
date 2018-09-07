@@ -92,7 +92,7 @@ export default {
         this.state.errors = errors;
         return;
       }
-      Api.local()
+      Api.instance()
         .post(`user/create`, this.newUser)
         .then(res => this.state.users.unshift(res.data))
         .then((this.newUser = {}));
