@@ -2,7 +2,12 @@
     <div>
         <Header @showSidebar="show"></Header>
         <div class="homepage">
-          <side-bar class="sidebar" v-if="open"></side-bar>
+          <transition name="slideLeft">
+            
+            <side-bar class="sidebar" v-if="open"></side-bar>
+          </transition>
+          <transition name="fade">
+          <p class="overlay" v-if="open"  @click="hideSidebar"></p></transition>
           <div class="content-section" @click="hideSidebar">
               <router-view></router-view>
           </div>
@@ -20,6 +25,7 @@ import Settings from "@/views/Settings.vue";
 import Users from "@/views/Users.vue";
 import SideBar from "@/components/common/SideBar.vue";
 import Header from "@/components/common/Header";
+require('vue2-animate/dist/vue2-animate.min.css')
 
 export default {
   name: "Admin",
@@ -75,6 +81,7 @@ export default {
 p {
   margin-bottom: 0px;
 }
+
 .content-section {
   height: calc(100vh - 4rem);
   width: calc(100vw - 250px);
@@ -98,10 +105,22 @@ p {
 .v-btn {
   border-radius: 5px;
 }
+.overlay {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.637);
+  display: none;
+  margin: 0px;
+}
 @media(max-width: 960px) {
   .content-section {
     margin-left: 0px;
     width: 100vw
+  }
+  .overlay {
+    display: block
   }
 }
 </style>

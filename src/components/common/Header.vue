@@ -2,9 +2,12 @@
     <div>
         <header class="homepage">
             <nav class="header">
+              <div class="show-sidebar-wrapper">
                 <v-icon class="show-sidebar" @click="$emit('showSidebar')">menu</v-icon>
+              </div>
+               
                 <p class="logo">Texas Cuisine</p>
-                <v-icon class="drop-down">arrow_drop_down</v-icon>
+                <p class="drop-down"></p>
                 <div class="username-logout" v-if="userIsLoggedIn">
                     <p class="username">{{getUser}}</p>
                     <v-btn small class="logout-button" @click="logout">LOGOUT</v-btn>
@@ -45,7 +48,8 @@ export default {
   display: flex;
   align-items: center;
   padding: 0rem 4rem;
-  justify-content: space-between
+  justify-content: space-between;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.541)
 }
 
 .logo {
@@ -75,18 +79,32 @@ export default {
   color: white !important;
   border: 1px solid white;
 }
-.show-sidebar, .drop-down {
+.show-sidebar-wrapper, .drop-down {
   display: none;
   color: white !important;
   cursor: pointer;
+
+}
+.show-sidebar{
+  color: white !important;  
 }
 
 
 
 @media(max-width: 960px){
-   .show-sidebar, .drop-down {
+   .show-sidebar-wrapper, .drop-down {
     display: block;
+      width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around
   }
+  .show-sidebar-wrapper:hover {
+    background-color:  #940e0e;
+  }
+  
     .username-logout {
     display: none
   }
