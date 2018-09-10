@@ -31,10 +31,10 @@
 <script>
 export default {
   name: "SideBar",
-  data() {
-      return {
-          drawer: null
-      }
+  watch:{
+    $route (to, from){
+        this.$parent.open = false;
+    }
   }
 };
 </script>
@@ -42,7 +42,6 @@ export default {
 <style>
 .side-navigation-bar {
   padding-top: 50px;
-  width: 250px;
   height: calc(100vh - 4rem);
   background-color: #940e0e;
 }

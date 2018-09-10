@@ -1,9 +1,9 @@
 <template>
     <div>
-        <Header></Header>
+        <Header @showSidebar="show"></Header>
         <div class="homepage">
-          <side-bar sidebar="sidebar" class="hidden-sm-and-down"></side-bar>
-          <div class="content-section">
+          <side-bar class="sidebar" v-if="open"></side-bar>
+          <div class="content-section" @click="hideSidebar">
               <router-view></router-view>
           </div>
         </div>
@@ -33,14 +33,43 @@ export default {
     Header,
     CreateProduct,
     ViewOrder
-  }
+  },
+  data() {
+    return {
+      open: true,
+      windowWidth: null
+    }
+  },
+  mounted() {
+    window.addEventListener("resize", this.onResize)
+  },
+  methods: {
+    onResize() {
+      if(window.innerWidth > 960) {
+        this.open = true
+      } else { this.open = false}
+    },
+    show() {
+      if(this.open) {
+        this.open = false
+      } else {
+        this.open = true
+      }
+    },
+    hideSidebar() {
+      if(this.open){
+        this.open = false
+      }
+    }
+  },
+
 };
 </script>
 
 <style>
 .homepage {
-  display: flex;
-  flex-direction: row;
+  position: relative;
+  display: flex
 }
 
 p {
@@ -48,14 +77,31 @@ p {
 }
 .content-section {
   height: calc(100vh - 4rem);
-  width: 100%;
+  width: calc(100vw - 250px);
+  position: absolute;
+  left: 0px;
   padding: 50px 5vw;
   overflow: auto;
+  margin-left: 250px;
+}
+.sidebar {
+  width: 250px;
+  left: 0px;
+  top: 0px;
+  z-index: 2;
+  transition: width 5s;
+
 }
 .v-messages__message {
   color: red;
 }
 .v-btn {
   border-radius: 5px;
+}
+@media(max-width: 960px) {
+  .content-section {
+    margin-left: 0px;
+    width: 100vw
+  }
 }
 </style>

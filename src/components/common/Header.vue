@@ -2,7 +2,7 @@
     <div>
         <header class="homepage">
             <nav class="header">
-                <v-icon class="show-sidebar">menu</v-icon>
+                <v-icon class="show-sidebar" @click="$emit('showSidebar')">menu</v-icon>
                 <p class="logo">Texas Cuisine</p>
                 <v-icon class="drop-down">arrow_drop_down</v-icon>
                 <div class="username-logout" v-if="userIsLoggedIn">
@@ -21,9 +21,6 @@ export default {
     logout() {
       this.$store.dispatch("logout");
       this.$router.push(`/`);
-    },
-    showSidebar() {
-      console.log(this.$refs.sidebar)
     }
   },
 
