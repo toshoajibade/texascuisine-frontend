@@ -43,6 +43,9 @@ export default {
     return {
       state: {
         products: []
+      },
+      user: {
+        name: `Ajibade Nurudeen`
       }
     };
   },
@@ -52,7 +55,20 @@ export default {
     },
     print() {
       pdfMake.vfs = font.pdfMake.vfs;
-      let docDefinition = { content: `This is a sample of the pdf to make` };
+      let docDefinition = { content: [`This is a sample of the pdf to make`,
+      {
+        columns: [
+          {
+          width: "50%",
+          text: "first column"
+          },
+          {
+            width: "50%",
+            text: this.user.name
+          }
+          ],
+      }
+      ]};
       pdfMake.createPdf(docDefinition).download();
     }
   },

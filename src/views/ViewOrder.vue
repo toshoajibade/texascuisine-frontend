@@ -1,17 +1,15 @@
 <template>
     <div class="order-page">
-        <div class="print-button-container">
-            <p class="delivery-status" v-if="order.status === 'pending'">Delivery Status: <span class="pending">{{order.status}}</span></p>
-            <p class="delivery-status" v-else-if="order.status === 'shipped'">Delivery Status: <span class="shipped">{{order.status}}</span></p>
-            <p class="delivery-status" v-else-if="order.status === 'delivered'">Delivery Status: <span class="delivered">{{order.status}}</span></p>
-            <p class="delivery-status" v-else>Delivery Status: <span class="failed">{{order.status}}</span></p>
+        <div class="update-status-tab">
+              <p class="delivery-status">Delivery Status: <span :class=order.status>{{order.status}}</span></p>
+              <div class="select">
+                <p>UPDATE TO</p>
+                  <v-select v-model="order.status" class="select-field-input" :items="deliveryStatus" item-text="label"  item-value="value"></v-select>
+              </div>
+              <v-icon class="print-icon" @click="print">print</v-icon>
+            </div>
+             
 
-
-            <div class="select">
-          <p>UPDATE TO</p>
-       <v-select v-model="order.status" class="select-field-input" :items="deliveryStatus" item-text="label"  item-value="value"></v-select></div>
-            <v-icon class="print-icon" @click="print">print</v-icon>
-        </div>
         <div class="delivery-details">
             <div class="customer-details">
                 <p class="customer-heading">Customer Details</p>
@@ -20,7 +18,7 @@
                 <p>08099565423</p>
                 <p>No 1, Gwarimpa Road, Aso Rock, Onike,Yaba, Kwara State</p>
             </div>
-            <div class="order-status">
+            <div class="order-details">
                 <p class="customer-heading">Order Details</p>
                 <p>Order#: <span class="order-number">F5HEU6HGUTUJHTY</span></p>
                 <p>Date Ordered: 21-08-2018</p>
@@ -28,14 +26,14 @@
                 
             </div>
         </div>
-        <div class="order-details">
+        <div class="items-ordered-list">
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Product</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Total</th>
+                        <th scope="column" class="product-name-column">Product</th>
+                        <th scope="column" class="price-column">Price</th>
+                        <th scope="column" class="quantity-column">Quantity</th>
+                        <th scope="column" class="subtotal-column">Total</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -80,7 +78,7 @@ export default {
         { label: "Cancelled", value: "cancelled" }
       ],
       order: {
-        status: `Pending`
+        status: `pending`
       }
     };
   },
@@ -102,6 +100,14 @@ export default {
 .select {
   display: flex;
   flex-direction: row;
+  margin-right: 1rem;
+}
+
+.price-column,
+.quantity-column,
+.subtotal-column {
+  width: 17.5%;
+  padding-right: 1rem;
 }
 
 .order-page {
@@ -131,10 +137,20 @@ export default {
 .customer-details {
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 100%;
+  flex: 1;
+  margin-right: 2rem;
+}
+.order-details {
+  flex: 1;
+  width: 100%;
+}
+.items-ordered-list {
+  overflow-x: auto;
 }
 table {
   width: 100%;
+  min-width: 400px;
   margin-top: 2rem;
   border-spacing: 0px;
   border-collapse: collapse;
@@ -143,10 +159,10 @@ th {
   text-align: left;
   font-size: 1.2em;
   font-weight: normal;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
-.print-button-container {
+.update-status-tab {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -170,7 +186,8 @@ th {
 .delivered {
   color: green;
 }
-.failed {
+.failed,
+.cancelled {
   color: red;
 }
 tbody > * {
@@ -179,5 +196,20 @@ tbody > * {
 }
 .first-child {
   border-top: 1px solid grey !important;
+}
+@media (max-width: 600px) {
+  .delivery-details {
+    flex-direction: column;
+  }
+  .customer-details {
+    margin-right: 0px;
+    margin-bottom: 1rem;
+  }
+  .update-status-tab {
+    flex-direction: column
+  }
+  .print-icon {
+    width: 3rem
+  }
 }
 </style>

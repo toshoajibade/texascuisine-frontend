@@ -2,10 +2,10 @@
     <div>
         <header class="homepage">
             <nav class="header">
-              
+                <v-icon class="show-sidebar">menu</v-icon>
                 <p class="logo">Texas Cuisine</p>
-                <v-spacer></v-spacer>
-                <div class="username-logout ml-auto" v-if="userIsLoggedIn">
+                <v-icon class="drop-down">arrow_drop_down</v-icon>
+                <div class="username-logout" v-if="userIsLoggedIn">
                     <p class="username">{{getUser}}</p>
                     <v-btn small class="logout-button" @click="logout">LOGOUT</v-btn>
                 </div>
@@ -21,8 +21,12 @@ export default {
     logout() {
       this.$store.dispatch("logout");
       this.$router.push(`/`);
+    },
+    showSidebar() {
+      console.log(this.$refs.sidebar)
     }
   },
+
   computed: {
     userIsLoggedIn() {
       return this.$store.state.isUserLoggedIn;
@@ -43,8 +47,8 @@ export default {
   background-color: #470000;
   display: flex;
   align-items: center;
-  padding-left: 50px;
-  padding-right: 50px;
+  padding: 0rem 4rem;
+  justify-content: space-between
 }
 
 .logo {
@@ -54,12 +58,14 @@ export default {
   line-height: 100%;
   text-align: center;
   margin: 0px;
+  align-self: flex start;
 }
 
 .username-logout {
   display: flex;
   flex-direction: row;
   align-items: center;
+  align-self: flex-end;
 }
 
 .username {
@@ -71,5 +77,25 @@ export default {
   background-color: transparent !important;
   color: white !important;
   border: 1px solid white;
+}
+.show-sidebar, .drop-down {
+  display: none;
+  color: white !important;
+  cursor: pointer;
+}
+
+
+
+@media(max-width: 960px){
+   .show-sidebar, .drop-down {
+    display: block;
+  }
+    .username-logout {
+    display: none
+  }
+    .header {
+    justify-content: space-between;
+    padding: 0 2rem;
+  }
 }
 </style>

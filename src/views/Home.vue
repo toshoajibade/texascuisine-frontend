@@ -85,7 +85,7 @@ export default {
 
 .body {
   width: 100%;
-  height: calc(100vh - 72px);
+  flex: 1;
   display: flex;
   flex-direction: row;
 }
@@ -112,10 +112,11 @@ export default {
   background-color: #f7f7f7;
   border-radius: 4px;
   display: flex;
+  margin: 2rem;
 }
 .form-container {
-  width: 300px;
-  height: 250px;
+  width: 100%;
+  padding: 0rem 2rem;
   display: flex;
   flex-direction: column;
 }
@@ -145,5 +146,18 @@ export default {
   background-color: #00472e !important;
   color: white !important;
   margin: 2rem 0 0 0;
+}
+@media(max-width: 960px) {
+  .side-container {
+    display: none
+  }
+  .login-form-container {
+  width: 100%;
+  height: 100%;
+  background-color: #f8e2e2;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
 }
 </style>

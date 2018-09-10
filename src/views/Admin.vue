@@ -2,7 +2,7 @@
     <div>
         <Header></Header>
         <div class="homepage">
-          <side-bar class="hidden-sm-and-down"></side-bar>
+          <side-bar sidebar="sidebar" class="hidden-sm-and-down"></side-bar>
           <div class="content-section">
               <router-view></router-view>
           </div>
