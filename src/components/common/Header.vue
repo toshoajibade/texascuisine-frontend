@@ -2,6 +2,7 @@
     <div>
         <header class="homepage">
             <nav class="header">
+              
                 <p class="logo">Texas Cuisine</p>
                 <v-spacer></v-spacer>
                 <div class="username-logout ml-auto" v-if="userIsLoggedIn">

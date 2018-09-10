@@ -3,18 +3,13 @@
     <form class="create-product-page">
         <p class="create-user-label" style="font-weight:bold">CREATE ADMIN</p>
         <p>Enter new admin details below</p>
-        <div class="product-name-price">
-          <v-text-field v-model="newUser.firstName" class="select-first" label="First Name" :error-messages="state.errors.firstName" type="text" />
-         
+        <div class="new-admin">
+          <v-text-field v-model="newUser.firstName" label="First Name" :error-messages="state.errors.firstName" type="text" />
           <v-text-field v-model="newUser.lastName" label="Last Name" :error-messages="state.errors.lastName"  type="text" />
-            
         </div>
-
-        <div class="product-name-price">
-          <v-text-field v-model="newUser.phoneNumber" class="select-first" label="Phone Number" :error-messages="state.errors.phoneNumber" type="text" />
-         
-            <v-text-field v-model="newUser.email"  label="Email" :error-messages="state.errors.email" type="email" />
-            
+        <div class="new-admin">
+          <v-text-field v-model="newUser.phoneNumber" label="Phone Number" :error-messages="state.errors.phoneNumber" type="text" />
+          <v-text-field v-model="newUser.email"  label="Email" :error-messages="state.errors.email" type="email" />
         </div>
         
         
@@ -22,7 +17,8 @@
     </form>
     <section v-if="state.users.length !== 0">
       <P style="font-weight:bold" class="current-admins">CURRENT ADMINS</P>
-      <table class="table" >
+      <div class="table-container">
+         <table class="table" >
         <thead>
         <tr class="table-header">
           <th class="first-child" scope="column">First Name</th>
@@ -42,6 +38,8 @@
         </tr>
         </tbody>
       </table>
+      </div>
+     
     </section>
     </div>
 </template>
@@ -87,6 +85,7 @@ export default {
   },
   methods: {
     addUser() {
+      this.state.errors = {};
       const { errors, isValid } = validations.validateNewUser(this.newUser);
       if (!isValid) {
         this.state.errors = errors;
@@ -98,13 +97,15 @@ export default {
         .then((this.newUser = {}));
     },
     deleteUser(value) {
-      console.log(value);
+      console.log(value)
       Api.instance()
         .delete(`user/delete/${value}`)
-        .then(res => {
+        .then(res => {if(res.status === 200){
+          console.log(res.status);
           let users = this.state.users.filter(user => user.userId !== value);
           this.state.users = users;
-        });
+        } }
+        );
     }
   }
 };
@@ -114,9 +115,7 @@ export default {
 form {
   margin-bottom: 3rem;
 }
-.select-first {
-  margin-right: 2rem;
-}
+
 .create-product-page {
   width: 100%;
   height: 100%;
@@ -129,15 +128,46 @@ form {
   margin-bottom: 1rem;
   font-size: 1.2em;
 }
-.product-name-price {
+.new-admin {
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
+.new-admin > *:first-child {
+  margin-right: 2rem;
+}
+
+ @media(max-width: 600px) {
+   .new-admin {
+     flex-direction: column;
+   }
+   .new-admin > * {
+     flex: 1 1 auto;
+   }
+   .new-admin > *:first-child {
+  margin-right: 0rem;
+}
+ }
+
+section {
+  display: flex;
+  flex-direction: column
+}
 table {
   width: 100%;
   border-spacing: 0px;
   border-collapse: collapse;
+}
+
+.table-container {
+  overflow-x: auto
+}
+
+
+td, th {
+  padding-right: 2rem;
 }
 .user-tab {
   height: 3rem;
@@ -164,4 +194,5 @@ th {
 .first-child {
   padding-left: 1rem;
 }
+
 </style>

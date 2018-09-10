@@ -1,17 +1,25 @@
 <template>
     <div class="order-tab" v-on:click="viewOrder">
         <div class="order-details">
-            <p>ORDER #: <span class="order-number">{{order.number}}</span> </p>
-            <p class="products">{{order.products}}</p>
-            
+            <p>ORDER #: <span class="order-number">{{orderNumber}}</span> </p>
+            <p class="products">{{state.products}}</p>
         </div>
         <div class="customer-details">
-            <p class="customer-name">{{order.customerName}}</p>
-            <p>{{order.phoneNumber}}</p>
-            <p>{{order.address}}</p>
+            <p class="customer-name">{{`${customerTitle} ${customerFirstName} ${customerLastName}`}}</p>
+            <p>{{customerPhoneNumber}}</p>
+            <p>{{customerAddress}}</p>
         </div>
-        <p class="order-status">{{order.status}}</p>
-        <v-icon class="view-button" v-on:click.stop="print">printer</v-icon>
+        <div class="order-status">
+            <p v-if="deliveryStatus == 'shipped'" class="shipped">{{deliveryStatus}}</p>
+            <p v-else-if="deliveryStatus == 'cancelled'" class="failed">{{deliveryStatus}}</p>
+            <p v-else-if="deliveryStatus == 'failed'" class="failed">{{deliveryStatus}}</p>
+            <p v-else-if="deliveryStatus == 'delivered'" class="delivered">{{deliveryStatus}}</p>
+            <p v-else class="order-status">{{deliveryStatus}}</p>
+        </div>
+       <div class="print-button">
+  <v-icon  v-on:click.stop="print">printer</v-icon>
+       </div>
+      
     </div>
 </template>
 
@@ -20,15 +28,21 @@ import pdfMake from "pdfmake/build/pdfmake";
 import font from "pdfmake/build/vfs_fonts";
 export default {
   name: "OrdersTab",
+  props: [
+    "orderNumber",
+    "paymentStatus",
+    "deliveryStatus",
+    "customerAddress",
+    "customerPhoneNumber",
+    "customerFirstName",
+    "customerLastName",
+    "customerTitle",
+    "products"
+  ],
   data() {
     return {
-      order: {
-        status: `PENDING`,
-        number: `FA5GJH7889907J767`,
-        products: `Fried and Jollof Rice, 1/2 Chicken, Table Water`,
-        customerName: `Pastor Andrew Okon`,
-        address: `No 12, Gwarimpa Street, Onike, Lagos`,
-        phoneNumber: `08097937583`
+      state: {
+        products: []
       }
     };
   },
@@ -41,6 +55,15 @@ export default {
       let docDefinition = { content: `This is a sample of the pdf to make` };
       pdfMake.createPdf(docDefinition).download();
     }
+  },
+  mounted() {
+    let products = this.products;
+    let productsOrdered = ``;
+    products.forEach(product => {
+      let productName = `${product.productName} ${product.productQuantity} `;
+      productsOrdered += productName;
+    });
+    this.state.products = productsOrdered;
   }
 };
 </script>
@@ -56,19 +79,45 @@ export default {
   justify-content: space-between;
   margin-bottom: 1.5rem;
 }
-@media (max-width: 960px) {
+.order-tab > * {
+  margin-right: 1rem;
+}
+@media (max-width: 600px) {
   .order-tab {
     flex-direction: column;
+  }
+  .order-status, .print-button {
+    align-self: flex-start !important
   }
 }
 .order-details {
   display: flex;
   flex-direction: column;
+  flex: 3
 }
 .customer-details {
   display: flex;
   flex-direction: column;
+  flex: 4
 }
+
+.order-status {
+  align-self: center;
+  margin-bottom: 0px;
+  flex: 1;
+}
+.print-button {
+  align-self: center;
+  flex: 1;
+  margin-right: 0px;
+  display: flex;
+  justify-content: center
+}
+
+.v-icon {
+  width: 24px
+}
+
 .customer-name {
   font-weight: normal;
   font-style: italic;
@@ -80,15 +129,15 @@ export default {
 .order-tab:hover .view-button {
   visibility: visible;
 }
-.view-button {
-  align-self: center;
-}
+
 .view-button:hover {
   color: #00472e;
 }
-.order-status {
-  align-self: center;
-  margin-bottom: 0px;
+
+
+.order-status > * {
+  text-transform: uppercase;
+  width: 100px
 }
 
 .update-button-container {
@@ -105,5 +154,14 @@ export default {
 }
 .my-auto {
   align-items: center;
+}
+.shipped {
+  color: blue;
+}
+.delivered {
+  color: green;
+}
+.failed {
+  color: red;
 }
 </style>

@@ -10,6 +10,7 @@
 * {
   font-family: "Raleway", cursive;
   color: rgb(43, 42, 42);
+  font-size: 16px;
 }
 html {
   overflow-y: hidden !important;

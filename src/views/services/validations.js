@@ -18,16 +18,14 @@ let validations = {
   },
   validateNewProduct: req => {
     let errors = {};
-    if (validator.isEmpty(req.name)) {
+    const { name, category, description} = req;
+    if (validator.isEmpty(name)) {
       errors.name = "Please enter the name of the product";
     }
-    if (validator.isEmpty(req.price)) {
-      errors.price = "Please enter the price of the product";
-    }
-    if (validator.isEmpty(req.category)) {
+    if (validator.isEmpty(category)) {
       errors.category = "Select the product category";
     }
-    if (validator.isEmpty(req.description)) {
+    if (validator.isEmpty(description)) {
       errors.description = "Please type in the product description";
     }
     return { errors };

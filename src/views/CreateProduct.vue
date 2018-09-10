@@ -9,7 +9,7 @@
           <v-text-field v-model="state.price" label="Price" :error-messages="state.errors.price" type="text" /></div>
             
         </div>
-     <div class="textarea-picture-container">
+        <div class="textarea-picture-container">
             <div class="textarea" >
               <p>Description</p>
               <div class="textarea-field">
@@ -22,12 +22,12 @@
               <div class="image-upload">
                 <div class="image-placeholder" v-if="state.url">
                    <label for="editImage"><v-icon class="edit-image-label">edit</v-icon></label>
-                    <input type="file"  id="editImage" @change='clicked' class="upload-button">
+                    <input type="file"  id="editImage" @change='uploadImage' class="upload-button">
                     <img class="image-preview" :src="state.url" alt="" srcset="">
                 </div>
                 <div class="image-placeholder" v-else>
                     <label for="file"><v-icon class="image-label">add_a_photo</v-icon></label>
-                    <input type="file"  id="file" @change='clicked' class="upload-button">
+                    <input type="file"  id="file" @change='uploadImage' class="upload-button">
                     <p>Click to add product image</p>
                 </div>
                
@@ -100,11 +100,10 @@ export default {
         console.log(error);
       }
     },
-    clicked(event) {
-      console.log(`I am clicked`);
+    uploadImage(event) {
       const file = event.target.files[0];
+      this.image = file;
       this.state.url = URL.createObjectURL(file);
-      // this.state.image = value;
     }
   },
   watch: {
@@ -115,7 +114,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .product-description-container {
   display: flex;
   flex-direction: row;
@@ -131,13 +130,16 @@ export default {
   width: 100%;
   justify-content: space-between;
 }
+.product-name-price > *:first-child {
+  margin-right: 2rem;
+}
 .select-first {
-  width: 48%;
+  width: 100%;
 }
 .image-label {
   color: grey !important;
   padding: 1rem !important;
-  font-size: 6rem;
+  font-size: 6rem !important;
   cursor: pointer;
 }
 .image-label:hover {
@@ -157,7 +159,7 @@ export default {
   color: white !important;
 }
 .picture {
-  width: 48%;
+  width: 100%;
   display: flex;
   flex-direction: column;
 }
@@ -182,7 +184,7 @@ export default {
   background-color: #00472e;
 }
 .textarea {
-  width: 48%;
+  width: 100%;
   margin-right: 2rem;
 }
 textarea {
@@ -230,5 +232,20 @@ textarea {
   left: 0px;
   height: 100%;
   width: 100%;
+}
+ @media(max-width: 600px) {
+   .product-name-price {
+     flex-direction: column;
+   }
+   .product-name-price > * {
+     flex: 1 1 auto;
+   }
+   .product-name-price > *:first-child {
+  margin-right: 0rem
+  }
+  .textarea-picture-container {
+  display: flex;
+  flex-direction: column;
+}
 }
 </style>

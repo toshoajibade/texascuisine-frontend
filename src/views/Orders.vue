@@ -1,13 +1,9 @@
 <template>
-    <div>
-        <orders-tab></orders-tab>
-        <orders-tab></orders-tab>
-        <orders-tab></orders-tab>
-        <orders-tab></orders-tab>
-        <orders-tab></orders-tab>
-        <orders-tab></orders-tab>
-        <orders-tab></orders-tab>
-        <orders-tab></orders-tab>
+    <div >
+      <div v-for="order in state.orders" v-bind:key="order.orderNumber">
+        <orders-tab :customerPhoneNumber="order.customerPhoneNumber" :orderNumber="order.orderNumber" :customerFirstName="order.customerFirstName" :customerLastName="order.customerLastName" :customerTitle="order.customerTitle" :products="order.products" :customerAddress="order.customerAddress" :deliveryStatus="order.deliveryStatus" />
+      </div>
+        
     </div>
 </template>
 
@@ -19,14 +15,22 @@ export default {
   components: {
     OrdersTab
   },
+  data() {
+    return {
+      state: {
+        orders: []
+      }
+    };
+  },
   async created() {
     try {
-    let orders = await Api.instance().get(`orders`);
-    console.log(orders)
+      let res = await Api.instance().get(`orders`);
+      let orders = res.data;
+      console.log(orders);
+      this.state.orders = orders;
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-
   }
 };
 </script>

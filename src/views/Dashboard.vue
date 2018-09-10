@@ -16,19 +16,37 @@
         </div>
        <div class="pending-orders">
            <p class="pending-order-title">Pending Orders List</p>
-           <orders-tab></orders-tab>
-           <orders-tab></orders-tab>
-           <orders-tab></orders-tab>
+             <div v-for="order in state.orders" v-bind:key="order.orderNumber">
+              <orders-tab :customerPhoneNumber="order.customerPhoneNumber" :orderNumber="order.orderNumber" :customerFirstName="order.customerFirstName" :customerLastName="order.customerLastName" :customerTitle="order.customerTitle" :products="order.products" :customerAddress="order.customerAddress" :deliveryStatus="order.deliveryStatus" />
+      </div>
        </div>
     </div>
 </template>
 
 <script>
 import OrdersTab from "@/components/common/OrdersTab.vue";
+import Api from "@/views/services/Api";
 export default {
   name: "Dashboard",
   components: {
     OrdersTab
+  },
+  data() {
+    return {
+      state: {
+        orders: []
+      }
+    }
+  },
+  async created() {
+     try {
+      let res = await Api.instance().get(`orders`);
+      let orders = res.data;
+      console.log(orders);
+      this.state.orders = orders;
+    } catch (error) {
+      console.log(error);
+    }
   },
   methods: {
     vieworder() {
@@ -53,10 +71,16 @@ export default {
   justify-content: center;
   align-items: center;
 }
-@media (max-width: 960px) {
+@media (max-width: 600px) {
   .sales-data {
-    flex-direction: column;
+    padding: 0px
   }
+  .data-label {
+    width: 75px
+  }
+}
+.date-label {
+  font-size: 1rem
 }
 .data {
   font-size: 2rem;
@@ -70,4 +94,5 @@ export default {
 .pending-order-title {
   font-size: 1rem;
 }
+
 </style>

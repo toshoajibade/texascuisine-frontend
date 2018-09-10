@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-layout wrap align-center >
+        <v-layout class="select-layout" align-center >
               <div class="select-slot">
               <v-select label="Category" v-model="selectedCategory" item-text="label" item-value="value" :items="categories"></v-select>
               </div>
@@ -8,7 +8,7 @@
               <v-select label="Status" v-model="selectedStatus" item-text="label"  item-value="value" :items="statuses"></v-select>
               </div>
               <v-spacer></v-spacer>
-                <router-link to="createproduct">
+                <router-link to="createproduct" class="add-product-wrapper">
             <v-btn class="btn-secondary">ADD PRODUCT</v-btn></router-link>
         </v-layout>
             
@@ -178,6 +178,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   border-spacing: 0px;
+  min-width: 600px;
 }
 th,
 td {
@@ -206,5 +207,22 @@ td {
 }
 .edit-icon:hover > * {
   color: rgb(83, 83, 241);
+}
+.product-selection-list {
+  overflow-x: auto
+}
+@media(max-width: 600px) {
+  .select-layout {
+    flex-direction: column
+  }
+  .select-slot {
+    width: 100%
+  }
+  .select-slot:first-child {
+  margin-right: 0px;
+  }
+  .add-product-wrapper {
+    align-self: flex-start !important
+  }
 }
 </style>
