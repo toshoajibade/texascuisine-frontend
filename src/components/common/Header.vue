@@ -1,6 +1,6 @@
 <template>
     <div>
-        <header class="homepage">
+        <header>
             <nav class="header">
               <div class="show-sidebar-wrapper">
                 <v-icon class="show-sidebar" v-if="userIsLoggedIn" @click="$emit('showSidebar')">menu</v-icon>

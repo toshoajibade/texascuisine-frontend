@@ -96,7 +96,7 @@ export default {
 <style>
 .homepage {
   display: flex;
-  top: 64px;
+  margin-top: 4rem;
   position: fixed;
 }
 
