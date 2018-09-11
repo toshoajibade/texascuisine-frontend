@@ -3,9 +3,8 @@
         <header class="homepage">
             <nav class="header">
               <div class="show-sidebar-wrapper">
-                <v-icon class="show-sidebar" @click="$emit('showSidebar')">menu</v-icon>
+                <v-icon class="show-sidebar" v-if="userIsLoggedIn" @click="$emit('showSidebar')">menu</v-icon>
               </div>
-               
                 <p class="logo">Texas Cuisine</p>
                 <p class="drop-down"></p>
                 <div class="username-logout" v-if="userIsLoggedIn">
@@ -83,6 +82,10 @@ export default {
   display: none;
   color: white !important;
   cursor: pointer;
+  -webkit-user-select: none; /* Safari 3.1+ */
+  -moz-user-select: none; /* Firefox 2+ */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none; /* Standard syntax */
 
 }
 .show-sidebar{

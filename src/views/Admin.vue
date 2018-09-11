@@ -46,8 +46,14 @@ export default {
       windowWidth: null
     }
   },
+  created() {
+    if(window.innerWidth < 960) {
+    this.open = false
+    }
+  },
   mounted() {
-    window.addEventListener("resize", this.onResize)
+    window.addEventListener("resize", this.onResize);
+
   },
   methods: {
     onResize() {

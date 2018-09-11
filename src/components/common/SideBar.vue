@@ -1,6 +1,7 @@
 <template>
     <div class="side-navigation-bar">
-        <router-link to="/admin/dashboard">
+        <div>
+            <router-link to="/admin/dashboard">
             <div class="navigation-tab">
                 <p>DASHBOARD</p>
             </div>
@@ -25,6 +26,13 @@
                 <p class="nona">SETTINGS</p>
             </div>
          </router-link> -->
+        </div>
+        
+        <div class="user-logout">
+            <p>Tosho Ajibade</p>
+            <v-btn class="logout-button">LOG OUT</v-btn>
+        </div>
+
     </div>
 </template>
 
@@ -44,6 +52,9 @@ export default {
   padding-top: 50px;
   height: calc(100vh - 4rem);
   background-color: #940e0e;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column
 }
 .navigation-tab {
   width: 100%;
@@ -51,6 +62,18 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.user-logout {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    margin-bottom: 2rem;
+    display: none;
+}
+.user-logout > * {
+    color: white
 }
 .navigation-tab:hover {
   background-color: rgb(187, 33, 33);
@@ -60,5 +83,15 @@ export default {
   font-size: 1.2rem;
   margin-bottom: 0;
   color: white;
+}
+.logout-button {
+  background-color: transparent !important;
+  color: white !important;
+  border: 1px solid white;
+}
+@media(max-width: 960px){
+    .user-logout {
+        display: flex
+    }
 }
 </style>

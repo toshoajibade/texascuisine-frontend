@@ -105,6 +105,7 @@ export default {
 }
 .login-form-inner-container {
   width: 400px;
+  height: 350px;
   padding: 4rem 0 4rem 0;
   justify-content: center;
   align-items: center;
@@ -119,6 +120,7 @@ export default {
   padding: 0rem 2rem;
   display: flex;
   flex-direction: column;
+  justify-content: space-between
 }
 .admin-text {
   color: #470000;
@@ -154,10 +156,10 @@ export default {
   .login-form-container {
   width: 100%;
   height: 100%;
-  background-color: #f8e2e2;
+  background-color: white;
   display: flex;
   justify-content: space-around;
-  align-items: center;
+  align-items: center
 }
 }
 </style>
