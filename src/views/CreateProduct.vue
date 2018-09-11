@@ -190,23 +190,33 @@ export default {
 textarea {
   width: 100%;
   height: 100%;
+  border-radius: 4px;
   padding: 12px;
   position: absolute;
+  border: 0.5px solid #969696 !important;
   top: 0px;
+  overflow: auto;
+  outline: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none
+}
+textarea:focus {
+  border: 0.5px solid black !important;
 }
 .textarea-field {
-  border: 1px solid;
   border-radius: 4px;
   width: 100%;
   position: relative;
   padding-top: 75%;
 }
+
 .textarea-picture-container {
   display: flex;
   flex-direction: row;
 }
 .image-upload {
-  border: 1px solid;
+  border: 0.5px solid #969696;
   border-radius: 4px;
   width: 100%;
   position: relative;
@@ -214,6 +224,9 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: space-around;
+}
+.image-upload:hover {
+  border: 0.5px solid black;
 }
 .image-placeholder {
   display: flex;
@@ -223,6 +236,7 @@ textarea {
   width: 100%;
   height: 100%;
   position: absolute;
+  border-radius: 4px;
   top: 0px;
 }
 .image-preview {
@@ -230,6 +244,7 @@ textarea {
   position: absolute;
   top: 0px;
   left: 0px;
+  border-radius: 4px;
   height: 100%;
   width: 100%;
 }

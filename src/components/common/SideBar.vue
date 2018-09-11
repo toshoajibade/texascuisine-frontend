@@ -42,7 +42,10 @@ export default {
   props: ["getUser", "logout"],
   watch:{
     $route (to, from){
-        this.$parent.open = false;
+        if(window.innerWidth < 960){
+           this.$parent.open = false; 
+        }
+        
     }
   }
 };

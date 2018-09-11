@@ -158,8 +158,11 @@ export default {
 }
 .table-header {
   border-bottom: 1px solid black;
-
   height: 3rem;
+}
+th {
+  font-size: 1.2rem;
+  font-weight: normal
 }
 .my-auto {
   margin-right: 0.5rem;

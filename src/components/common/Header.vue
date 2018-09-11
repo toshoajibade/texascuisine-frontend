@@ -46,10 +46,6 @@ export default {
   text-align: center;
   margin: 0px;
   align-self: flex start;
-  -webkit-user-select: none; /* Safari 3.1+ */
-  -moz-user-select: none; /* Firefox 2+ */
-  -ms-user-select: none; /* IE 10+ */
-  user-select: none; /* Standard syntax */
 }
 
 .username-logout {
@@ -73,11 +69,6 @@ export default {
   display: none;
   color: white !important;
   cursor: pointer;
-  -webkit-user-select: none; /* Safari 3.1+ */
-  -moz-user-select: none; /* Firefox 2+ */
-  -ms-user-select: none; /* IE 10+ */
-  user-select: none; /* Standard syntax */
-
 }
 .show-sidebar{
   color: white !important;  

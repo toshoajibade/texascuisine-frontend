@@ -184,8 +184,8 @@ td, th {
 th {
   text-align: left;
   font-weight: normal;
-  font-size: 1.2em;
-  text-transform: uppercase;
+  font-size: 1.2rem;
+  text-transform: capitalize;
 }
 .table-header {
   border-bottom: 1px solid black;

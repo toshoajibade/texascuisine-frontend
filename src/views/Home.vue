@@ -5,6 +5,7 @@
             <div class="side-container">
             </div>
             <div class="login-form-container">
+            
                 <div class="login-form-inner-container">
                 <form autocomplete="false" class="form-container">
                     <p class="admin-text">Admin Login</p>
@@ -38,18 +39,21 @@ export default {
         password: "",
         errors: {}
       },
-      loginError: ``
+      loginError: ``,
+      isLoading: false
     };
   },
   methods: {
     async login() {
       try {
+        this.isLoading = true;
         this.state.errors = {};
         this.loginError = ``;
         const req = this.state;
         const { isValid, errors } = await validations.validateInput(req);
         if (!isValid) {
           this.state.errors = errors;
+          this.isLoading = false
           return;
         }
         let email = this.state.email;
@@ -59,8 +63,10 @@ export default {
         this.$store.dispatch("setToken", res.data.token);
         this.$router.push(`/admin`);
         console.log(res);
+        this.isLoading = false
       } catch (err) {
         this.loginError = err.response.data.error;
+        this.isLoading = true
       }
     }
   },
@@ -159,7 +165,17 @@ export default {
   background-color: white;
   display: flex;
   justify-content: space-around;
-  align-items: center
+  align-items: center;
 }
+
+}
+@media(max-width: 600px) { 
+  .login-form-container {
+    align-items: flex-start;
+    padding-top: 2rem;
+  }
+  .login-error-container{
+    height: 3rem;
+  }
 }
 </style>

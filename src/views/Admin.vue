@@ -8,7 +8,7 @@
           </transition>
           <transition name="fade">
           <p class="overlay" v-if="open"  @click="hideSidebar"></p></transition>
-          <div class="content-section" @click="hideSidebar">
+          <div class="content-section">
               <router-view></router-view>
           </div>
         </div>
@@ -117,8 +117,6 @@ p {
   left: 0px;
   top: 0px;
   z-index: 2;
-  transition: width 5s;
-
 }
 .v-messages__message {
   color: red;
@@ -134,6 +132,11 @@ p {
   background-color: rgba(0, 0, 0, 0.637);
   display: none;
   margin: 0px;
+}
+.slideLeft-enter-active, .slideLeft-leave-active {
+  -webkit-animation-duration: 200ms;
+  -moz-animation-duration: 200ms;
+  animation-duration: 200ms;
 }
 @media(max-width: 960px) {
   .content-section {
