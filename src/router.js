@@ -14,6 +14,7 @@ import Admin from "./views/Admin.vue";
 Vue.use(Router);
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: "/",
@@ -24,10 +25,6 @@ export default new Router({
       path: "/admin",
       component: Admin,
       children: [
-        {
-          path: "",
-          component: Dashboard
-        },
         {
           path: "products",
           name: "products",
@@ -62,6 +59,10 @@ export default new Router({
           path: "createproduct",
           name: "createproduct",
           component: CreateProduct
+        },
+        {
+          path: "",
+          component: Dashboard
         }
       ]
     }
