@@ -93,13 +93,13 @@ export default {
           this.state.errors = errors;
           return;
         }
+        this.isLoading = true
         let formdata = new FormData();
         formdata.append("name", this.state.name);
         formdata.append("price", this.state.price);
         formdata.append("category", this.selectedCategory);
         formdata.append("description", this.state.description);
         formdata.append("image", this.state.image);
-        this.isLoading = true
         await Api.postPicture().post(`items/create`, formdata);
         this.isLoading = false
         this.$router.push("/admin/products");
@@ -108,7 +108,6 @@ export default {
             });
       } catch (error) {
         this.isLoading = false
-        console.log(error);
       }
     },
     uploadImage(event) {
