@@ -24,7 +24,13 @@ export default new Router({
     {
       path: "/admin",
       component: Admin,
+      name: "admin",
       children: [
+        {
+          path: "/",
+          name: "dashboard",
+          component: Dashboard
+        },
         {
           path: "products",
           name: "products",
@@ -60,10 +66,7 @@ export default new Router({
           name: "createproduct",
           component: CreateProduct
         },
-        {
-          path: "",
-          component: Dashboard
-        }
+ 
       ]
     }
   ],
