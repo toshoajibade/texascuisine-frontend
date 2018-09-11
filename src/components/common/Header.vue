@@ -36,6 +36,7 @@ export default {
   padding: 0rem 4rem;
   justify-content: space-between;
   position: fixed;
+  z-index: 100;
   top: 0px;
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.541)
 }

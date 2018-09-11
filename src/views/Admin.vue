@@ -95,7 +95,9 @@ export default {
 
 <style>
 .homepage {
-  display: flex
+  display: flex;
+  top: 64px;
+  position: fixed;
 }
 
 p {
