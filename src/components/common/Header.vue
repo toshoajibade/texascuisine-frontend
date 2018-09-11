@@ -9,7 +9,7 @@
                 <p class="drop-down"></p>
                 <div class="username-logout" v-if="userIsLoggedIn">
                     <p class="username">{{getUser}}</p>
-                    <v-btn small class="logout-button" @click="logout">LOGOUT</v-btn>
+                    <v-btn small class="logout-button" @click="$emit('logout')">LOGOUT</v-btn>
                 </div>
             </nav>
         </header>
@@ -19,22 +19,9 @@
 <script>
 export default {
   name: "Header",
+  props: ["getUser", "userIsLoggedIn", "logout"],
   methods: {
-    logout() {
-      this.$store.dispatch("logout");
-      this.$router.push(`/`);
-    }
-  },
-
-  computed: {
-    userIsLoggedIn() {
-      return this.$store.state.isUserLoggedIn;
-    },
-    getUser() {
-      return `${this.$store.state.user.firstName} ${
-        this.$store.state.user.lastName
-      }`;
-    }
+    
   }
 };
 </script>
@@ -59,6 +46,10 @@ export default {
   text-align: center;
   margin: 0px;
   align-self: flex start;
+  -webkit-user-select: none; /* Safari 3.1+ */
+  -moz-user-select: none; /* Firefox 2+ */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none; /* Standard syntax */
 }
 
 .username-logout {

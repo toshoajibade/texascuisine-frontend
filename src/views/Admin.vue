@@ -1,10 +1,10 @@
 <template>
     <div>
-        <Header @showSidebar="show"></Header>
+        <Header @showSidebar="show" :userIsLoggedIn="userIsLoggedIn" @logout="logout" :getUser="getUser"></Header>
         <div class="homepage">
           <transition name="slideLeft">
             
-            <side-bar class="sidebar" v-if="open"></side-bar>
+            <side-bar class="sidebar" :getUser="getUser" @logout="logout" v-if="open"></side-bar>
           </transition>
           <transition name="fade">
           <p class="overlay" v-if="open"  @click="hideSidebar"></p></transition>
@@ -72,6 +72,21 @@ export default {
       if(this.open){
         this.open = false
       }
+    },
+    logout() {
+      this.$store.dispatch("logout");
+      this.$router.push(`/`);
+    }
+  },
+
+  computed: {
+    userIsLoggedIn() {
+      return this.$store.state.isUserLoggedIn;
+    },
+    getUser() {
+      return `${this.$store.state.user.firstName} ${
+        this.$store.state.user.lastName
+      }`;
     }
   },
 

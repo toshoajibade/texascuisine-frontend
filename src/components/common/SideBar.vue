@@ -29,8 +29,8 @@
         </div>
         
         <div class="user-logout">
-            <p>Tosho Ajibade</p>
-            <v-btn class="logout-button">LOG OUT</v-btn>
+            <p>{{getUser}}</p>
+            <v-btn class="logout-button" @click="$emit('logout')">LOG OUT</v-btn>
         </div>
 
     </div>
@@ -39,6 +39,7 @@
 <script>
 export default {
   name: "SideBar",
+  props: ["getUser", "logout"],
   watch:{
     $route (to, from){
         this.$parent.open = false;
