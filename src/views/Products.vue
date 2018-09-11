@@ -11,9 +11,13 @@
                 <router-link to="createproduct" class="add-product-wrapper">
             <v-btn class="btn-secondary">ADD PRODUCT</v-btn></router-link>
         </v-layout>
-            
-        <div class="product-selection-list">
-       <table class="table"  v-if="state.products.length !== 0">
+        <div class="loading-wrapper" v-if="isLoading">
+           <v-progress-circular class="loading" indeterminate color="grey" />
+        </div>
+        <div class="product-selection-list" v-else>
+        
+       <table class="table" v-if="state.products.length !== 0">
+      
         <thead>
         <tr class="table-header">
           <th scope="column">Picture</th>
@@ -25,7 +29,7 @@
         </thead>
         <tbody>
         <tr scope="row" v-for="product in state.products" class="user-tab" v-bind:key="product.productId">
-          <td><img class="product-image" :src="product.imageUrl"></td>
+          <td><img class="product-image" :alt="product.name" :src="product.imageUrl"></td>
           <td>{{product.name}}</td>
           <td>{{product.price}}</td>
           
@@ -68,17 +72,20 @@ export default {
       state: {
         products: [],
         allProducts: []
-      }
+      },
+      isLoading: false
     };
   },
   created() {
+    this.isLoading = true 
     Api.instance()
       .get(`items`)
       .then(res => {
         if (res.status === 200) {
           this.state.products = res.data;
           this.state.allProducts = res.data;
-        }
+        };
+        this.isLoading = false
       });
   },
   methods: {
@@ -213,6 +220,12 @@ td {
 }
 .product-selection-list {
   overflow-x: auto
+}
+.loading-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 4rem
 }
 @media(max-width: 600px) {
   .select-layout {

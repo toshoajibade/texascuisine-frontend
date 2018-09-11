@@ -45,19 +45,11 @@
 </template>
 
 <script>
-import InputField from "@/components/common/InputField";
-import TextArea from "@/components/common/TextArea";
-import ImageUploader from "@/components/common/ImageUploader";
 import Api from "@/views/services/Api";
 import validations from "@/views/services/validations";
 
 export default {
   name: "Products",
-  components: {
-    InputField,
-    TextArea,
-    ImageUploader
-  },
   data() {
     return {
       state: {

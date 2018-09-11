@@ -39,14 +39,12 @@ export default {
         password: "",
         errors: {}
       },
-      loginError: ``,
-      isLoading: false
+      loginError: ``
     };
   },
   methods: {
     async login() {
       try {
-        this.isLoading = true;
         this.state.errors = {};
         this.loginError = ``;
         const req = this.state;
@@ -62,11 +60,8 @@ export default {
         this.$store.dispatch("setUser", res.data.user);
         this.$store.dispatch("setToken", res.data.token);
         this.$router.push(`/admin`);
-        console.log(res);
-        this.isLoading = false
       } catch (err) {
         this.loginError = err.response.data.error;
-        this.isLoading = true
       }
     }
   },

@@ -1,7 +1,7 @@
 <template>
     <div class="side-navigation-bar">
         <div>
-            <router-link to="/admin/dashboard">
+            <router-link to="/admin">
             <div class="navigation-tab">
                 <p>DASHBOARD</p>
             </div>

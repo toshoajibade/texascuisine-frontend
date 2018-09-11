@@ -1,4 +1,10 @@
 <template>
+<div class="overall">
+
+
+ <div class="loading-wrapper" v-if="isLoading">
+         <v-progress-circular class="loading" indeterminate color="grey" />
+      </div>
     <form class="create-product-page">
         <v-text-field v-model="product.name" label="Product Name" :error-messages="state.errors.name" type="text" />
         <div class="product-name-price">
@@ -6,7 +12,7 @@
           <v-select :items="state.category" v-model="product.category" item-text="label"  item-value="value" label="Category" :error-messages="state.errors.category" type="text" />
           </div> 
           <div  class="select-first">
-          <v-text-field v-model="product.price" label="Price" :error-messages="state.errors.price" type="text" /></div>
+          <v-text-field v-model="product.price" label="Price" :error-messages="state.errors.price" type="number" /></div>
             
         </div>
      <div class="textarea-picture-container">
@@ -14,7 +20,7 @@
               <p>Description</p>
               <div class="textarea-field">
               <textarea  v-model="product.description" placeholder="Enter the product description here"> </textarea></div> 
-              <p>{{state.errors.description}}</p>
+              <p class="custom-error">{{state.errors.description}}</p>
             </div>
             <v-spacer></v-spacer>
             <div class="picture">
@@ -26,18 +32,16 @@
                     <img class="image-preview" :src="product.imageUrl" alt="" srcset="">
                 </div>
               </div>
-              <p>{{state.errors.image}}</p>
+              <p class="custom-error">{{state.errors.image}}</p>
             </div>
           </div>
         <v-btn type="submit" v-on:click.prevent="editProduct" class="btn btn-primary">Submit</v-btn>
-        <v-btn type="submit" v-on:click.prevent="deleteProduct" class="btn btn-danger">Delete</v-btn>
+        <v-btn type="submit" v-on:click.prevent="deleteProduct" class="delete-button">Delete</v-btn>
     </form>
+    </div>
 </template>
 
 <script>
-import InputField from "@/components/common/InputField";
-import TextArea from "@/components/common/TextArea";
-import ImageUploader from "@/components/common/ImageUploader";
 import Api from "@/views/services/Api";
 import swal from "sweetalert2";
 import validations from "@/views/services/validations";
@@ -45,16 +49,11 @@ const isNothing = require("lodash/isEmpty");
 
 export default {
   name: "Products",
-  components: {
-    InputField,
-    TextArea,
-    ImageUploader
-  },
   data() {
     return {
       state: {
         errors: {},
-          category: [
+        category: [
           { label: "FOOD", value: "food"},
           { label: "DRINK", value: "drinks" }
         ],
@@ -70,12 +69,13 @@ export default {
 
       },
       selectedCategory: ``,
-      product: {}
+      product: {},
+      isLoading: false
     };
   },
   beforeMount() {
-    console.log(`I am about to mount`)
     let productId = this.$route.params.productId;
+    this.isLoading = true
     Api.instance()
       .get(`product/${productId}`)
       .then(res => {
@@ -83,10 +83,12 @@ export default {
           this.product = res.data;
           console.log(`this is state`,this.product);
         }
+        this.isLoading = false
       });
   },
   methods: {
     async editProduct() {
+      this.state.errors = {};
       let productId = this.product.productId;
       let { errors } = await validations.validateNewProduct(this.product);
       if(this.product.price <= 0) {
@@ -97,18 +99,26 @@ export default {
           this.state.errors = errors;
           return;
         }
+         this.isLoading = true
       if(!this.product.image) {
         Api.instance()
           .put(`product/edit/${productId}`, this.product)
         .then(res => {
+          this.isLoading = false
           if (res.status === 200) {
             this.$router.push("/admin/products");
             swal({
               html: "<p>The product has been successfully edited</p>"
             });
+          }  else if(res.status === 403){
+            console.log('home')
+            this.$router.push("/");
+          } else {
+            console.log('error')
           }
         });
       } else {
+
         let formdata = new FormData();
         formdata.append("name", this.product.name);
         formdata.append("price", this.product.price);
@@ -118,6 +128,7 @@ export default {
         Api.postPicture()
         .put(`product/edit/${productId}`, formdata)
         .then(res => {
+          this.isLoading = false
           if (res.status === 200) {
             this.$router.push("/admin/products");
             swal({
@@ -140,6 +151,14 @@ export default {
         .then(res => {
           if (res.status === 200) {
             this.$router.push("/admin/products");
+              swal({
+              html: "<p>Product deleted successfully</p>"
+            });
+            
+          } else if(res.status === 403){
+            this.$router.push("/");
+          } else {
+            console.log('error')
           }
         });
     }
@@ -169,13 +188,19 @@ export default {
   background-color: #00472e;
   height: 36px;
 }
+
 .picture-label {
   margin-bottom: 0.5rem;
 }
-.btn-danger {
-  margin-left: 2rem;
-  background-color: red;
-  color: white
+.delete-button:hover {
+  background-color: #940e0e !important;
+  color: white !important;
+
+}
+.delete-button {
+  color: rgb(173, 8, 8) !important;
+  background-color: white !important;
+    border: 1px solid  #940e0e;
 }
 .product-image {
   width: 100%;

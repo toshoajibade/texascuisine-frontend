@@ -1,12 +1,17 @@
 <template>
-    <form class="create-product-page">
+  <div class="overall">
+      <div class="loading-wrapper" v-if="isLoading">
+         <v-progress-circular class="loading" indeterminate color="grey" />
+      </div>
+       <form class="create-product-page">
+
         <v-text-field v-model="state.name" label="Product Name" :error-messages="state.errors.name" type="text" />
         <div class="product-name-price">
           <div class="select-first">
           <v-select :items="state.category" v-model="selectedCategory" item-text="label"  item-value="value" label="Category" :error-messages="state.errors.category" type="text" />
           </div> 
           <div  class="select-first">
-          <v-text-field v-model="state.price" label="Price" :error-messages="state.errors.price" type="text" /></div>
+          <v-text-field v-model="state.price" label="Price" :error-messages="state.errors.price" type="number" /></div>
             
         </div>
         <div class="textarea-picture-container">
@@ -14,7 +19,7 @@
               <p>Description</p>
               <div class="textarea-field">
               <textarea  v-model="state.description" placeholder="Enter the product description here"> </textarea></div> 
-              <p>{{state.errors.description}}</p>
+              <p class="custom-error">{{state.errors.description}}</p>
             </div>
             <v-spacer></v-spacer>
             <div class="picture">
@@ -32,28 +37,23 @@
                 </div>
                
               </div>
-              <p>{{state.errors.image}}</p>
+              <p  class="custom-error">{{state.errors.image}}</p>
             </div>
           </div>
         <v-btn type="submit" v-on:click.prevent="addProduct" class="btn-primary">Submit</v-btn>
     </form>
+  </div>
+   
 </template>
 
 <script>
-import InputField from "@/components/common/InputField";
-import TextArea from "@/components/common/TextArea";
-import ImageUploader from "@/components/common/ImageUploader";
 import Api from "@/views/services/Api";
 import validations from "@/views/services/validations";
+import swal from "sweetalert2";
 const isNothing = require("lodash/isEmpty");
 
 export default {
   name: "Products",
-  components: {
-    InputField,
-    TextArea,
-    ImageUploader
-  },
   data() {
     return {
       state: {
@@ -68,15 +68,18 @@ export default {
         url: ``,
         errors: {}
       },
-      selectedCategory: ``
+      selectedCategory: ``,
+      isLoading: false
     };
   },
   methods: {
     async addProduct() {
+      this.state.errors = {};
+      let price = Number(this.state.price)
       try {
         let req = {
           name: this.state.name,
-          price: this.state.price,
+          price,
           category: this.selectedCategory,
           description: this.state.description,
           image: this.state.image
@@ -84,6 +87,7 @@ export default {
         let isValid;
         const { errors } = await validations.validateNewProduct(req);
         if (req.image === null) errors.image = `Please upload product picture`;
+        if(req.price < 0) errors.price = `Please enter a valid price`
         isValid = isNothing(errors);
         if (!isValid) {
           this.state.errors = errors;
@@ -95,14 +99,21 @@ export default {
         formdata.append("category", this.selectedCategory);
         formdata.append("description", this.state.description);
         formdata.append("image", this.state.image);
-        Api.postPicture().post(`items/create`, formdata);
+        this.isLoading = true
+        await Api.postPicture().post(`items/create`, formdata);
+        this.isLoading = false
+        this.$router.push("/admin/products");
+                    swal({
+              html: "<p>Product added successfully</p>"
+            });
       } catch (error) {
+        this.isLoading = false
         console.log(error);
       }
     },
     uploadImage(event) {
       const file = event.target.files[0];
-      this.image = file;
+      this.state.image = file;
       this.state.url = URL.createObjectURL(file);
     }
   },
@@ -247,6 +258,28 @@ textarea:focus {
   border-radius: 4px;
   height: 100%;
   width: 100%;
+}
+.custom-error {
+  font-size: 12px;
+  color: red;
+  background-color: transparent
+}
+.overall {
+  position: relative;
+}
+.loading-wrapper {
+  display: flex;
+  position: absolute;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 3;
+  width: 100%;
+  padding: 2rem;
+  margin-top: 4rem;
+
+}
+.loading{
+  padding: 2rem;
 }
  @media(max-width: 600px) {
    .product-name-price {
