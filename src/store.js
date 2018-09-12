@@ -24,11 +24,6 @@ export default new Vuex.Store({
       this.state.user = {};
       this.state.token = null;
     },
-    setStoreState(store, payload) {
-      this.state.isUserLoggedIn = payload.isUserLoggedIn;
-      this.state.user = payload.user;
-      this.state.token = payload.token
-    }
   },
   actions: {
     setUser(context, payload) {
@@ -41,8 +36,5 @@ export default new Vuex.Store({
     logout(context) {
       context.commit("logout");
     },
-    setStoreState(context, payload) {
-      context.commit("setStoreState", payload)
-    }
   }
 });

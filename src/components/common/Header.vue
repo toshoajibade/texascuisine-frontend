@@ -2,8 +2,8 @@
     <div>
         <header>
             <nav class="header">
-              <div class="show-sidebar-wrapper">
-                <v-icon class="show-sidebar" v-if="userIsLoggedIn" @click="$emit('showSidebar')">menu</v-icon>
+              <div class="show-sidebar-wrapper" v-if="userIsLoggedIn" @click="$emit('showSidebar')">
+                <v-icon class="show-sidebar">menu</v-icon>
               </div>
                 <p class="logo">Texas Cuisine</p>
                 <p class="drop-down"></p>
@@ -75,6 +75,10 @@ export default {
 }
 .show-sidebar{
   color: white !important;  
+}
+.show-sidebar::selection, .logo::selection {
+  color: white;
+  background-color: transparent;
 }
 
 
