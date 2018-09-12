@@ -50,6 +50,11 @@ export default {
     if(window.innerWidth < 960) {
     this.open = false
     }
+    if(window.localStorage.vuex) {
+     let data = JSON.parse(window.localStorage.vuex);
+    this.$store.dispatch("setStoreState", data);
+    }
+   
   },
   mounted() {
     window.addEventListener("resize", this.onResize);
