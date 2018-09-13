@@ -76,9 +76,11 @@ export default {
 .show-sidebar{
   color: white !important;  
 }
-.show-sidebar::selection, .logo::selection {
-  color: white;
-  background-color: transparent;
+.show-sidebar, .logo {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
 }
 
 
