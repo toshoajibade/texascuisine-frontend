@@ -47,12 +47,6 @@ export default {
     } catch (error) {
       console.log(error);
     }
-  },
-  methods: {
-    vieworder() {
-      console.log(`I have been clicked`);
-      this.$router.push(`/vieworder`);
-    }
   }
 };
 </script>

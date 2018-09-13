@@ -7,7 +7,7 @@
             <div class="login-form-container">
             
                 <div class="login-form-inner-container">
-                <form autocomplete="false" class="form-container">
+                <form autocomplete="off" class="form-container">
                     <p class="admin-text">Admin Login</p>
                     <div class="login-error-container">
                     <p class="login-error">{{loginError}}</p>
@@ -59,7 +59,7 @@ export default {
         let res = await Api.instance().post(`user/login`, { email, password });
         this.$store.dispatch("setUser", res.data.user);
         this.$store.dispatch("setToken", res.data.token);
-        this.$router.push(`/admin`);
+        this.$router.push(`/admin/dashboard`);
       } catch (err) {
         this.loginError = err.response.data.error;
       }

@@ -23,10 +23,9 @@ export default new Router({
     {
       path: "/admin",
       component: Admin,
-      name: "admin",
       children: [
         {
-          path: "/",
+          path: "dashboard",
           name: "dashboard",
           component: Dashboard
         },

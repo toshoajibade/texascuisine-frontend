@@ -10,10 +10,13 @@ if (process.env.NODE_ENV === "production") {
           "For more details, visit https://goo.gl/AFskqB"
       );
     },
-    cached() {
+    cached(registration) {
       console.log("Content has been cached for offline use.");
     },
-    updated() {
+    updatefound(registration) {
+      console.log('New content is downloading.')
+    },
+    updated(registration) {
       console.log("New content is available; please refresh.");
     },
     offline() {

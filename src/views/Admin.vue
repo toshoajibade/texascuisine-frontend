@@ -96,8 +96,7 @@ export default {
 <style>
 .homepage {
   display: flex;
-  margin-top: 4rem;
-  position: fixed;
+  height: calc(100vh - 4rem);
 }
 
 p {
@@ -105,7 +104,7 @@ p {
 }
 
 .content-section {
-  height: calc(100vh - 4rem);
+  height: 100%;
   width: calc(100vw - 250px);
   position: absolute;
   left: 0px;
@@ -115,6 +114,7 @@ p {
 }
 .sidebar {
   width: 250px;
+  height: 100%;
   left: 0px;
   top: 0px;
   z-index: 2;
