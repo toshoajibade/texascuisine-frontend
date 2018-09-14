@@ -34,7 +34,6 @@ export default {
   },
   beforeCreate() {
     if(this.$store.state.isUserLoggedIn === true) {
-     
       this.$router.push("admin/dashboard")
     }
   },
@@ -174,5 +173,12 @@ export default {
   .login-error-container{
     height: 3rem;
   }
+  .body {
+  width: 100%;
+  height: calc(100vh - 64px);
+  margin-top: 64px;
+  display: flex;
+  flex-direction: row;
+}
 }
 </style>

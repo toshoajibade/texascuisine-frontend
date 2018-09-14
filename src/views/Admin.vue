@@ -149,5 +149,11 @@ p {
     width: 250px;
     height: calc(100vh - 64px);
   }
+  .homepage {
+  display: flex;
+  margin-top: 64px;
+  height: calc(100vh - 64px);
+  flex-direction: row;
+}
 }
 </style>

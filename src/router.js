@@ -10,10 +10,11 @@ import Products from "./views/Products.vue";
 import CreateProduct from "./views/CreateProduct.vue";
 import EditProduct from "./views/EditProduct.vue";
 import Admin from "./views/Admin.vue";
+import store from "./store";
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: "/",
@@ -70,3 +71,15 @@ export default new Router({
   ],
   linkExactActiveClass: "exact-active"
 });
+
+router.beforeEach((to, from, next) => {
+  if(to.name === `home`) {
+    next()
+  } else if (store.state.isUserLoggedIn === false) {
+    router.push(`/`)
+  } else {
+    next()
+  }
+})
+
+export default router;
