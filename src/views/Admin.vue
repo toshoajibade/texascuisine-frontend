@@ -3,7 +3,6 @@
         <Header @showSidebar="show" :userIsLoggedIn="userIsLoggedIn" @logout="logout" :getUser="getUser"></Header>
         <div class="homepage">
           <transition name="slideLeft">
-            
             <side-bar class="sidebar" :getUser="getUser" @logout="logout" v-if="open"></side-bar>
           </transition>
           <transition name="fade">
@@ -95,10 +94,12 @@ export default {
 
 <style>
 .homepage {
+  position: absolute;
+  top: 64px;
   display: flex;
-  margin-top: 64px;
   height: calc(100vh - 64px);
   flex-direction: row;
+  width: 100%;
 }
 
 p {
@@ -149,11 +150,6 @@ p {
     width: 250px;
     height: calc(100vh - 64px);
   }
-  .homepage {
-  display: flex;
-  margin-top: 64px;
-  height: calc(100vh - 64px);
-  flex-direction: row;
-}
+
 }
 </style>

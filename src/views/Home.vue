@@ -87,7 +87,8 @@ export default {
 .body {
   width: 100%;
   height: calc(100vh - 64px);
-  margin-top: 64px;
+  position: absolute;
+  top: 64px;
   display: flex;
   flex-direction: row;
 }
@@ -168,17 +169,10 @@ export default {
 @media(max-width: 600px) { 
   .login-form-container {
     align-items: flex-start;
-    padding-top: 2rem;
+    padding-top: 1rem;
   }
   .login-error-container{
     height: 3rem;
   }
-  .body {
-  width: 100%;
-  height: calc(100vh - 64px);
-  margin-top: 64px;
-  display: flex;
-  flex-direction: row;
-}
 }
 </style>

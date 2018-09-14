@@ -54,7 +54,7 @@ export default {
 <style>
 .side-navigation-bar {
   padding-top: 50px;
-  height: calc(100vh - 4rem);
+  height: 100%;
   background-color: #940e0e;
   display: flex;
   justify-content: space-between;
