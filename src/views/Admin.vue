@@ -96,7 +96,9 @@ export default {
 <style>
 .homepage {
   display: flex;
-  height: calc(100vh - 4rem);
+  margin-top: 64px;
+  height: calc(100vh - 64px);
+  flex-direction: row;
 }
 
 p {
@@ -106,17 +108,12 @@ p {
 .content-section {
   height: 100%;
   width: calc(100vw - 250px);
-  position: absolute;
-  left: 0px;
   padding: 50px 5vw;
   overflow: auto;
-  margin-left: 250px;
 }
 .sidebar {
   width: 250px;
   height: 100%;
-  left: 0px;
-  top: 0px;
   z-index: 2;
 }
 .v-messages__message {
