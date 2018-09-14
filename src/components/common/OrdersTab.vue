@@ -92,6 +92,7 @@ export default {
   display: flex;
   flex-direction: row;
   padding: 1rem;
+  box-shadow: 2px 2px 2px #b4b3b3;
   justify-content: space-between;
   margin-bottom: 1.5rem;
 }
@@ -133,7 +134,9 @@ export default {
 .v-icon {
   width: 24px
 }
-
+.v-icon:hover{
+  color: #00472e
+}
 .customer-name {
   font-weight: normal;
   font-style: italic;
@@ -165,7 +168,7 @@ export default {
   font-weight: bold;
 }
 .order-tab:hover {
-  box-shadow: 2px 2px 2px #b4b3b3;
+    background-color: #ebebeb;
   cursor: pointer;
 }
 .my-auto {

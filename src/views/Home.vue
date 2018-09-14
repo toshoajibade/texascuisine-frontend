@@ -1,5 +1,5 @@
 <template>
-    <div class="homepage">
+    <div>
         <Header></Header>
         <section class="body">
             <div class="side-container">
@@ -31,6 +31,12 @@ export default {
   name: "Home",
   components: {
     Header
+  },
+  beforeCreate() {
+    if(this.$store.state.isUserLoggedIn === true) {
+     
+      this.$router.push("admin/dashboard")
+    }
   },
   data() {
     return {
@@ -77,16 +83,12 @@ export default {
   margin: 0px;
   padding: 0px;
 }
-.homepage {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
+
 
 .body {
   width: 100%;
-  flex: 1;
+  height: calc(100vh - 64px);
+  margin-top: 64px;
   display: flex;
   flex-direction: row;
 }

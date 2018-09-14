@@ -50,10 +50,10 @@ export default {
     if(window.innerWidth < 960) {
     this.open = false
     }
+
   },
   mounted() {
     window.addEventListener("resize", this.onResize);
-
   },
   methods: {
     onResize() {
@@ -112,9 +112,10 @@ p {
   overflow: auto;
 }
 .sidebar {
-  width: 250px;
+  flex: 0 0 250px;
   height: 100%;
   z-index: 2;
+
 }
 .v-messages__message {
   color: red;
@@ -138,11 +139,15 @@ p {
 }
 @media(max-width: 960px) {
   .content-section {
-    margin-left: 0px;
     width: 100vw
   }
   .overlay {
     display: block
+  }
+  .sidebar {
+    position: absolute;
+    width: 250px;
+    height: calc(100vh - 64px);
   }
 }
 </style>
