@@ -95,7 +95,8 @@ export default {
 }
 @media(max-width: 960px){
     .user-logout {
-        display: flex
+        display: flex;
+        margin-bottom: 4rem;
     }
 }
 </style>

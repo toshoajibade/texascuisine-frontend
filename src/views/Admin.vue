@@ -109,8 +109,11 @@ p {
 .content-section {
   height: 100%;
   width: calc(100vw - 250px);
-  padding: 50px 5vw;
+  padding: 50px 5vw 0px 5vw;
   overflow: auto;
+}
+.content-section > * {
+  padding-bottom: 3rem;
 }
 .sidebar {
   flex: 0 0 250px;
