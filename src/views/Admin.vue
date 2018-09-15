@@ -49,7 +49,6 @@ export default {
     if(window.innerWidth < 960) {
     this.open = false
     }
-
   },
   mounted() {
     window.addEventListener("resize", this.onResize);

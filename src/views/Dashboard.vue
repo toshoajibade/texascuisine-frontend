@@ -39,6 +39,7 @@ export default {
     }
   },
   async created() {
+    this.$db.set('beans', 'sweet', 'items')
      try {
       let res = await Api.instance().get(`orders`);
       let orders = res.data;
