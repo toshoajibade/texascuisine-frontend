@@ -1,12 +1,26 @@
 module.exports = {
   lintOnSave: true,
   pwa: {
-    workboxPluginMode: 'InjectManifest',
+    workboxPluginMode: 'GenerateSW',
     workboxOptions: {
       // swSrc is required in InjectManifest mode.
-      swSrc: 'src/sw.js',
       globDirectory: "dist/",
-      swDest: "sw.js"
+      skipWaiting: true,
+      clientsClaim: true,
+      swDest: "sw.js",
+      runtimeCaching: [{
+        urlPattern: /^https:\/\/res\.cloudinary\.com/,
+        handler: 'staleWhileRevalidate'
+            },
+        {
+        urlPattern: /^https:\/\/fonts\.googleapis\.com/,
+        handler: 'staleWhileRevalidate'
+        },
+        {
+        urlPattern: /(?:item|user|order)/,
+        handler: 'staleWhileRevalidate'
+        },
+        ]
     }
   }
 };

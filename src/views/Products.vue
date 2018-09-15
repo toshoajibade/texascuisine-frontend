@@ -29,7 +29,7 @@
         </thead>
         <tbody>
         <tr scope="row" v-for="product in state.products" class="user-tab" v-bind:key="product.productId">
-          <td><img class="product-image" :alt="product.name" :src="product.imageUrl"></td>
+          <td><img class="product-image" crossorigin="anonymous" :alt="product.name" :src="product.imageUrl"></td>
           <td>{{product.name}}</td>
           <td>{{product.price}}</td>
           
