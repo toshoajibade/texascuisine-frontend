@@ -1,17 +1,8 @@
 /* eslint-disable no-console */
 
 import { register } from "register-service-worker";
-import { install } from "vuex";
-
-  register(`${process.env.BASE_URL}service-worker.js`, {
+  register(`${process.env.BASE_URL}sw.js`, {
     ready() {
-      self.addEventListener("install", e => {
-        e.waitUntil(caches.open('v1').then(
-          cache.addAll([
-            
-          ])
-        ))
-      })
       console.log(
         "App is being served from cache by a service worker.\n" +
           "For more details, visit https://goo.gl/AFskqB"
@@ -19,6 +10,7 @@ import { install } from "vuex";
     },
     cached(registration) {
       console.log("Content has been cached for offline use.");
+      console.log(registration.scope)
     },
     updatefound(registration) {
       console.log('New content is downloading.')
