@@ -1,5 +1,6 @@
 <template>
   <div>
+    <v-progress-linear color="secondary" v-if="state.isLoading" :indeterminate="true" class="progress-bar" height="3" value="15"></v-progress-linear>
     <form class="create-product-page">
         <p class="create-user-label" style="font-weight:bold">CREATE ADMIN</p>
         <p>Enter new admin details below</p>
@@ -41,6 +42,12 @@
       </div>
      
     </section>
+        <div class="alert-wrapper">
+          <v-alert v-model="state.offline" class="alert" color="rgba(0, 0, 0, 0)">Please connect to the internet</v-alert>
+       </div>
+        <div class="alert-wrapper" v-if="state.postError">
+          <v-alert v-model="state.postError" class="alert" color="rgba(0, 0, 0, 0)">Error! Please try again</v-alert>
+       </div>
     </div>
 </template>
 
@@ -55,7 +62,10 @@ export default {
       state: {
         users: [],
         count: 0,
-        errors: {}
+        errors: {},
+        offline: false,
+        postError: false,
+        isLoading: false
       },
       newUser: {
         lastName: "",
@@ -66,6 +76,7 @@ export default {
     };
   },
   async created() {
+    this.state.isLoading = true
     try {
       const res = await Api.instance().get(`user/list`);
       if (res.status === 200) {
@@ -78,12 +89,18 @@ export default {
       if (navigator.onLine === false && users.length !== 0) {
           this.state.users = users;
       } else {
-        console.log(`please connect to the internet`)
+           this.state.offline = true
+        setTimeout(() => {
+          this.state.offline = false
+        }, 2000);
       }
+    } finally {
+      this.state.isLoading = false
     }
   },
   methods: {
     async addUser() {
+      this.state.isLoading = true
       this.state.errors = {};
       try {
         const { errors, isValid } = await validations.validateNewUser(
@@ -101,13 +118,22 @@ export default {
         }
       } catch (error) {
         if (navigator.onLine === false) {
-          console.log(`please connect to internet`);
+             this.state.offline = true
+        setTimeout(() => {
+          this.state.offline = false
+        }, 2000);
         } else {
-          console(`an error occured, please try again`);
+        this.state.postError = true
+        setTimeout(() => {
+          this.state.postError = false
+        }, 2000);
         }
+      } finally {
+        this.state.isLoading = false
       }
     },
     async deleteUser(value) {
+      this.state.isLoading = true
       try {
         const res = await Api.instance().delete(`user/delete/${value}`);
         if (res.status === 200) {
@@ -117,10 +143,18 @@ export default {
         }
       } catch (error) {
         if (navigator.onLine === false) {
-          console.log(`please connect to internet`);
+             this.state.offline = true
+        setTimeout(() => {
+          this.state.offline = false
+        }, 2000);
         } else {
-          console.log(`an error occured, please try again`);
+        this.state.postError = true
+        setTimeout(() => {
+          this.state.postError = false
+        }, 2000);
         }
+      } finally {
+        this.state.isLoading = false
       }
     }
   }

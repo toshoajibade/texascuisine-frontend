@@ -1,5 +1,6 @@
 <template>
     <div>
+          <v-progress-linear color="secondary" v-if="state.isLoading" :indeterminate="true" class="progress-bar" height="3" value="15"></v-progress-linear>
         <v-layout class="select-layout" align-center >
               <div class="select-slot">
               <v-select label="Category" v-model="selectedCategory" item-text="label" item-value="value" :items="categories"></v-select>
@@ -11,10 +12,7 @@
                 <router-link to="createproduct" class="add-product-wrapper">
             <v-btn class="btn-secondary">ADD PRODUCT</v-btn></router-link>
         </v-layout>
-        <div class="loading-wrapper" v-if="isLoading">
-           <v-progress-circular class="loading" indeterminate color="grey" />
-        </div>
-        <div class="product-selection-list" v-else>
+        <div class="product-selection-list">
         
        <table class="table" v-if="state.products.length !== 0">
       
@@ -47,6 +45,12 @@
         </tbody>
       </table>
       </div>
+       <div class="alert-wrapper">
+          <v-alert v-model="state.offline" class="alert" color="rgba(0, 0, 0, 0)">Please connect to the internet</v-alert>
+       </div>
+      <div class="alert-wrapper" v-if="state.postError">
+          <v-alert v-model="state.postError" class="alert" color="rgba(0, 0, 0, 0)">Error! Please try again</v-alert>
+       </div>
     </div>
 </template>
 
@@ -71,13 +75,16 @@ export default {
       selectedStatus: null,
       state: {
         products: [],
-        allProducts: []
+        allProducts: [],
+        offline: false,
+        postError: false,
+        isLoading: false
       },
-      isLoading: false
+      
     };
   },
   async created() {
-    this.isLoading = true;
+    this.state.isLoading = true;
     try {
       const res = await Api.instance().get(`items`);
       if (res.status === 200) {
@@ -91,10 +98,13 @@ export default {
       if (navigator.onLine === false && products.length !== 0) {
           this.state.products = products;
       } else {
-        console.log(`please connect to the internet`)
+          this.state.offline = true
+        setTimeout(() => {
+          this.state.offline = false
+        }, 2000);
       }
     } finally {
-      this.isLoading = false;
+      this.state.isLoading = false;
     }
   },
   methods: {
@@ -110,9 +120,15 @@ export default {
           }
       } catch (error) {
         if (navigator.onLine === false) {
-          console.log(`please connect to internet`);
+             this.state.offline = true
+        setTimeout(() => {
+          this.state.offline = false
+        }, 2000);
         } else {
-          console.log(`an error occured, please try again`);
+           this.state.postError = true
+          setTimeout(() => {
+          this.state.postError = false
+        }, 2000);
         }
       }
     }

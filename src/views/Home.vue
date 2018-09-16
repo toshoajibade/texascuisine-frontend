@@ -1,6 +1,7 @@
 <template>
     <div>
         <Header></Header>
+        <v-progress-linear color="secondary" v-if="state.isLoading" :indeterminate="true" class="progress-bar" height="3" value="15"></v-progress-linear>
         <section class="body">
             <div class="side-container">
             </div>
@@ -42,13 +43,15 @@ export default {
       state: {
         email: "",
         password: "",
-        errors: {}
+        errors: {},
+        isLoading: false
       },
       loginError: ``
     };
   },
   methods: {
     async login() {
+      this.state.isLoading = true
       try {
         this.state.errors = {};
         this.loginError = ``;
@@ -56,7 +59,7 @@ export default {
         const { isValid, errors } = await validations.validateInput(req);
         if (!isValid) {
           this.state.errors = errors;
-          this.isLoading = false;
+          this.state.isLoading = false;
           return;
         }
         let email = this.state.email;
@@ -67,6 +70,8 @@ export default {
         this.$router.push(`/admin/dashboard`);
       } catch (err) {
         this.loginError = err.response.data.error;
+      } finally {
+        this.state.isLoading = false
       }
     }
   },
@@ -95,6 +100,10 @@ export default {
   width: 50%;
   height: 100%;
   background-color: #f8e2e2;
+}
+
+.progress-bar {
+  left: 0px
 }
 
 .login-form-container {

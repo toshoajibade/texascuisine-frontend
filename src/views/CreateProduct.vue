@@ -1,8 +1,6 @@
 <template>
   <div class="overall">
-      <div class="loading-wrapper" v-if="isLoading">
-         <v-progress-circular class="loading" indeterminate color="grey" />
-      </div>
+      <v-progress-linear color="secondary" v-if="state.isLoading" :indeterminate="true" class="progress-bar" height="3" value="15"></v-progress-linear>
        <form class="create-product-page">
 
         <v-text-field v-model="product.name" label="Product Name" :error-messages="product.errors.name" type="text" />
@@ -42,6 +40,12 @@
           </div>
         <v-btn type="submit" v-on:click.prevent="addProduct" class="btn-primary">Submit</v-btn>
     </form>
+        <div class="alert-wrapper">
+          <v-alert v-model="state.offline" class="alert" color="rgba(0, 0, 0, 0)">Please connect to the internet</v-alert>
+       </div>
+        <div class="alert-wrapper" v-if="state.postError">
+          <v-alert v-model="state.postError" class="alert" color="rgba(0, 0, 0, 0)">Error! Please try again</v-alert>
+       </div>
   </div>
    
 </template>
@@ -68,13 +72,18 @@ export default {
         url: ``,
         errors: {}
       },
+      state: {
+        offline: false,
+        postError: false,
+         isLoading: false
+      },
       selectedCategory: ``,
-      isLoading: false
+     
     };
   },
   methods: {
     async addProduct() {
-      this.isLoading = true;
+      this.state.isLoading = true;
       this.product.errors = {};
       let price = Number(this.product.price);
       try {
@@ -108,23 +117,24 @@ export default {
         });
       } catch (error) {
         if (navigator.onLine === false) {
-          console.log(`please connect to internet`);
+             this.state.offline = true
+        setTimeout(() => {
+          this.state.offline = false
+        }, 2000);
         } else {
-          console(`an error occured, please try again`);
+        this.state.postError = true
+        setTimeout(() => {
+          this.state.postError = false
+        }, 2000);
         }
       } finally {
-        this.isLoading = false;
+        this.state.isLoading = false;
       }
     },
     uploadImage(event) {
       const file = event.target.files[0];
       this.product.image = file;
       this.product.url = URL.createObjectURL(file);
-    }
-  },
-  watch: {
-    selectedCategory(result) {
-      console.log(result);
     }
   }
 };

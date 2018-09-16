@@ -141,9 +141,49 @@ p {
   -moz-animation-duration: 200ms;
   animation-duration: 200ms;
 }
+.alert-wrapper {
+  position: fixed;
+  top: 6rem;
+  width: calc(100vw - 250px);
+  left: 250px;
+  display: flex;
+  z-index: 1000;
+  justify-content: space-around
+}
+.v-alert {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 4px !important;
+  justify-content: space-around;
+  border-style: none !important;
+  width: 50%;
+}
+.v-alert > div {
+  color: white;
+  text-align: center
+}
+.progress-bar {
+  position: fixed !important;
+  left: 250px;
+  right: 0px;
+  top: 64px;
+  margin: 0px !important;
+  z-index: 1000;
+}
 @media (max-width: 960px) {
   .content-section {
     width: 100vw;
+  }
+  .progress-bar {
+    left: 0px;
+  }
+  .alert-wrapper {
+    left: 0px;
+    width: 100%
+  }
+  .v-alert {
+    width: 80%
   }
   .overlay {
     display: block;

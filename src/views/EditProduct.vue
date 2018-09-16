@@ -1,10 +1,6 @@
 <template>
-<div class="overall">
-
-
- <div class="loading-wrapper" v-if="isLoading">
-         <v-progress-circular class="loading" indeterminate color="grey" />
-      </div>
+  <div class="overall">
+    <v-progress-linear color="secondary" v-if="state.isLoading" :indeterminate="true" class="progress-bar" height="3" value="15"></v-progress-linear>
     <form class="create-product-page">
         <v-text-field v-model="product.name" label="Product Name" :error-messages="state.errors.name" type="text" />
         <div class="product-name-price">
@@ -38,6 +34,12 @@
         <v-btn type="submit" v-on:click.prevent="editProduct" class="btn btn-primary">Submit</v-btn>
         <v-btn type="submit" v-on:click.prevent="deleteProduct" class="delete-button">Delete</v-btn>
     </form>
+    <div class="alert-wrapper">
+          <v-alert v-model="state.offline" class="alert" color="rgba(0, 0, 0, 0)">Please connect to the internet</v-alert>
+       </div>
+               <div class="alert-wrapper" v-if="state.postError">
+          <v-alert v-model="state.postError" class="alert" color="rgba(0, 0, 0, 0)">Error! Please try again</v-alert>
+       </div>
     </div>
 </template>
 
@@ -56,7 +58,10 @@ export default {
         category: [
           { label: "FOOD", value: "food" },
           { label: "DRINK", value: "drinks" }
-        ]
+        ],
+        offline: false,
+        postError: false,
+        isLoading: false
       },
       product: {
         name: "",
@@ -68,12 +73,12 @@ export default {
         imageUrl: ""
       },
       selectedCategory: ``,
-      isLoading: false
+     
     };
   },
   async beforeMount() {
     let productId = this.$route.params.productId;
-    this.isLoading = true;
+    this.state.isLoading = true;
     try {
       let res = await Api.instance().get(`product/${productId}`)
         if (res.status === 200) {
@@ -81,16 +86,23 @@ export default {
         }
     } catch (error) {
       if (navigator.onLine === false) {
-          console.log(`please connect to internet`);
+          this.state.offline = true
+        setTimeout(() => {
+          this.state.offline = false
+        }, 2000);
         } else {
-          console(`an error occured, please try again`);
+         this.state.postError = true
+        setTimeout(() => {
+          this.state.postError = false
+        }, 2000);
         }
     } finally {
-      this.isLoading = false;
+      this.state.isLoading = false;
     }
   },
   methods: {
     async editProduct() {
+      this.state.isLoading = true
       try {
         this.state.errors = {};
         let productId = this.product.productId;
@@ -130,12 +142,18 @@ export default {
       }
       } catch (error) {
         if (navigator.onLine === false) {
-          console.log(`please connect to internet`);
+             this.state.offline = true
+        setTimeout(() => {
+          this.state.offline = false
+        }, 2000);
         } else {
-          console(`an error occured, please try again`);
+           this.state.postError = true
+        setTimeout(() => {
+          this.state.postError = false
+        }, 2000);
         }
       } finally {
-        this.isLoading = false;
+        this.state.isLoading = false;
       }
     },
     uploadImage(event) {
@@ -144,22 +162,32 @@ export default {
       console.log(this.product.image);
       this.product.imageUrl = URL.createObjectURL(file);
     },
-    deleteProduct() {
-      let productId = this.product.productId;
-      Api.instance()
-        .delete(`product/delete/${productId}`)
-        .then(res => {
+    async deleteProduct() {
+      this.state.isLoading = true
+      try {
+              let productId = this.product.productId;
+      let res = await Api.instance().delete(`product/delete/${productId}`)
           if (res.status === 200) {
             this.$router.push("/admin/products");
             swal({
               html: "<p>Product deleted successfully</p>"
             });
-          } else if (res.status === 403) {
-            this.$router.push("/");
-          } else {
-            console.log("error");
           }
-        });
+      } catch (error) {
+        if (navigator.onLine === false) {
+        this.state.offline = true
+        setTimeout(() => {
+          this.state.offline = false
+        }, 2000);
+        } else {
+           this.state.postError = true
+        setTimeout(() => {
+          this.state.postError = false
+        }, 2000);
+        }
+      } finally {
+        this.state.isLoading = false;
+      }
     }
   }
 };
