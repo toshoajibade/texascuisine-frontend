@@ -24,7 +24,7 @@ import Settings from "@/views/Settings.vue";
 import Users from "@/views/Users.vue";
 import SideBar from "@/components/common/SideBar.vue";
 import Header from "@/components/common/Header";
-require('vue2-animate/dist/vue2-animate.min.css')
+require("vue2-animate/dist/vue2-animate.min.css");
 
 export default {
   name: "Admin",
@@ -43,11 +43,11 @@ export default {
     return {
       open: true,
       windowWidth: null
-    }
+    };
   },
   created() {
-    if(window.innerWidth < 960) {
-    this.open = false
+    if (window.innerWidth < 960) {
+      this.open = false;
     }
   },
   mounted() {
@@ -55,20 +55,22 @@ export default {
   },
   methods: {
     onResize() {
-      if(window.innerWidth > 960) {
-        this.open = true
-      } else { this.open = false}
+      if (window.innerWidth > 960) {
+        this.open = true;
+      } else {
+        this.open = false;
+      }
     },
     show() {
-      if(this.open) {
-        this.open = false
+      if (this.open) {
+        this.open = false;
       } else {
-        this.open = true
+        this.open = true;
       }
     },
     hideSidebar() {
-      if(this.open){
-        this.open = false
+      if (this.open) {
+        this.open = false;
       }
     },
     logout() {
@@ -86,8 +88,7 @@ export default {
         this.$store.state.user.lastName
       }`;
     }
-  },
-
+  }
 };
 </script>
 
@@ -118,7 +119,6 @@ p {
   flex: 0 0 250px;
   height: 100%;
   z-index: 2;
-
 }
 .v-messages__message {
   color: red;
@@ -135,23 +135,23 @@ p {
   display: none;
   margin: 0px;
 }
-.slideLeft-enter-active, .slideLeft-leave-active {
+.slideLeft-enter-active,
+.slideLeft-leave-active {
   -webkit-animation-duration: 200ms;
   -moz-animation-duration: 200ms;
   animation-duration: 200ms;
 }
-@media(max-width: 960px) {
+@media (max-width: 960px) {
   .content-section {
-    width: 100vw
+    width: 100vw;
   }
   .overlay {
-    display: block
+    display: block;
   }
   .sidebar {
     position: absolute;
     width: 250px;
     height: calc(100vh - 64px);
   }
-
 }
 </style>

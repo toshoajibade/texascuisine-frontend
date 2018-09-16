@@ -206,10 +206,10 @@ tbody > * {
     margin-bottom: 1rem;
   }
   .update-status-tab {
-    flex-direction: column
+    flex-direction: column;
   }
   .print-icon {
-    width: 3rem
+    width: 3rem;
   }
 }
 </style>

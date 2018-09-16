@@ -1,8 +1,8 @@
 import Vue from "vue";
+import { sync } from "vuex-router-sync";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import { sync } from 'vuex-router-sync';
 import db from "./indexedDB";
 import "./registerServiceWorker";
 import Vuetify from "vuetify";
@@ -10,11 +10,11 @@ import "vuetify/dist/vuetify.min.css";
 import "material-design-icons-iconfont/dist/material-design-icons.css";
 
 Vue.use(Vuetify);
-const unsync = sync(store, router)
+const unsync = sync(store, router);
 
-Vue.prototype.$db = db
+Vue.prototype.$db = db;
 
-unsync(); 
+unsync();
 Vue.config.productionTip = false;
 
 new Vue({

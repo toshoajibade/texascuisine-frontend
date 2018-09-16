@@ -1,9 +1,9 @@
 import axios from "axios";
 import store from "../../store";
 
-let Api = {
+const Api = {
   instance() {
-    let instance = axios.create({
+    const instance = axios.create({
       baseURL: `https://shielded-brushlands-80745.herokuapp.com/`,
       // baseURL: `http://localhost:3000/`,
       headers: {
@@ -13,7 +13,7 @@ let Api = {
     return instance;
   },
   postPicture() {
-    let postPicture = axios.create({
+    const postPicture = axios.create({
       baseURL: `https://shielded-brushlands-80745.herokuapp.com/`,
       // baseURL: `http://localhost:3000/`,
       headers: {

@@ -5,30 +5,30 @@
       </div>
        <form class="create-product-page">
 
-        <v-text-field v-model="state.name" label="Product Name" :error-messages="state.errors.name" type="text" />
+        <v-text-field v-model="product.name" label="Product Name" :error-messages="product.errors.name" type="text" />
         <div class="product-name-price">
           <div class="select-first">
-          <v-select :items="state.category" v-model="selectedCategory" item-text="label"  item-value="value" label="Category" :error-messages="state.errors.category" type="text" />
+          <v-select :items="product.category" v-model="selectedCategory" item-text="label"  item-value="value" label="Category" :error-messages="product.errors.category" type="text" />
           </div> 
           <div  class="select-first">
-          <v-text-field v-model="state.price" label="Price" :error-messages="state.errors.price" type="number" /></div>
+          <v-text-field v-model="product.price" label="Price" :error-messages="product.errors.price" type="number" /></div>
             
         </div>
         <div class="textarea-picture-container">
             <div class="textarea" >
               <p>Description</p>
               <div class="textarea-field">
-              <textarea  v-model="state.description" placeholder="Enter the product description here"> </textarea></div> 
-              <p class="custom-error">{{state.errors.description}}</p>
+              <textarea  v-model="product.description" placeholder="Enter the product description here"> </textarea></div> 
+              <p class="custom-error">{{product.errors.description}}</p>
             </div>
             <v-spacer></v-spacer>
             <div class="picture">
               <p>Picture</p>
               <div class="image-upload">
-                <div class="image-placeholder" v-if="state.url">
+                <div class="image-placeholder" v-if="product.url">
                    <label for="editImage"><v-icon class="edit-image-label">edit</v-icon></label>
                     <input type="file"  id="editImage" @change='uploadImage' class="upload-button">
-                    <img class="image-preview" :src="state.url" alt="" srcset="">
+                    <img class="image-preview" :src="product.url" alt="" srcset="">
                 </div>
                 <div class="image-placeholder" v-else>
                     <label for="file"><v-icon class="image-label">add_a_photo</v-icon></label>
@@ -37,7 +37,7 @@
                 </div>
                
               </div>
-              <p  class="custom-error">{{state.errors.image}}</p>
+              <p  class="custom-error">{{product.errors.image}}</p>
             </div>
           </div>
         <v-btn type="submit" v-on:click.prevent="addProduct" class="btn-primary">Submit</v-btn>
@@ -56,7 +56,7 @@ export default {
   name: "Products",
   data() {
     return {
-      state: {
+      product: {
         name: "",
         price: "",
         category: [
@@ -74,46 +74,52 @@ export default {
   },
   methods: {
     async addProduct() {
-      this.state.errors = {};
-      let price = Number(this.state.price)
+      this.isLoading = true;
+      this.product.errors = {};
+      let price = Number(this.product.price);
       try {
         let req = {
-          name: this.state.name,
+          name: this.product.name,
           price,
           category: this.selectedCategory,
-          description: this.state.description,
-          image: this.state.image
+          description: this.product.description,
+          image: this.product.image
         };
         let isValid;
         const { errors } = await validations.validateNewProduct(req);
         if (req.image === null) errors.image = `Please upload product picture`;
-        if(req.price < 0) errors.price = `Please enter a valid price`
+        if (!req.price || req.price < 0) errors.price = `Please enter a valid price`;
         isValid = isNothing(errors);
         if (!isValid) {
-          this.state.errors = errors;
+          this.product.errors = errors;
           return;
         }
-        this.isLoading = true
         let formdata = new FormData();
-        formdata.append("name", this.state.name);
-        formdata.append("price", this.state.price);
+        formdata.append("name", this.product.name);
+        formdata.append("price", this.product.price);
         formdata.append("category", this.selectedCategory);
-        formdata.append("description", this.state.description);
-        formdata.append("image", this.state.image);
+        formdata.append("description", this.product.description);
+        formdata.append("image", this.product.image);
         await Api.postPicture().post(`items/create`, formdata);
-        this.isLoading = false
+        this.isLoading = false;
         this.$router.push("/admin/products");
-                    swal({
-              html: "<p>Product added successfully</p>"
-            });
+        swal({
+          html: "<p>Product added successfully</p>"
+        });
       } catch (error) {
-        this.isLoading = false
+        if (navigator.onLine === false) {
+          console.log(`please connect to internet`);
+        } else {
+          console(`an error occured, please try again`);
+        }
+      } finally {
+        this.isLoading = false;
       }
     },
     uploadImage(event) {
       const file = event.target.files[0];
-      this.state.image = file;
-      this.state.url = URL.createObjectURL(file);
+      this.product.image = file;
+      this.product.url = URL.createObjectURL(file);
     }
   },
   watch: {
@@ -209,7 +215,7 @@ textarea {
   outline: none;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
-  box-shadow: none
+  box-shadow: none;
 }
 textarea:focus {
   border: 0.5px solid black !important;
@@ -261,7 +267,7 @@ textarea:focus {
 .custom-error {
   font-size: 12px;
   color: red;
-  background-color: transparent
+  background-color: transparent;
 }
 .overall {
   position: relative;
@@ -275,24 +281,23 @@ textarea:focus {
   width: 100%;
   padding: 2rem;
   margin-top: 4rem;
-
 }
-.loading{
+.loading {
   padding: 2rem;
 }
- @media(max-width: 600px) {
-   .product-name-price {
-     flex-direction: column;
-   }
-   .product-name-price > * {
-     flex: 1 1 auto;
-   }
-   .product-name-price > *:first-child {
-  margin-right: 0rem
+@media (max-width: 600px) {
+  .product-name-price {
+    flex-direction: column;
+  }
+  .product-name-price > * {
+    flex: 1 1 auto;
+  }
+  .product-name-price > *:first-child {
+    margin-right: 0rem;
   }
   .textarea-picture-container {
-  display: flex;
-  flex-direction: column;
-}
+    display: flex;
+    flex-direction: column;
+  }
 }
 </style>

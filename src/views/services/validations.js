@@ -1,24 +1,24 @@
 const validator = require("validator");
 const isNothing = require("lodash/isEmpty");
 
-let validations = {
+const validations = {
   validateInput: req => {
-    let errors = {};
+    const errors = {};
     if (!validator.isEmail(req.email)) {
       errors.email = "Please enter a valid email address";
     }
     if (validator.isEmpty(req.password)) {
       errors.password = "Please enter your password";
     }
-    let isValid = isNothing(errors);
+    const isValid = isNothing(errors);
     return {
       errors,
       isValid
     };
   },
   validateNewProduct: req => {
-    let errors = {};
-    const { name, category, description} = req;
+    const errors = {};
+    const { name, category, description } = req;
     if (validator.isEmpty(name)) {
       errors.name = "Please enter the name of the product";
     }
@@ -31,7 +31,7 @@ let validations = {
     return { errors };
   },
   validateNewUser: req => {
-    let errors = {};
+    const errors = {};
     if (validator.isEmpty(req.firstName)) {
       errors.firstName = "Please enter the user's first name";
     }
@@ -47,7 +47,7 @@ let validations = {
     if (validator.isEmpty(req.phoneNumber)) {
       errors.phoneNumber = "Please enter the user's phone number";
     }
-    let isValid = isNothing(errors);
+    const isValid = isNothing(errors);
     return { errors, isValid };
   }
 };

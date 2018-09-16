@@ -20,9 +20,7 @@
 export default {
   name: "Header",
   props: ["getUser", "userIsLoggedIn", "logout"],
-  methods: {
-    
-  }
+  methods: {}
 };
 </script>
 
@@ -37,7 +35,7 @@ export default {
   align-items: center;
   padding: 0rem 4rem;
   justify-content: space-between;
-  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.541)
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.541);
 }
 
 .logo {
@@ -67,41 +65,42 @@ export default {
   color: white !important;
   border: 1px solid white;
 }
-.show-sidebar-wrapper, .drop-down {
+.show-sidebar-wrapper,
+.drop-down {
   display: none;
   color: white !important;
   cursor: pointer;
 }
-.show-sidebar{
-  color: white !important;  
+.show-sidebar {
+  color: white !important;
 }
-.show-sidebar, .logo {
+.show-sidebar,
+.logo {
   user-select: none !important;
   -webkit-user-select: none !important;
   -moz-user-select: none !important;
   -ms-user-select: none !important;
 }
 
-
-
-@media(max-width: 960px){
-   .show-sidebar-wrapper, .drop-down {
+@media (max-width: 960px) {
+  .show-sidebar-wrapper,
+  .drop-down {
     display: block;
-      width: 3rem;
-  height: 3rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: space-around
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
   }
   .show-sidebar-wrapper:hover {
-    background-color:  #940e0e;
+    background-color: #940e0e;
   }
-  
-    .username-logout {
-    display: none
+
+  .username-logout {
+    display: none;
   }
-    .header {
+  .header {
     justify-content: space-between;
     padding: 0 2rem;
   }

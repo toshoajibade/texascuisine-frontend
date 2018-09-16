@@ -76,31 +76,45 @@ export default {
       isLoading: false
     };
   },
-  created() {
-    this.isLoading = true 
-    Api.instance()
-      .get(`items`)
-      .then(res => {
-        if (res.status === 200) {
-          this.state.products = res.data;
-          this.state.allProducts = res.data;
-        };
-        this.isLoading = false
-      });
+  async created() {
+    this.isLoading = true;
+    try {
+      const res = await Api.instance().get(`items`);
+      if (res.status === 200) {
+        let products = res.data.reverse()
+        this.state.products = products;
+        this.state.allProducts = products;
+        products.forEach(product => this.$db.set(product.productId, product, "items"));
+      }
+    } catch (error) {
+      let products = await this.$db.getAll("items");
+      if (navigator.onLine === false && products.length !== 0) {
+          this.state.products = products;
+      } else {
+        console.log(`please connect to the internet`)
+      }
+    } finally {
+      this.isLoading = false;
+    }
   },
   methods: {
-    changeProductStatus(value) {
-      Api.instance()
-        .put(`product/changestatus/${value}`)
-        .then(res => {
-          if (res.status === 200) {
+    async changeProductStatus(value) {
+      try {
+        let res = await Api.instance().put(`product/changestatus/${value}`);
+         if (res.status === 200) {
             let products = this.state.products.filter(
               product => product.productId !== value
             );
             products.unshift(res.data);
             this.state.products = products;
           }
-        });
+      } catch (error) {
+        if (navigator.onLine === false) {
+          console.log(`please connect to internet`);
+        } else {
+          console.log(`an error occured, please try again`);
+        }
+      }
     }
   },
   watch: {
@@ -169,7 +183,7 @@ export default {
 }
 th {
   font-size: 1.2rem;
-  font-weight: normal
+  font-weight: normal;
 }
 .my-auto {
   margin-right: 0.5rem;
@@ -219,26 +233,26 @@ td {
   color: rgb(83, 83, 241);
 }
 .product-selection-list {
-  overflow-x: auto
+  overflow-x: auto;
 }
 .loading-wrapper {
   width: 100%;
   display: flex;
   justify-content: space-around;
-  margin-top: 4rem
+  margin-top: 4rem;
 }
-@media(max-width: 600px) {
+@media (max-width: 600px) {
   .select-layout {
-    flex-direction: column
+    flex-direction: column;
   }
   .select-slot {
-    width: 100%
+    width: 100%;
   }
   .select-slot:first-child {
-  margin-right: 0px;
+    margin-right: 0px;
   }
   .add-product-wrapper {
-    align-self: flex-start !important
+    align-self: flex-start !important;
   }
 }
 </style>

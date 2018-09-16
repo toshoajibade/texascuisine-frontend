@@ -55,20 +55,23 @@ export default {
     },
     print() {
       pdfMake.vfs = font.pdfMake.vfs;
-      let docDefinition = { content: [`This is a sample of the pdf to make`,
-      {
-        columns: [
+      let docDefinition = {
+        content: [
+          `This is a sample of the pdf to make`,
           {
-          width: "50%",
-          text: "first column"
-          },
-          {
-            width: "50%",
-            text: this.user.name
+            columns: [
+              {
+                width: "50%",
+                text: "first column"
+              },
+              {
+                width: "50%",
+                text: this.user.name
+              }
+            ]
           }
-          ],
-      }
-      ]};
+        ]
+      };
       pdfMake.createPdf(docDefinition).download();
     }
   },
@@ -103,19 +106,20 @@ export default {
   .order-tab {
     flex-direction: column;
   }
-  .order-status, .print-button {
-    align-self: flex-start !important
+  .order-status,
+  .print-button {
+    align-self: flex-start !important;
   }
 }
 .order-details {
   display: flex;
   flex-direction: column;
-  flex: 3
+  flex: 3;
 }
 .customer-details {
   display: flex;
   flex-direction: column;
-  flex: 4
+  flex: 4;
 }
 
 .order-status {
@@ -128,14 +132,14 @@ export default {
   flex: 1;
   margin-right: 0px;
   display: flex;
-  justify-content: center
+  justify-content: center;
 }
 
 .v-icon {
-  width: 24px
+  width: 24px;
 }
-.v-icon:hover{
-  color: #00472e
+.v-icon:hover {
+  color: #00472e;
 }
 .customer-name {
   font-weight: normal;
@@ -153,10 +157,9 @@ export default {
   color: #00472e;
 }
 
-
 .order-status > * {
   text-transform: uppercase;
-  width: 100px
+  width: 100px;
 }
 
 .update-button-container {
@@ -168,7 +171,7 @@ export default {
   font-weight: bold;
 }
 .order-tab:hover {
-    background-color: #ebebeb;
+  background-color: #ebebeb;
   cursor: pointer;
 }
 .my-auto {

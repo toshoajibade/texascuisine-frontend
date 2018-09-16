@@ -64,8 +64,7 @@ const router = new Router({
           path: "createproduct",
           name: "createproduct",
           component: CreateProduct
-        },
- 
+        }
       ]
     }
   ],
@@ -73,13 +72,13 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  if(to.name === `home`) {
-    next()
+  if (to.name === `home`) {
+    next();
   } else if (store.state.isUserLoggedIn === false) {
-    router.push(`/`)
+    router.push(`/`);
   } else {
-    next()
+    next();
   }
-})
+});
 
 export default router;

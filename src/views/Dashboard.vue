@@ -36,17 +36,21 @@ export default {
       state: {
         orders: []
       }
-    }
+    };
   },
   async created() {
-    this.$db.set('beans', 'sweet', 'items')
-     try {
+  try {
       let res = await Api.instance().get(`orders`);
-      let orders = res.data;
-      console.log(orders);
+      let orders = res.data.reverse();
       this.state.orders = orders;
+      orders.forEach(order => this.$db.set(order.orderNumber, order, "orders"));
     } catch (error) {
-      console.log(error);
+      let orders = await this.$db.getAll("orders");
+      if (navigator.onLine === false && orders.length !== 0) {
+        this.state.orders = orders
+      } else {
+        console.log(`please connect to the internet`)
+      }
     }
   }
 };
@@ -68,14 +72,14 @@ export default {
 }
 @media (max-width: 600px) {
   .sales-data {
-    padding: 0px
+    padding: 0px;
   }
   .data-label {
-    width: 75px
+    width: 75px;
   }
 }
 .date-label {
-  font-size: 1rem
+  font-size: 1rem;
 }
 .data {
   font-size: 2rem;
@@ -89,5 +93,4 @@ export default {
 .pending-order-title {
   font-size: 1rem;
 }
-
 </style>

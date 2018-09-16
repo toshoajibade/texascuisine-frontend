@@ -40,12 +40,11 @@
 export default {
   name: "SideBar",
   props: ["getUser", "logout"],
-  watch:{
-    $route (to, from){
-        if(window.innerWidth < 960){
-           this.$parent.open = false; 
-        }
-        
+  watch: {
+    $route(to, from) {
+      if (window.innerWidth < 960) {
+        this.$parent.open = false;
+      }
     }
   }
 };
@@ -58,7 +57,7 @@ export default {
   background-color: #940e0e;
   display: flex;
   justify-content: space-between;
-  flex-direction: column
+  flex-direction: column;
 }
 .navigation-tab {
   width: 100%;
@@ -68,16 +67,16 @@ export default {
   align-items: center;
 }
 .user-logout {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    margin-bottom: 2rem;
-    display: none;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 2rem;
+  display: none;
 }
 .user-logout > * {
-    color: white
+  color: white;
 }
 .navigation-tab:hover {
   background-color: rgb(187, 33, 33);
@@ -93,10 +92,10 @@ export default {
   color: white !important;
   border: 1px solid white;
 }
-@media(max-width: 960px){
-    .user-logout {
-        display: flex;
-        margin-bottom: 4rem;
-    }
+@media (max-width: 960px) {
+  .user-logout {
+    display: flex;
+    margin-bottom: 4rem;
+  }
 }
 </style>

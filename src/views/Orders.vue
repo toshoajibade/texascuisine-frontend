@@ -25,11 +25,16 @@ export default {
   async created() {
     try {
       let res = await Api.instance().get(`orders`);
-      let orders = res.data;
-      console.log(orders);
+      let orders = res.data.reverse();
       this.state.orders = orders;
+      orders.forEach(order => this.$db.set(order.orderNumber, order, "orders"));
     } catch (error) {
-      console.log(error);
+      let orders = await this.$db.getAll("orders");
+      if (navigator.onLine === false && orders.length !== 0) {
+        this.state.orders = orders
+      } else {
+        console.log(`please connect to the internet`)
+      }
     }
   }
 };

@@ -23,7 +23,7 @@ export default new Vuex.Store({
       this.state.isUserLoggedIn = false;
       this.state.user = {};
       this.state.token = null;
-    },
+    }
   },
   actions: {
     setUser(context, payload) {
@@ -35,6 +35,6 @@ export default new Vuex.Store({
     },
     logout(context) {
       context.commit("logout");
-    },
+    }
   }
 });

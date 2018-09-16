@@ -65,39 +65,63 @@ export default {
       }
     };
   },
-  created() {
-    Api.instance()
-      .get(`user/list`)
-      .then(res => {
-        if (res.status === 200) {
-          this.state.users = res.data.reverse();
-          console.log(this.state.users);
-        }
-      });
+  async created() {
+    try {
+      const res = await Api.instance().get(`user/list`);
+      if (res.status === 200) {
+        let users = res.data.reverse();
+        this.state.users = users;
+        users.forEach(user => this.$db.set(user.userId, user, "users"));
+      }
+    } catch (error) {
+      let users = await this.$db.getAll("users");
+      if (navigator.onLine === false && users.length !== 0) {
+          this.state.users = users;
+      } else {
+        console.log(`please connect to the internet`)
+      }
+    }
   },
   methods: {
-    addUser() {
+    async addUser() {
       this.state.errors = {};
-      const { errors, isValid } = validations.validateNewUser(this.newUser);
-      if (!isValid) {
-        this.state.errors = errors;
-        return;
+      try {
+        const { errors, isValid } = await validations.validateNewUser(
+          this.newUser
+        );
+        if (!isValid) {
+          this.state.errors = errors;
+          return;
+        }
+        const res = await Api.instance().post(`user/create`, this.newUser);
+        if (res.status === 200) {
+          this.state.users.unshift(res.data);
+          this.$db.set(res.data.userId, res.data, "users");
+          this.newUser = {};
+        }
+      } catch (error) {
+        if (navigator.onLine === false) {
+          console.log(`please connect to internet`);
+        } else {
+          console(`an error occured, please try again`);
+        }
       }
-      Api.instance()
-        .post(`user/create`, this.newUser)
-        .then(res => this.state.users.unshift(res.data))
-        .then((this.newUser = {}));
     },
-    deleteUser(value) {
-      console.log(value)
-      Api.instance()
-        .delete(`user/delete/${value}`)
-        .then(res => {if(res.status === 200){
-          console.log(res.status);
+    async deleteUser(value) {
+      try {
+        const res = await Api.instance().delete(`user/delete/${value}`);
+        if (res.status === 200) {
           let users = this.state.users.filter(user => user.userId !== value);
           this.state.users = users;
-        } }
-        );
+          this.$db.delete(value, "users");
+        }
+      } catch (error) {
+        if (navigator.onLine === false) {
+          console.log(`please connect to internet`);
+        } else {
+          console.log(`an error occured, please try again`);
+        }
+      }
     }
   }
 };
@@ -131,21 +155,21 @@ form {
   margin-right: 2rem;
 }
 
- @media(max-width: 600px) {
-   .new-admin {
-     flex-direction: column;
-   }
-   .new-admin > * {
-     flex: 1 1 auto;
-   }
-   .new-admin > *:first-child {
-  margin-right: 0rem;
+@media (max-width: 600px) {
+  .new-admin {
+    flex-direction: column;
+  }
+  .new-admin > * {
+    flex: 1 1 auto;
+  }
+  .new-admin > *:first-child {
+    margin-right: 0rem;
+  }
 }
- }
 
 section {
   display: flex;
-  flex-direction: column
+  flex-direction: column;
 }
 table {
   width: 100%;
@@ -154,11 +178,11 @@ table {
 }
 
 .table-container {
-  overflow-x: auto
+  overflow-x: auto;
 }
 
-
-td, th {
+td,
+th {
   padding-right: 2rem;
 }
 .user-tab {
@@ -186,5 +210,4 @@ th {
 .first-child {
   padding-left: 1rem;
 }
-
 </style>

@@ -33,8 +33,8 @@ export default {
     Header
   },
   beforeCreate() {
-    if(this.$store.state.isUserLoggedIn === true) {
-      this.$router.push("admin/dashboard")
+    if (this.$store.state.isUserLoggedIn === true) {
+      this.$router.push("admin/dashboard");
     }
   },
   data() {
@@ -56,7 +56,7 @@ export default {
         const { isValid, errors } = await validations.validateInput(req);
         if (!isValid) {
           this.state.errors = errors;
-          this.isLoading = false
+          this.isLoading = false;
           return;
         }
         let email = this.state.email;
@@ -82,7 +82,6 @@ export default {
   margin: 0px;
   padding: 0px;
 }
-
 
 .body {
   width: 100%;
@@ -123,7 +122,7 @@ export default {
   padding: 0rem 2rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between
+  justify-content: space-between;
 }
 .admin-text {
   color: #470000;
@@ -152,26 +151,25 @@ export default {
   color: white !important;
   margin: 2rem 0 0 0;
 }
-@media(max-width: 960px) {
+@media (max-width: 960px) {
   .side-container {
-    display: none
+    display: none;
   }
   .login-form-container {
-  width: 100%;
-  height: 100%;
-  background-color: white;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
 }
-
-}
-@media(max-width: 600px) { 
+@media (max-width: 600px) {
   .login-form-container {
     align-items: flex-start;
     padding-top: 1rem;
   }
-  .login-error-container{
+  .login-error-container {
     height: 3rem;
   }
 }

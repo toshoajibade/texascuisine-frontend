@@ -54,9 +54,9 @@ export default {
       state: {
         errors: {},
         category: [
-          { label: "FOOD", value: "food"},
+          { label: "FOOD", value: "food" },
           { label: "DRINK", value: "drinks" }
-        ],
+        ]
       },
       product: {
         name: "",
@@ -65,83 +65,83 @@ export default {
         description: "",
         image: null,
         productId: "",
-        imageUrl: "",
-
+        imageUrl: ""
       },
       selectedCategory: ``,
-      product: {},
       isLoading: false
     };
   },
-  beforeMount() {
+  async beforeMount() {
     let productId = this.$route.params.productId;
-    this.isLoading = true
-    Api.instance()
-      .get(`product/${productId}`)
-      .then(res => {
+    this.isLoading = true;
+    try {
+      let res = await Api.instance().get(`product/${productId}`)
         if (res.status === 200) {
           this.product = res.data;
-          console.log(`this is state`,this.product);
         }
-        this.isLoading = false
-      });
+    } catch (error) {
+      if (navigator.onLine === false) {
+          console.log(`please connect to internet`);
+        } else {
+          console(`an error occured, please try again`);
+        }
+    } finally {
+      this.isLoading = false;
+    }
   },
   methods: {
     async editProduct() {
-      this.state.errors = {};
-      let productId = this.product.productId;
-      let { errors } = await validations.validateNewProduct(this.product);
-      if(this.product.price <= 0) {
-        errors.price = `Please enter a valid amount`
-      }
-      let isValid = isNothing(errors);
+      try {
+        this.state.errors = {};
+        let productId = this.product.productId;
+        let { errors } = await validations.validateNewProduct(this.product);
+        if (!this.product.price || this.product.price < 0) {
+          errors.price = `Please enter a valid amount`;
+        }
+        
+        let isValid = isNothing(errors);
         if (!isValid) {
           this.state.errors = errors;
           return;
         }
-         this.isLoading = true
-      if(!this.product.image) {
-        Api.instance()
-          .put(`product/edit/${productId}`, this.product)
-        .then(res => {
-          this.isLoading = false
-          if (res.status === 200) {
-            this.$router.push("/admin/products");
-            swal({
-              html: "<p>The product has been successfully edited</p>"
-            });
-          }  else if(res.status === 403){
-            console.log('home')
-            this.$router.push("/");
-          } else {
-            console.log('error')
-          }
-        });
+        this.isLoading = true;
+        if (!this.product.image) {
+        let res = await Api.instance().put(`product/edit/${productId}`, this.product)
+            if (res.status === 200) {
+              this.$router.push("/admin/products");
+              swal({
+                html: "<p>The product has been successfully edited</p>"
+              });
+            }
       } else {
-
         let formdata = new FormData();
         formdata.append("name", this.product.name);
         formdata.append("price", this.product.price);
         formdata.append("category", this.selectedCategory);
         formdata.append("description", this.product.description);
         formdata.append("image", this.product.image);
-        Api.postPicture()
-        .put(`product/edit/${productId}`, formdata)
-        .then(res => {
-          this.isLoading = false
-          if (res.status === 200) {
-            this.$router.push("/admin/products");
-            swal({
-              html: "<p>The product has been successfully edited</p>"
-            });
-          }
-        })
+        let res = await Api.postPicture().put(`product/edit/${productId}`, formdata)
+        if (res.status === 200) {
+          this.$router.push("/admin/products");
+          swal({
+            html: "<p>The product has been successfully edited</p>"
+          });
+        }
+      }
+      } catch (error) {
+        if (navigator.onLine === false) {
+          console.log(`please connect to internet`);
+        } else {
+          console(`an error occured, please try again`);
+        }
+      } finally {
+        this.isLoading = false;
       }
     },
     uploadImage(event) {
       const file = event.target.files[0];
       this.product.image = file;
-      console.log(this.product.image)
+      console.log(this.product.image);
       this.product.imageUrl = URL.createObjectURL(file);
     },
     deleteProduct() {
@@ -151,14 +151,13 @@ export default {
         .then(res => {
           if (res.status === 200) {
             this.$router.push("/admin/products");
-              swal({
+            swal({
               html: "<p>Product deleted successfully</p>"
             });
-            
-          } else if(res.status === 403){
+          } else if (res.status === 403) {
             this.$router.push("/");
           } else {
-            console.log('error')
+            console.log("error");
           }
         });
     }
@@ -195,12 +194,11 @@ export default {
 .delete-button:hover {
   background-color: #940e0e !important;
   color: white !important;
-
 }
 .delete-button {
   color: rgb(173, 8, 8) !important;
   background-color: white !important;
-    border: 1px solid  #940e0e;
+  border: 1px solid #940e0e;
 }
 .product-image {
   width: 100%;
