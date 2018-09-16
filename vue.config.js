@@ -16,10 +16,6 @@ module.exports = {
         {
           urlPattern: /^https:\/\/fonts\.googleapis\.com/,
           handler: "staleWhileRevalidate"
-        },
-        {
-          urlPattern: /(?:item|user|order)/,
-          handler: "staleWhileRevalidate"
         }
       ]
     }
