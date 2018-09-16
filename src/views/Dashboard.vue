@@ -46,8 +46,8 @@ export default {
     };
   },
   async created() {
-  this.state.isLoading = true
-  try {
+    this.state.isLoading = true;
+    try {
       let res = await Api.instance().get(`orders`);
       let orders = res.data.reverse();
       this.state.orders = orders;
@@ -57,13 +57,13 @@ export default {
       if (navigator.onLine === false && orders.length !== 0) {
         this.state.orders = orders;
       } else {
-        this.state.offline = true
+        this.state.offline = true;
         setTimeout(() => {
-          this.state.offline = false
+          this.state.offline = false;
         }, 2000);
       }
     } finally {
-      this.state.isLoading = false
+      this.state.isLoading = false;
     }
   }
 };
@@ -107,5 +107,4 @@ export default {
 .pending-order-title {
   font-size: 1rem;
 }
-
 </style>

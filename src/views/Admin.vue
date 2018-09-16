@@ -148,7 +148,7 @@ p {
   left: 250px;
   display: flex;
   z-index: 1000;
-  justify-content: space-around
+  justify-content: space-around;
 }
 .v-alert {
   position: fixed;
@@ -161,7 +161,7 @@ p {
 }
 .v-alert > div {
   color: white;
-  text-align: center
+  text-align: center;
 }
 .progress-bar {
   position: fixed !important;
@@ -180,10 +180,10 @@ p {
   }
   .alert-wrapper {
     left: 0px;
-    width: 100%
+    width: 100%;
   }
   .v-alert {
-    width: 80%
+    width: 80%;
   }
   .overlay {
     display: block;

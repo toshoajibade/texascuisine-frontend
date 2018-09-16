@@ -76,7 +76,7 @@ export default {
     };
   },
   async created() {
-    this.state.isLoading = true
+    this.state.isLoading = true;
     try {
       const res = await Api.instance().get(`user/list`);
       if (res.status === 200) {
@@ -87,20 +87,20 @@ export default {
     } catch (error) {
       let users = await this.$db.getAll("users");
       if (navigator.onLine === false && users.length !== 0) {
-          this.state.users = users;
+        this.state.users = users;
       } else {
-           this.state.offline = true
+        this.state.offline = true;
         setTimeout(() => {
-          this.state.offline = false
+          this.state.offline = false;
         }, 2000);
       }
     } finally {
-      this.state.isLoading = false
+      this.state.isLoading = false;
     }
   },
   methods: {
     async addUser() {
-      this.state.isLoading = true
+      this.state.isLoading = true;
       this.state.errors = {};
       try {
         const { errors, isValid } = await validations.validateNewUser(
@@ -118,22 +118,22 @@ export default {
         }
       } catch (error) {
         if (navigator.onLine === false) {
-             this.state.offline = true
-        setTimeout(() => {
-          this.state.offline = false
-        }, 2000);
+          this.state.offline = true;
+          setTimeout(() => {
+            this.state.offline = false;
+          }, 2000);
         } else {
-        this.state.postError = true
-        setTimeout(() => {
-          this.state.postError = false
-        }, 2000);
+          this.state.postError = true;
+          setTimeout(() => {
+            this.state.postError = false;
+          }, 2000);
         }
       } finally {
-        this.state.isLoading = false
+        this.state.isLoading = false;
       }
     },
     async deleteUser(value) {
-      this.state.isLoading = true
+      this.state.isLoading = true;
       try {
         const res = await Api.instance().delete(`user/delete/${value}`);
         if (res.status === 200) {
@@ -143,18 +143,18 @@ export default {
         }
       } catch (error) {
         if (navigator.onLine === false) {
-             this.state.offline = true
-        setTimeout(() => {
-          this.state.offline = false
-        }, 2000);
+          this.state.offline = true;
+          setTimeout(() => {
+            this.state.offline = false;
+          }, 2000);
         } else {
-        this.state.postError = true
-        setTimeout(() => {
-          this.state.postError = false
-        }, 2000);
+          this.state.postError = true;
+          setTimeout(() => {
+            this.state.postError = false;
+          }, 2000);
         }
       } finally {
-        this.state.isLoading = false
+        this.state.isLoading = false;
       }
     }
   }

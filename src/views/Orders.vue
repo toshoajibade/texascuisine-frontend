@@ -28,7 +28,7 @@ export default {
     };
   },
   async created() {
-    this.state.isLoading = true
+    this.state.isLoading = true;
     try {
       let res = await Api.instance().get(`orders`);
       let orders = res.data.reverse();
@@ -37,15 +37,15 @@ export default {
     } catch (error) {
       let orders = await this.$db.getAll("orders");
       if (navigator.onLine === false && orders.length !== 0) {
-        this.state.orders = orders
+        this.state.orders = orders;
       } else {
-        this.state.offline = true
+        this.state.offline = true;
         setTimeout(() => {
-          this.state.offline = false
+          this.state.offline = false;
         }, 2000);
       }
     } finally {
-      this.state.isLoading = false
+      this.state.isLoading = false;
     }
   }
 };

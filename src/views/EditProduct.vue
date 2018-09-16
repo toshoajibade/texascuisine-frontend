@@ -72,37 +72,36 @@ export default {
         productId: "",
         imageUrl: ""
       },
-      selectedCategory: ``,
-     
+      selectedCategory: ``
     };
   },
   async beforeMount() {
     let productId = this.$route.params.productId;
     this.state.isLoading = true;
     try {
-      let res = await Api.instance().get(`product/${productId}`)
-        if (res.status === 200) {
-          this.product = res.data;
-        }
+      let res = await Api.instance().get(`product/${productId}`);
+      if (res.status === 200) {
+        this.product = res.data;
+      }
     } catch (error) {
       if (navigator.onLine === false) {
-          this.state.offline = true
+        this.state.offline = true;
         setTimeout(() => {
-          this.state.offline = false
+          this.state.offline = false;
         }, 2000);
-        } else {
-         this.state.postError = true
+      } else {
+        this.state.postError = true;
         setTimeout(() => {
-          this.state.postError = false
+          this.state.postError = false;
         }, 2000);
-        }
+      }
     } finally {
       this.state.isLoading = false;
     }
   },
   methods: {
     async editProduct() {
-      this.state.isLoading = true
+      this.state.isLoading = true;
       try {
         this.state.errors = {};
         let productId = this.product.productId;
@@ -110,7 +109,7 @@ export default {
         if (!this.product.price || this.product.price < 0) {
           errors.price = `Please enter a valid amount`;
         }
-        
+
         let isValid = isNothing(errors);
         if (!isValid) {
           this.state.errors = errors;
@@ -118,39 +117,45 @@ export default {
         }
         this.isLoading = true;
         if (!this.product.image) {
-        let res = await Api.instance().put(`product/edit/${productId}`, this.product)
-            if (res.status === 200) {
-              this.$router.push("/admin/products");
-              swal({
-                html: "<p>The product has been successfully edited</p>"
-              });
-            }
-      } else {
-        let formdata = new FormData();
-        formdata.append("name", this.product.name);
-        formdata.append("price", this.product.price);
-        formdata.append("category", this.selectedCategory);
-        formdata.append("description", this.product.description);
-        formdata.append("image", this.product.image);
-        let res = await Api.postPicture().put(`product/edit/${productId}`, formdata)
-        if (res.status === 200) {
-          this.$router.push("/admin/products");
-          swal({
-            html: "<p>The product has been successfully edited</p>"
-          });
+          let res = await Api.instance().put(
+            `product/edit/${productId}`,
+            this.product
+          );
+          if (res.status === 200) {
+            this.$router.push("/admin/products");
+            swal({
+              html: "<p>The product has been successfully edited</p>"
+            });
+          }
+        } else {
+          let formdata = new FormData();
+          formdata.append("name", this.product.name);
+          formdata.append("price", this.product.price);
+          formdata.append("category", this.selectedCategory);
+          formdata.append("description", this.product.description);
+          formdata.append("image", this.product.image);
+          let res = await Api.postPicture().put(
+            `product/edit/${productId}`,
+            formdata
+          );
+          if (res.status === 200) {
+            this.$router.push("/admin/products");
+            swal({
+              html: "<p>The product has been successfully edited</p>"
+            });
+          }
         }
-      }
       } catch (error) {
         if (navigator.onLine === false) {
-             this.state.offline = true
-        setTimeout(() => {
-          this.state.offline = false
-        }, 2000);
+          this.state.offline = true;
+          setTimeout(() => {
+            this.state.offline = false;
+          }, 2000);
         } else {
-           this.state.postError = true
-        setTimeout(() => {
-          this.state.postError = false
-        }, 2000);
+          this.state.postError = true;
+          setTimeout(() => {
+            this.state.postError = false;
+          }, 2000);
         }
       } finally {
         this.state.isLoading = false;
@@ -159,31 +164,30 @@ export default {
     uploadImage(event) {
       const file = event.target.files[0];
       this.product.image = file;
-      console.log(this.product.image);
       this.product.imageUrl = URL.createObjectURL(file);
     },
     async deleteProduct() {
-      this.state.isLoading = true
+      this.state.isLoading = true;
       try {
-              let productId = this.product.productId;
-      let res = await Api.instance().delete(`product/delete/${productId}`)
-          if (res.status === 200) {
-            this.$router.push("/admin/products");
-            swal({
-              html: "<p>Product deleted successfully</p>"
-            });
-          }
+        let productId = this.product.productId;
+        let res = await Api.instance().delete(`product/delete/${productId}`);
+        if (res.status === 200) {
+          this.$router.push("/admin/products");
+          swal({
+            html: "<p>Product deleted successfully</p>"
+          });
+        }
       } catch (error) {
         if (navigator.onLine === false) {
-        this.state.offline = true
-        setTimeout(() => {
-          this.state.offline = false
-        }, 2000);
+          this.state.offline = true;
+          setTimeout(() => {
+            this.state.offline = false;
+          }, 2000);
         } else {
-           this.state.postError = true
-        setTimeout(() => {
-          this.state.postError = false
-        }, 2000);
+          this.state.postError = true;
+          setTimeout(() => {
+            this.state.postError = false;
+          }, 2000);
         }
       } finally {
         this.state.isLoading = false;

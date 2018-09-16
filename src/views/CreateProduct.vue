@@ -75,10 +75,9 @@ export default {
       state: {
         offline: false,
         postError: false,
-         isLoading: false
+        isLoading: false
       },
-      selectedCategory: ``,
-     
+      selectedCategory: ``
     };
   },
   methods: {
@@ -97,7 +96,8 @@ export default {
         let isValid;
         const { errors } = await validations.validateNewProduct(req);
         if (req.image === null) errors.image = `Please upload product picture`;
-        if (!req.price || req.price < 0) errors.price = `Please enter a valid price`;
+        if (!req.price || req.price < 0)
+          errors.price = `Please enter a valid price`;
         isValid = isNothing(errors);
         if (!isValid) {
           this.product.errors = errors;
@@ -117,15 +117,15 @@ export default {
         });
       } catch (error) {
         if (navigator.onLine === false) {
-             this.state.offline = true
-        setTimeout(() => {
-          this.state.offline = false
-        }, 2000);
+          this.state.offline = true;
+          setTimeout(() => {
+            this.state.offline = false;
+          }, 2000);
         } else {
-        this.state.postError = true
-        setTimeout(() => {
-          this.state.postError = false
-        }, 2000);
+          this.state.postError = true;
+          setTimeout(() => {
+            this.state.postError = false;
+          }, 2000);
         }
       } finally {
         this.state.isLoading = false;

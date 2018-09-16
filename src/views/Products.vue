@@ -79,8 +79,7 @@ export default {
         offline: false,
         postError: false,
         isLoading: false
-      },
-      
+      }
     };
   },
   async created() {
@@ -88,19 +87,21 @@ export default {
     try {
       const res = await Api.instance().get(`items`);
       if (res.status === 200) {
-        let products = res.data.reverse()
+        let products = res.data.reverse();
         this.state.products = products;
         this.state.allProducts = products;
-        products.forEach(product => this.$db.set(product.productId, product, "items"));
+        products.forEach(product =>
+          this.$db.set(product.productId, product, "items")
+        );
       }
     } catch (error) {
       let products = await this.$db.getAll("items");
       if (navigator.onLine === false && products.length !== 0) {
-          this.state.products = products;
+        this.state.products = products;
       } else {
-          this.state.offline = true
+        this.state.offline = true;
         setTimeout(() => {
-          this.state.offline = false
+          this.state.offline = false;
         }, 2000);
       }
     } finally {
@@ -111,24 +112,24 @@ export default {
     async changeProductStatus(value) {
       try {
         let res = await Api.instance().put(`product/changestatus/${value}`);
-         if (res.status === 200) {
-            let products = this.state.products.filter(
-              product => product.productId !== value
-            );
-            products.unshift(res.data);
-            this.state.products = products;
-          }
+        if (res.status === 200) {
+          let products = this.state.products.filter(
+            product => product.productId !== value
+          );
+          products.unshift(res.data);
+          this.state.products = products;
+        }
       } catch (error) {
         if (navigator.onLine === false) {
-             this.state.offline = true
-        setTimeout(() => {
-          this.state.offline = false
-        }, 2000);
-        } else {
-           this.state.postError = true
+          this.state.offline = true;
           setTimeout(() => {
-          this.state.postError = false
-        }, 2000);
+            this.state.offline = false;
+          }, 2000);
+        } else {
+          this.state.postError = true;
+          setTimeout(() => {
+            this.state.postError = false;
+          }, 2000);
         }
       }
     }

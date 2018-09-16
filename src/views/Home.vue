@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     async login() {
-      this.state.isLoading = true
+      this.state.isLoading = true;
       try {
         this.state.errors = {};
         this.loginError = ``;
@@ -71,7 +71,7 @@ export default {
       } catch (err) {
         this.loginError = err.response.data.error;
       } finally {
-        this.state.isLoading = false
+        this.state.isLoading = false;
       }
     }
   },
@@ -103,7 +103,7 @@ export default {
 }
 
 .progress-bar {
-  left: 0px
+  left: 0px;
 }
 
 .login-form-container {
