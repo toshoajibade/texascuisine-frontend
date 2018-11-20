@@ -1,29 +1,39 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "./views/Home.vue";
-import Dashboard from "./views/Dashboard.vue";
-import Orders from "./views/Orders.vue";
-import ViewOrder from "./views/ViewOrder.vue";
-import Settings from "./views/Settings.vue";
-import Users from "./views/Users.vue";
-import Products from "./views/Products.vue";
-import CreateProduct from "./views/CreateProduct.vue";
-import EditProduct from "./views/EditProduct.vue";
-import Admin from "./views/Admin.vue";
 import store from "./store";
 
 Vue.use(Router);
 
+const PageAdminLayout = () =>
+  import(/* webpackChunkName: "admin" */ "@/views/PageAdminLayout.vue");
+const PageLogin = () =>
+  import(/* webpackChunkName: "home" */ "@/views/PageLogin.vue");
+const Products = () =>
+  import(/* webpackChunkName: "product" */ "@/components/PageProducts.vue");
+const ViewOrder = () =>
+  import(/* webpackChunkName: "viewOrder" */ "@/components/PageViewOrder.vue");
+const Users = () =>
+  import(/* webpackChunkName: "users" */ "@/components/PageUsers.vue");
+const CreateProduct = () =>
+  import(/* webpackChunkName: "createproduct" */ "@/components/PageCreateProduct.vue");
+const EditProduct = () =>
+  import(/* webpackChunkName: "edit" */ "@/components/PageEditProduct.vue");
+const Dashboard = () =>
+  import(/* webpackChunkName: "dashboard" */ "@/components/PageDashboard.vue");
+const Orders = () =>
+  import(/* webpackChunkName: "orders" */ "@/components/PageOrders.vue");
+
 const router = new Router({
+  mode: "history",
   routes: [
     {
       path: "/",
       name: "home",
-      component: Home
+      component: PageLogin
     },
     {
       path: "/admin",
-      component: Admin,
+      component: PageAdminLayout,
       children: [
         {
           path: "dashboard",
@@ -54,11 +64,6 @@ const router = new Router({
           path: "users",
           name: "users",
           component: Users
-        },
-        {
-          path: "settings",
-          name: "settings",
-          component: Settings
         },
         {
           path: "createproduct",

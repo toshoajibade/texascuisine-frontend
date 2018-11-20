@@ -6,10 +6,8 @@
                 <p>UPDATE TO</p>
                   <v-select v-model="order.status" class="select-field-input" :items="deliveryStatus" item-text="label"  item-value="value"></v-select>
               </div>
-              <v-icon class="print-icon" @click="print">print</v-icon>
+              <i class="print-icon material-icons" @click="print">print</i>
             </div>
-             
-
         <div class="delivery-details">
             <div class="customer-details">
                 <p class="customer-heading">Customer Details</p>
@@ -60,9 +58,8 @@
 </template>
 
 <script>
-import ItemsOrdered from "@/components/common/ItemsOrdered";
-import pdfMake from "pdfmake/build/pdfmake";
-import font from "pdfmake/build/vfs_fonts";
+import ItemsOrdered from "@/components/ItemsOrdered";
+
 export default {
   name: "ViewOrder",
   components: {
@@ -84,9 +81,6 @@ export default {
   },
   methods: {
     print() {
-      pdfMake.vfs = font.pdfMake.vfs;
-      let docDefinition = { content: `This is a sample of the pdf to make` };
-      pdfMake.createPdf(docDefinition).download();
     }
   }
 };

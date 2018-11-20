@@ -1,59 +1,60 @@
 <template>
   <div>
-    <v-progress-linear color="secondary" v-if="state.isLoading" :indeterminate="true" class="progress-bar" height="3" value="15"></v-progress-linear>
     <form class="create-product-page">
-        <p class="create-user-label" style="font-weight:bold">CREATE ADMIN</p>
-        <p>Enter new admin details below</p>
-        <div class="new-admin">
-          <v-text-field v-model="newUser.firstName" label="First Name" :error-messages="state.errors.firstName" type="text" />
-          <v-text-field v-model="newUser.lastName" label="Last Name" :error-messages="state.errors.lastName"  type="text" />
-        </div>
-        <div class="new-admin">
-          <v-text-field v-model="newUser.phoneNumber" label="Phone Number" :error-messages="state.errors.phoneNumber" type="text" />
-          <v-text-field v-model="newUser.email"  label="Email" :error-messages="state.errors.email" type="email" />
-        </div>
-        
-        
-        <v-btn type="submit" class="btn-primary" v-on:click.prevent="addUser">CREATE</v-btn>
+      <p class="create-user-label" style="font-weight:bold">CREATE ADMIN</p>
+      <p>Enter new admin details below</p>
+      <div class="new-admin">
+        <input v-model="newUser.firstName" label="First Name" :error-messages="state.errors.firstName" type="text" />
+        <input v-model="newUser.lastName" label="Last Name" :error-messages="state.errors.lastName" type="text" />
+      </div>
+      <div class="new-admin">
+        <input v-model="newUser.phoneNumber" label="Phone Number" :error-messages="state.errors.phoneNumber" type="text" />
+        <input v-model="newUser.email" label="Email" :error-messages="state.errors.email" type="email" />
+      </div>
+
+      <button type="submit" class="btn-primary" v-on:click.prevent="addUser">CREATE</button>
     </form>
     <section v-if="state.users.length !== 0">
       <P style="font-weight:bold" class="current-admins">CURRENT ADMINS</P>
       <div class="table-container">
-         <table class="table" >
-        <thead>
-        <tr class="table-header">
-          <th class="first-child" scope="column">First Name</th>
-          <th scope="column">Last Name</th>
-          <th scope="column">Email Address</th>
-          <th scope="column">Phone Number</th>
-          <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr scope="row" v-for="user in state.users" class="user-tab" v-bind:key="user.userId">
-          <td class="first-child">{{user.firstName}}</td>
-          <td>{{user.lastName}}</td>
-          <td>{{user.email}}</td>
-          <td>{{user.phoneNumber}}</td>
-          <td> <v-icon small class="delete-user" v-on:click="deleteUser(user.userId)">delete</v-icon></td>
-        </tr>
-        </tbody>
-      </table>
+        <table class="table">
+          <thead>
+            <tr class="table-header">
+              <th class="first-child" scope="column">First Name</th>
+              <th scope="column">Last Name</th>
+              <th scope="column">Email Address</th>
+              <th scope="column">Phone Number</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr scope="row" v-for="user in state.users" class="user-tab" v-bind:key="user.userId">
+              <td class="first-child">{{user.firstName}}</td>
+              <td>{{user.lastName}}</td>
+              <td>{{user.email}}</td>
+              <td>{{user.phoneNumber}}</td>
+              <td>
+                <v-icon small class="delete-user" v-on:click="deleteUser(user.userId)">delete</v-icon>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-     
+
     </section>
-        <div class="alert-wrapper">
-          <v-alert v-model="state.offline" class="alert" color="rgba(0, 0, 0, 0)">Please connect to the internet</v-alert>
-       </div>
-        <div class="alert-wrapper" v-if="state.postError">
-          <v-alert v-model="state.postError" class="alert" color="rgba(0, 0, 0, 0)">Error! Please try again</v-alert>
-       </div>
+    <div class="alert-wrapper">
+      <v-alert v-model="state.offline" class="alert" color="rgba(0, 0, 0, 0)">Please connect to the internet</v-alert>
     </div>
+    <div class="alert-wrapper" v-if="state.postError">
+      <v-alert v-model="state.postError" class="alert" color="rgba(0, 0, 0, 0)">Error! Please try again</v-alert>
+    </div>
+  </div>
 </template>
 
 <script>
-import Api from "@/views/services/Api";
-import validations from "@/views/services/validations";
+import Api from "@/services/Api";
+import handleError from "@/middleware/handleError";
+import validations from "@/services/validations";
 
 export default {
   name: "Products",
@@ -75,8 +76,9 @@ export default {
       }
     };
   },
+
   async created() {
-    this.state.isLoading = true;
+    this.$Progress.start();
     try {
       const res = await Api.instance().get(`user/list`);
       if (res.status === 200) {
@@ -95,12 +97,13 @@ export default {
         }, 2000);
       }
     } finally {
-      this.state.isLoading = false;
+      this.$Progress.finish();
     }
   },
+
   methods: {
     async addUser() {
-      this.state.isLoading = true;
+      this.$Progress.start();
       this.state.errors = {};
       try {
         const { errors, isValid } = await validations.validateNewUser(
@@ -117,23 +120,14 @@ export default {
           this.newUser = {};
         }
       } catch (error) {
-        if (navigator.onLine === false) {
-          this.state.offline = true;
-          setTimeout(() => {
-            this.state.offline = false;
-          }, 2000);
-        } else {
-          this.state.postError = true;
-          setTimeout(() => {
-            this.state.postError = false;
-          }, 2000);
-        }
+        this.handleError();
       } finally {
-        this.state.isLoading = false;
+        this.$Progress.finish();
       }
     },
+
     async deleteUser(value) {
-      this.state.isLoading = true;
+      this.$Progress.start();
       try {
         const res = await Api.instance().delete(`user/delete/${value}`);
         if (res.status === 200) {
@@ -142,19 +136,9 @@ export default {
           this.$db.delete(value, "users");
         }
       } catch (error) {
-        if (navigator.onLine === false) {
-          this.state.offline = true;
-          setTimeout(() => {
-            this.state.offline = false;
-          }, 2000);
-        } else {
-          this.state.postError = true;
-          setTimeout(() => {
-            this.state.postError = false;
-          }, 2000);
-        }
+        this.handleError();
       } finally {
-        this.state.isLoading = false;
+        this.$Progress.finish();
       }
     }
   }

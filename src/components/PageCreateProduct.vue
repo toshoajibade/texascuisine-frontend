@@ -1,63 +1,66 @@
 <template>
   <div class="overall">
-      <v-progress-linear color="secondary" v-if="state.isLoading" :indeterminate="true" class="progress-bar" height="3" value="15"></v-progress-linear>
-       <form class="create-product-page">
-
-        <v-text-field v-model="product.name" label="Product Name" :error-messages="product.errors.name" type="text" />
-        <div class="product-name-price">
-          <div class="select-first">
-          <v-select :items="product.category" v-model="selectedCategory" item-text="label"  item-value="value" label="Category" :error-messages="product.errors.category" type="text" />
-          </div> 
-          <div  class="select-first">
-          <v-text-field v-model="product.price" label="Price" :error-messages="product.errors.price" type="number" /></div>
-            
+    <form class="create-product-page">
+      <input v-model="product.name" label="Product Name" :error-messages="product.errors.name" type="text" />
+      <div class="product-name-price">
+        <div class="select-first">
+          <select :options="product.category" v-model="selectedCategory" item-text="label" item-value="value" label="Category" :error-messages="product.errors.category" type="text" />
         </div>
-        <div class="textarea-picture-container">
-            <div class="textarea" >
-              <p>Description</p>
-              <div class="textarea-field">
-              <textarea  v-model="product.description" placeholder="Enter the product description here"> </textarea></div> 
-              <p class="custom-error">{{product.errors.description}}</p>
+        <div class="select-first">
+          <input v-model="product.price" label="Price" :error-messages="product.errors.price" type="number" /></div>
+
+      </div>
+      <div class="textarea-picture-container">
+        <div class="textarea">
+          <p>Description</p>
+          <div class="textarea-field">
+            <textarea v-model="product.description" placeholder="Enter the product description here"> </textarea></div>
+          <p class="custom-error">{{product.errors.description}}</p>
+        </div>
+        <div class="picture">
+          <p>Picture</p>
+          <div class="image-upload">
+            <div class="image-placeholder" v-if="product.url">
+              <label for="editImage">
+                <v-icon class="edit-image-label">edit</v-icon>
+              </label>
+              <input type="file" id="editImage" @change='uploadImage' class="upload-button">
+              <img class="image-preview" :src="product.url" alt="" srcset="">
             </div>
-            <v-spacer></v-spacer>
-            <div class="picture">
-              <p>Picture</p>
-              <div class="image-upload">
-                <div class="image-placeholder" v-if="product.url">
-                   <label for="editImage"><v-icon class="edit-image-label">edit</v-icon></label>
-                    <input type="file"  id="editImage" @change='uploadImage' class="upload-button">
-                    <img class="image-preview" :src="product.url" alt="" srcset="">
-                </div>
-                <div class="image-placeholder" v-else>
-                    <label for="file"><v-icon class="image-label">add_a_photo</v-icon></label>
-                    <input type="file"  id="file" @change='uploadImage' class="upload-button">
-                    <p>Click to add product image</p>
-                </div>
-               
-              </div>
-              <p  class="custom-error">{{product.errors.image}}</p>
+            <div class="image-placeholder" v-else>
+              <label for="file">
+                <v-icon class="image-label">add_a_photo</v-icon>
+              </label>
+              <input type="file" id="file" @change='uploadImage' class="upload-button">
+              <p>Click to add product image</p>
             </div>
+
           </div>
-        <v-btn type="submit" v-on:click.prevent="addProduct" class="btn-primary">Submit</v-btn>
+          <p class="custom-error">{{product.errors.image}}</p>
+        </div>
+      </div>
+      <button type="submit" v-on:click.prevent="addProduct" class="btn-primary">Submit</button>
     </form>
-        <div class="alert-wrapper">
-          <v-alert v-model="state.offline" class="alert" color="rgba(0, 0, 0, 0)">Please connect to the internet</v-alert>
-       </div>
-        <div class="alert-wrapper" v-if="state.postError">
-          <v-alert v-model="state.postError" class="alert" color="rgba(0, 0, 0, 0)">Error! Please try again</v-alert>
-       </div>
+    <div class="alert-wrapper">
+      <v-alert v-model="state.offline" class="alert" color="rgba(0, 0, 0, 0)">Please connect to the internet</v-alert>
+    </div>
+    <div class="alert-wrapper" v-if="state.postError">
+      <v-alert v-model="state.postError" class="alert" color="rgba(0, 0, 0, 0)">Error! Please try again</v-alert>
+    </div>
   </div>
-   
+
 </template>
 
 <script>
-import Api from "@/views/services/Api";
-import validations from "@/views/services/validations";
+import Api from "@/services/Api";
+import validations from "@/services/validations";
 import swal from "sweetalert2";
-const isNothing = require("lodash/isEmpty");
+import uploadImage from "@/mixins/uploadImage";
+import handleError from "@/middleware/handleError";
 
 export default {
   name: "Products",
+  mixins: [uploadImage],
   data() {
     return {
       product: {
@@ -80,9 +83,10 @@ export default {
       selectedCategory: ``
     };
   },
+
   methods: {
     async addProduct() {
-      this.state.isLoading = true;
+      this.$Progress.start();
       this.product.errors = {};
       let price = Number(this.product.price);
       try {
@@ -93,12 +97,11 @@ export default {
           description: this.product.description,
           image: this.product.image
         };
-        let isValid;
         const { errors } = await validations.validateNewProduct(req);
         if (req.image === null) errors.image = `Please upload product picture`;
         if (!req.price || req.price < 0)
           errors.price = `Please enter a valid price`;
-        isValid = isNothing(errors);
+        let isValid = Object.keys(errors).length === 0 ? true : false;
         if (!isValid) {
           this.product.errors = errors;
           return;
@@ -110,31 +113,15 @@ export default {
         formdata.append("description", this.product.description);
         formdata.append("image", this.product.image);
         await Api.postPicture().post(`items/create`, formdata);
-        this.isLoading = false;
         this.$router.push("/admin/products");
         swal({
           html: "<p>Product added successfully</p>"
         });
       } catch (error) {
-        if (navigator.onLine === false) {
-          this.state.offline = true;
-          setTimeout(() => {
-            this.state.offline = false;
-          }, 2000);
-        } else {
-          this.state.postError = true;
-          setTimeout(() => {
-            this.state.postError = false;
-          }, 2000);
-        }
+        this.handleError();
       } finally {
-        this.state.isLoading = false;
+        this.$Progress.finish();
       }
-    },
-    uploadImage(event) {
-      const file = event.target.files[0];
-      this.product.image = file;
-      this.product.url = URL.createObjectURL(file);
     }
   }
 };

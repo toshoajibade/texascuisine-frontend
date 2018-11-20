@@ -1,21 +1,37 @@
+import "@babel/polyfill";
 import Vue from "vue";
+import VueProgressBar from "vue-progressbar";
 import { sync } from "vuex-router-sync";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import db from "./indexedDB";
 import "./registerServiceWorker";
-import Vuetify from "vuetify";
-import "vuetify/dist/vuetify.min.css";
 import "material-design-icons-iconfont/dist/material-design-icons.css";
+import "roboto-fontface/css/roboto/roboto-fontface.css";
 
-Vue.use(Vuetify);
 const unsync = sync(store, router);
 
 Vue.prototype.$db = db;
 
 unsync();
 Vue.config.productionTip = false;
+
+const options = {
+  color: "#bffaf3",
+  failedColor: "#fff",
+  thickness: "2px",
+  transition: {
+    speed: "0.2s",
+    opacity: "0.6s",
+    termination: 300
+  },
+  autoRevert: true,
+  location: "top",
+  inverse: false
+};
+
+Vue.use(VueProgressBar, options);
 
 new Vue({
   router,

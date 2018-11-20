@@ -1,30 +1,29 @@
 <template>
-    <div>
-        <header>
-            <nav class="header">
-              <div class="show-sidebar-wrapper" v-if="userIsLoggedIn" @click="$emit('showSidebar')">
-                <v-icon class="show-sidebar">menu</v-icon>
-              </div>
-                <p class="logo">Texas Cuisine</p>
-                <p class="drop-down"></p>
-                <div class="username-logout" v-if="userIsLoggedIn">
-                    <p class="username">{{getUser}}</p>
-                    <v-btn small class="logout-button" @click="$emit('logout')">LOGOUT</v-btn>
-                </div>
-            </nav>
-        </header>
-    </div>
+  <div>
+    <header>
+      <nav class="header">
+        <div class="show-sidebar-wrapper" v-if="userIsLoggedIn" @click="$emit('showSidebar')">
+          <i class="material-icons show-sidebar">menu</i>
+        </div>
+        <p class="logo">Texas Cuisine</p>
+        <p class="drop-down"></p>
+        <div class="username-logout" v-if="userIsLoggedIn">
+          <p class="username">{{getUser}}</p>
+          <button small class="logout-button" @click="$emit('logout')">LOGOUT</button>
+        </div>
+      </nav>
+    </header>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "Header",
-  props: ["getUser", "userIsLoggedIn", "logout"],
-  methods: {}
+  name: "TheNavbar",
+  props: ["getUser", "userIsLoggedIn", "logout"]
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .header {
   width: 100%;
   position: fixed;
@@ -38,15 +37,7 @@ export default {
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.541);
 }
 
-.logo {
-  font-family: "Lobster", cursive;
-  color: white;
-  font-size: 24px;
-  line-height: 100%;
-  text-align: center;
-  margin: 0px;
-  align-self: flex start;
-}
+
 
 .username-logout {
   display: flex;
@@ -64,6 +55,7 @@ export default {
   background-color: transparent !important;
   color: white !important;
   border: 1px solid white;
+  padding: 0.25rem 0.75rem;
 }
 .show-sidebar-wrapper,
 .drop-down {

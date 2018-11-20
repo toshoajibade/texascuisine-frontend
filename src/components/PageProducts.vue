@@ -1,61 +1,66 @@
 <template>
-    <div>
-          <v-progress-linear color="secondary" v-if="state.isLoading" :indeterminate="true" class="progress-bar" height="3" value="15"></v-progress-linear>
-        <v-layout class="select-layout" align-center >
-              <div class="select-slot">
-              <v-select label="Category" v-model="selectedCategory" item-text="label" item-value="value" :items="categories"></v-select>
-              </div>
-               <div class="select-slot">
-              <v-select label="Status" v-model="selectedStatus" item-text="label"  item-value="value" :items="statuses"></v-select>
-              </div>
-              <v-spacer></v-spacer>
-                <router-link to="createproduct" class="add-product-wrapper">
-            <v-btn class="btn-secondary">ADD PRODUCT</v-btn></router-link>
-        </v-layout>
-        <div class="product-selection-list">
-        
-       <table class="table" v-if="state.products.length !== 0">
-      
+  <div>
+    <div class="select-slot">
+      <select label="Category" v-model="selectedCategory" item-text="label" item-value="value" :options="categories"></select>
+    </div>
+    <div class="select-slot">
+      <select label="Status" v-model="selectedStatus" item-text="label" item-value="value" :items="statuses"></select>
+    </div>
+    <router-link to="createproduct" class="add-product-wrapper">
+      <button class="btn-secondary">ADD PRODUCT</button>
+    </router-link>
+    <div class="product-selection-list">
+
+      <table class="table" v-if="state.products.length !== 0">
+
         <thead>
-        <tr class="table-header">
-          <th scope="column">Picture</th>
-          <th scope="column">Name</th>
-          <th scope="column">Price</th>
-          <th></th>
-          <th></th>
-        </tr> 
+          <tr class="table-header">
+            <th scope="column">Picture</th>
+            <th scope="column">Name</th>
+            <th scope="column">Price</th>
+            <th></th>
+            <th></th>
+          </tr>
         </thead>
         <tbody>
-        <tr scope="row" v-for="product in state.products" class="user-tab" v-bind:key="product.productId">
-          <td><img class="product-image" crossorigin="anonymous" :alt="product.name" :src="product.imageUrl"></td>
-          <td>{{product.name}}</td>
-          <td>{{product.price}}</td>
-          
-          <td><router-link :to="{ name: 'edit', params: { productId: product.productId }}"> <p class="edit-icon" :value="product.productId"><v-icon>edit</v-icon><span> EDIT</span></p></router-link></td>
-          <td v-if="product.status === 'active'" >
-            <p class="product-status" v-on:click="changeProductStatus(product.productId)">
-            <v-icon  style="color:red"  >pause</v-icon>PAUSE
-            </p>
-          </td>  
-          <td v-else-if="product.status === 'inactive'"> 
-              <p class="product-status" v-on:click="changeProductStatus(product.productId)"><v-icon  style="color:green" >play_arrow</v-icon>ACTIVATE
+          <tr scope="row" v-for="product in state.products" class="user-tab" v-bind:key="product.productId">
+            <td><img class="product-image" crossorigin="anonymous" :alt="product.name" :src="product.imageUrl"></td>
+            <td>{{product.name}}</td>
+            <td>{{product.price}}</td>
+
+            <td>
+              <router-link :to="{ name: 'edit', params: { productId: product.productId }}">
+                <p class="edit-icon" :value="product.productId">
+                  <i class="material-icons">edit</i><span> EDIT</span>
+                </p>
+              </router-link>
+            </td>
+            <td v-if="product.status === 'active'">
+              <p class="product-status" v-on:click="changeProductStatus(product.productId)">
+                <i class="material-icons" style="color:red">pause</i>PAUSE
               </p>
-          </td>
-        </tr>
+            </td>
+            <td v-else-if="product.status === 'inactive'">
+              <p class="product-status" v-on:click="changeProductStatus(product.productId)">
+                <i class="material-icons" style="color:green">play_arrow</i>ACTIVATE
+              </p>
+            </td>
+          </tr>
         </tbody>
       </table>
-      </div>
-       <div class="alert-wrapper">
-          <v-alert v-model="state.offline" class="alert" color="rgba(0, 0, 0, 0)">Please connect to the internet</v-alert>
-       </div>
-      <div class="alert-wrapper" v-if="state.postError">
-          <v-alert v-model="state.postError" class="alert" color="rgba(0, 0, 0, 0)">Error! Please try again</v-alert>
-       </div>
     </div>
+    <div class="alert-wrapper">
+      <v-alert v-model="state.offline" class="alert" color="rgba(0, 0, 0, 0)">Please connect to the internet</v-alert>
+    </div>
+    <div class="alert-wrapper" v-if="state.postError">
+      <v-alert v-model="state.postError" class="alert" color="rgba(0, 0, 0, 0)">Error! Please try again</v-alert>
+    </div>
+  </div>
 </template>
 
 <script>
-import Api from "@/views/services/Api";
+import Api from "@/services/Api";
+import handleError from "@/middleware/handleError";
 
 export default {
   name: "Products",
@@ -82,8 +87,9 @@ export default {
       }
     };
   },
+
   async created() {
-    this.state.isLoading = true;
+    this.$Progress.start();
     try {
       const res = await Api.instance().get(`items`);
       if (res.status === 200) {
@@ -105,9 +111,10 @@ export default {
         }, 2000);
       }
     } finally {
-      this.state.isLoading = false;
+      this.$Progress.finish();
     }
   },
+
   methods: {
     async changeProductStatus(value) {
       try {
@@ -120,17 +127,7 @@ export default {
           this.state.products = products;
         }
       } catch (error) {
-        if (navigator.onLine === false) {
-          this.state.offline = true;
-          setTimeout(() => {
-            this.state.offline = false;
-          }, 2000);
-        } else {
-          this.state.postError = true;
-          setTimeout(() => {
-            this.state.postError = false;
-          }, 2000);
-        }
+        this.handleError();
       }
     }
   },

@@ -1,44 +1,38 @@
 <template>
-    <div class="side-navigation-bar">
-        <div>
-            <router-link to="/admin/dashboard">
-            <div class="navigation-tab">
-                <p>DASHBOARD</p>
-            </div>
-        </router-link>
-        <router-link to="/admin/orders">
-            <div class="navigation-tab">
-                <p>ORDERS</p>
-            </div>
-         </router-link>
-        <router-link to="/admin/products">
-            <div class="navigation-tab">
-                <p>PRODUCTS</p>
-            </div>
-         </router-link>
-        <router-link to="/admin/users">
-            <div class="navigation-tab">
-                <p>USERS</p>
-            </div>
-         </router-link>
-        <!-- <router-link to="/admin/settings">
-            <div class="navigation-tab">
-                <p class="nona">SETTINGS</p>
-            </div>
-         </router-link> -->
+  <div class="side-navigation-bar">
+    <div>
+      <router-link to="/admin/dashboard">
+        <div class="navigation-tab">
+          <p>DASHBOARD</p>
         </div>
-        
-        <div class="user-logout">
-            <p>{{getUser}}</p>
-            <v-btn class="logout-button" @click="$emit('logout')">LOG OUT</v-btn>
+      </router-link>
+      <router-link to="/admin/orders">
+        <div class="navigation-tab">
+          <p>ORDERS</p>
         </div>
-
+      </router-link>
+      <router-link to="/admin/products">
+        <div class="navigation-tab">
+          <p>PRODUCTS</p>
+        </div>
+      </router-link>
+      <router-link to="/admin/users">
+        <div class="navigation-tab">
+          <p>USERS</p>
+        </div>
+      </router-link>
     </div>
+    <div class="user-logout">
+      <p>{{getUser}}</p>
+      <button class="logout-button" @click="$emit('logout')">LOG OUT</button>
+    </div>
+
+  </div>
 </template>
 
 <script>
 export default {
-  name: "SideBar",
+  name: "Sidebar",
   props: ["getUser", "logout"],
   watch: {
     $route(to, from) {
@@ -83,7 +77,7 @@ export default {
   text-decoration: none;
 }
 .navigation-tab > p {
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin-bottom: 0;
   color: white;
 }

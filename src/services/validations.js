@@ -1,5 +1,4 @@
 const validator = require("validator");
-const isNothing = require("lodash/isEmpty");
 
 const validations = {
   validateInput: req => {
@@ -10,7 +9,7 @@ const validations = {
     if (validator.isEmpty(req.password)) {
       errors.password = "Please enter your password";
     }
-    const isValid = isNothing(errors);
+    const isValid = Object.keys(errors).length === 0 ? true : false;;
     return {
       errors,
       isValid
@@ -47,7 +46,7 @@ const validations = {
     if (validator.isEmpty(req.phoneNumber)) {
       errors.phoneNumber = "Please enter the user's phone number";
     }
-    const isValid = isNothing(errors);
+    const isValid = Object.keys(errors).length === 0 ? true : false;;
     return { errors, isValid };
   }
 };

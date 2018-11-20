@@ -1,37 +1,37 @@
 <template>
-    <div>
-        <Header></Header>
-        <v-progress-linear color="secondary" v-if="state.isLoading" :indeterminate="true" class="progress-bar" height="3" value="15"></v-progress-linear>
-        <section class="body">
-            <div class="side-container">
+  <div>
+    <TheNavbar></TheNavbar>
+    <section class="body">
+      <div class="side-container">
+      </div>
+      <div class="login-form-container">
+        <div class="login-form-inner-container">
+          <form autocomplete="off" class="form-container">
+            <p class="admin-text">Admin Login</p>
+            <div class="login-error-container">
+              <p class="login-error">{{loginError}}</p>
             </div>
-            <div class="login-form-container">
-            
-                <div class="login-form-inner-container">
-                <form autocomplete="off" class="form-container">
-                    <p class="admin-text">Admin Login</p>
-                    <div class="login-error-container">
-                    <p class="login-error">{{loginError}}</p>
-                    </div>
-                    <v-text-field v-model="state.email" class="email-input" label="Email address" name="email" :error-messages="state.errors.email" type="email" />
-                    <v-text-field label="Password" v-model="state.password" class="password-input" name="password" autocomplete="new-password" type="password" :error-messages="state.errors.password" />
-                    <v-btn type="submit" class="btn-primary" @click.prevent="login">Submit</v-btn>
-                </form>
-                </div>
-            </div>
-        </section>
-    </div>
+            <InputField @inputChanged="log" v-model="state.email" label="Email address" name="email" :error_message="state.errors.email" type="email" />
+            <InputField v-model="state.password" label="Password" name="password" :error_message="state.errors.password" type="password" autocomplete="new-password" />
+            <button type="submit" class="btn-primary login-button" @click.prevent="login">Submit</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </div>
 </template>
 
 <script>
-import Header from "@/components/common/Header";
-import Api from "@/views/services/Api";
-import validations from "@/views/services/validations";
+import TheNavbar from "@/components/TheNavbar";
+import Api from "@/services/Api";
+import validations from "@/services/validations";
+import InputField from "@/components/InputField";
 
 export default {
   name: "Home",
   components: {
-    Header
+    TheNavbar,
+    InputField
   },
   beforeCreate() {
     if (this.$store.state.isUserLoggedIn === true) {
@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     async login() {
-      this.state.isLoading = true;
+      this.$Progress.start();
       try {
         this.state.errors = {};
         this.loginError = ``;
@@ -59,7 +59,7 @@ export default {
         const { isValid, errors } = await validations.validateInput(req);
         if (!isValid) {
           this.state.errors = errors;
-          this.state.isLoading = false;
+          this.$Progress.finish();
           return;
         }
         let email = this.state.email;
@@ -71,7 +71,7 @@ export default {
       } catch (err) {
         this.loginError = err.response.data.error;
       } finally {
-        this.state.isLoading = false;
+        this.$Progress.finish();
       }
     }
   },
@@ -82,7 +82,7 @@ export default {
 </script>
 
 
-<style scoped>
+<style lang="scss" scoped>
 * {
   margin: 0px;
   padding: 0px;
@@ -90,7 +90,7 @@ export default {
 
 .body {
   width: 100%;
-  height: calc(100vh - 64px);
+  min-height: calc(100vh - 64px);
   position: absolute;
   top: 64px;
   display: flex;
@@ -98,17 +98,11 @@ export default {
 }
 .side-container {
   width: 50%;
-  height: 100%;
   background-color: #f8e2e2;
-}
-
-.progress-bar {
-  left: 0px;
 }
 
 .login-form-container {
   width: 50%;
-  height: 100%;
   background-color: #f7f7f7;
   display: flex;
   justify-content: space-around;
@@ -116,8 +110,6 @@ export default {
 }
 .login-form-inner-container {
   width: 400px;
-  height: 350px;
-  padding: 4rem 0 4rem 0;
   justify-content: center;
   align-items: center;
   box-shadow: 2px 2px 10px #adaaaa;
@@ -128,7 +120,7 @@ export default {
 }
 .form-container {
   width: 100%;
-  padding: 0rem 2rem;
+  padding: 3rem 2rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -155,10 +147,10 @@ export default {
   color: red;
 }
 
-.v-btn {
-  background-color: #00472e !important;
-  color: white !important;
-  margin: 2rem 0 0 0;
+.login-button {
+  background-color: #00472e;
+  color: white;
+  margin-top: 1.5rem;
 }
 @media (max-width: 960px) {
   .side-container {
@@ -166,20 +158,10 @@ export default {
   }
   .login-form-container {
     width: 100%;
-    height: 100%;
     background-color: white;
     display: flex;
     justify-content: space-around;
     align-items: center;
-  }
-}
-@media (max-width: 600px) {
-  .login-form-container {
-    align-items: flex-start;
-    padding-top: 1rem;
-  }
-  .login-error-container {
-    height: 3rem;
   }
 }
 </style>

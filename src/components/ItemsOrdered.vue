@@ -12,6 +12,3 @@ export default {
   name: "ItemsOrdered"
 };
 </script>
-
-<style scoped>
-</style>
