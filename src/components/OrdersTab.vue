@@ -137,12 +137,7 @@ export default {
   justify-content: center;
 }
 
-.v-icon {
-  width: 24px;
-}
-.v-icon:hover {
-  color: #00472e;
-}
+
 .customer-name {
   font-weight: normal;
   font-style: italic;

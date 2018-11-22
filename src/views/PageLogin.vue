@@ -11,7 +11,7 @@
             <div class="login-error-container">
               <p class="login-error">{{loginError}}</p>
             </div>
-            <InputField @inputChanged="log" v-model="state.email" label="Email address" name="email" :error_message="state.errors.email" type="email" />
+            <InputField v-model="state.email" label="Email address" name="email" :error_message="state.errors.email" type="email" />
             <InputField v-model="state.password" label="Password" name="password" :error_message="state.errors.password" type="password" autocomplete="new-password" />
             <button type="submit" class="btn-primary login-button" @click.prevent="login">Submit</button>
           </form>

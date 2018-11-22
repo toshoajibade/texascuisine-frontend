@@ -6,6 +6,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import db from "./indexedDB";
+import ClickOutside from "vue-click-outside";
 import "./registerServiceWorker";
 import "material-design-icons-iconfont/dist/material-design-icons.css";
 import "roboto-fontface/css/roboto/roboto-fontface.css";
@@ -32,6 +33,8 @@ const options = {
 };
 
 Vue.use(VueProgressBar, options);
+
+Vue.directive("click-outside", ClickOutside);
 
 new Vue({
   router,

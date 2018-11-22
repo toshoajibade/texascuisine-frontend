@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Chela+One|Lobster|Dancing+Script|Raleway");
+@import "~material-design-icons-iconfont/dist/material-design-icons.css";
 
 $primary-color: #470000;
 $secondary-color: #00472e;
@@ -163,4 +164,25 @@ input:-webkit-autofill {
 
 button:hover {
   cursor: pointer;
+}
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-feature-settings: 'liga';
+    font-feature-settings: 'liga';
+}
+textarea {
+  resize: none;
 }

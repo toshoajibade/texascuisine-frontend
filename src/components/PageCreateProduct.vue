@@ -1,14 +1,14 @@
 <template>
   <div class="overall">
     <form class="create-product-page">
-      <input v-model="product.name" label="Product Name" :error-messages="product.errors.name" type="text" />
+      <InputField v-model="product.name" label="Product Name" name="productName" :error_message="product.errors.name" />
       <div class="product-name-price">
         <div class="select-first">
-          <select :options="product.category" v-model="selectedCategory" item-text="label" item-value="value" label="Category" :error-messages="product.errors.category" type="text" />
+          <SelectField :options="product.category" :value="selectedCategory" @update="updateCategory" name="productCategory" label="Category" />
         </div>
         <div class="select-first">
-          <input v-model="product.price" label="Price" :error-messages="product.errors.price" type="number" /></div>
-
+          <InputField v-model="product.price" label="Price" :error_messages="product.errors.price" type="number" />
+        </div>
       </div>
       <div class="textarea-picture-container">
         <div class="textarea">
@@ -22,14 +22,14 @@
           <div class="image-upload">
             <div class="image-placeholder" v-if="product.url">
               <label for="editImage">
-                <v-icon class="edit-image-label">edit</v-icon>
+                <i class="material-icons edit-image-label">edit</i>
               </label>
               <input type="file" id="editImage" @change='uploadImage' class="upload-button">
               <img class="image-preview" :src="product.url" alt="" srcset="">
             </div>
             <div class="image-placeholder" v-else>
               <label for="file">
-                <v-icon class="image-label">add_a_photo</v-icon>
+                <i class="material-icons image-label">add_a_photo</i>
               </label>
               <input type="file" id="file" @change='uploadImage' class="upload-button">
               <p>Click to add product image</p>
@@ -39,7 +39,7 @@
           <p class="custom-error">{{product.errors.image}}</p>
         </div>
       </div>
-      <button type="submit" v-on:click.prevent="addProduct" class="btn-primary">Submit</button>
+      <button type="submit" v-on:click.prevent="addProduct" class="btn-primary submit-button">Submit</button>
     </form>
     <div class="alert-wrapper">
       <v-alert v-model="state.offline" class="alert" color="rgba(0, 0, 0, 0)">Please connect to the internet</v-alert>
@@ -57,9 +57,15 @@ import validations from "@/services/validations";
 import swal from "sweetalert2";
 import uploadImage from "@/mixins/uploadImage";
 import handleError from "@/middleware/handleError";
+import InputField from "@/components/InputField";
+import SelectField from "@/components/SelectField"
 
 export default {
   name: "Products",
+  components: {
+    InputField,
+    SelectField
+  },
   mixins: [uploadImage],
   data() {
     return {
@@ -85,6 +91,11 @@ export default {
   },
 
   methods: {
+    updateCategory(value) {
+      console.log("imagine")
+      this.selectedCategory = value
+      console.log(value)
+    },
     async addProduct() {
       this.$Progress.start();
       this.product.errors = {};
@@ -127,7 +138,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .product-description-container {
   display: flex;
   flex-direction: row;
@@ -161,15 +172,12 @@ export default {
 .product-name {
   width: 100%;
 }
-.btn-primary {
-  margin-top: 3rem;
-  margin-bottom: 3rem;
-  border: 1px solid #00472e;
-  color: #00472e !important;
-}
-.btn-primary:hover {
-  background-color: #00472e !important;
-  color: white !important;
+
+.submit-button {
+  margin-top: 1rem;
+  padding: 0.25rem 0.75rem;
+  background-color: $secondary-color;
+  color: white;
 }
 .picture {
   width: 100%;

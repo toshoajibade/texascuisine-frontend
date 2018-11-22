@@ -19,6 +19,7 @@
     "sweetalert2": "^7.28.2",
     "validator": "^10.8.0",
     "vue": "^2.5.16",
+    "vue-click-outside": "^1.0.7",
     "vue-progressbar": "^0.7.5",
     "vue-router": "^3.0.1",
     "vue-select": "^2.5.1",

@@ -19,7 +19,16 @@
 <script>
 export default {
   name: "TheNavbar",
-  props: ["getUser", "userIsLoggedIn", "logout"]
+  props: {
+    getUser: {
+      required: false,
+      type: String
+    },
+    userIsLoggedIn: {
+      required: true,
+      type: Boolean
+    }
+  }
 };
 </script>
 
@@ -36,8 +45,6 @@ export default {
   justify-content: space-between;
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.541);
 }
-
-
 
 .username-logout {
   display: flex;

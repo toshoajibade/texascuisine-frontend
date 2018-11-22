@@ -1,29 +1,82 @@
 <template>
-  <custom-select ref="customSelect">
-    <select>
-      <option v-for="option in options" :key="option">{{option.value}}</option>
-    </select>
-  </custom-select>
+  <div class="custom-select" v-click-outside="hide">
+    <label :for="name">{{label}}</label>
+    <input :id="name" :value="value.toUpperCase()" @click="showDropdown = true" readonly>
+    <div class="custom-select-options" v-show="showDropdown" @click="showDropdown = false" >
+      <div v-for="option in options" :value="option.value" :key="option.value" @click="$emit('update', option.value)">{{option.value.toUpperCase()}}</div>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
   props: {
+    name: {
+      type: String,
+      required: true
+    },
+    label: {
+      type: String,
+      required: true
+    },
     options: {
-      type: Array,
+      type: [Array, Number, String, Boolean, Object],
       required: true,
       validator(value) {
         return value.length > 0;
       }
+    },
+    value: {
+      required: false,
+      type: String
     }
   },
-  
-  created() {
-    const { customSelect } = this.$refs
+  data() {
+    return {
+      showDropdown: false
+    };
+  },
+  methods: {
+    hide() {
+      this.showDropdown = false
+    }
   }
 };
 </script>
 
-<style lang="sass" scoped>
+<style lang="scss" scoped>
+.custom-select {
+  width: 100%;
+  position: relative;
+}
 
+input {
+  width: 100%;
+  border-width: 0px 0px 0.5px 0px;
+  border-color: black;
+  height: 2rem;
+  outline: none;
+  :focus,
+  :active {
+    outline: none;
+  }
+}
+.custom-select-options {
+  display: block;
+  position: absolute;
+  width: 100%;
+  background-color: white;
+  z-index: 100;
+  top: 2rem;
+  border-radius: 0.25rem;
+  box-shadow: 0px 0px 10px rgb(201, 201, 201);
+  & > * {
+    padding: 1rem;
+    width: 100%;
+    cursor: pointer;
+    &:hover {
+      background-color: #0000000a;
+    }
+  }
+}
 </style>

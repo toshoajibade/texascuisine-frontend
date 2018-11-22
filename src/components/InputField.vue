@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper"> 
     <label :for="name">{{label}}</label>
-    <input :id="name" :name="name" :type="type">
+    <input :id="name" v-on:input="$emit('input', $event.target.value)" :name="name" :type="type">
     <div class="error-message">
       <p v-if="error_message">{{error_message}}</p>
     </div>
@@ -30,7 +30,12 @@ export default {
     },
     type: {
       type: String,
-      required: true
+      required: false,
+      default: "text"
+    },
+    value: {
+      type: String,
+      required: false
     }
   }
 };

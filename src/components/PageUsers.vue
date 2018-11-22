@@ -4,15 +4,14 @@
       <p class="create-user-label" style="font-weight:bold">CREATE ADMIN</p>
       <p>Enter new admin details below</p>
       <div class="new-admin">
-        <input v-model="newUser.firstName" label="First Name" :error-messages="state.errors.firstName" type="text" />
-        <input v-model="newUser.lastName" label="Last Name" :error-messages="state.errors.lastName" type="text" />
+        <InputField v-model="newUser.firstName" label="First Name" name="firstName" :error_message="state.errors.firstName" />
+        <InputField v-model="newUser.lastName" label="Last Name" name="lastName" :error_message="state.errors.lastName" />
       </div>
       <div class="new-admin">
-        <input v-model="newUser.phoneNumber" label="Phone Number" :error-messages="state.errors.phoneNumber" type="text" />
-        <input v-model="newUser.email" label="Email" :error-messages="state.errors.email" type="email" />
+        <InputField v-model="newUser.phoneNumber" label="Phone Number" name="phoneNumber" :error_message="state.errors.phoneNumber" />
+        <InputField v-model="newUser.email" label="Email" type="email" name="email" :error_message="state.errors.email" />
       </div>
-
-      <button type="submit" class="btn-primary" v-on:click.prevent="addUser">CREATE</button>
+      <button type="submit" class="btn-primary create-user-button" v-on:click.prevent="addUser">CREATE</button>
     </form>
     <section v-if="state.users.length !== 0">
       <P style="font-weight:bold" class="current-admins">CURRENT ADMINS</P>
@@ -34,13 +33,12 @@
               <td>{{user.email}}</td>
               <td>{{user.phoneNumber}}</td>
               <td>
-                <v-icon small class="delete-user" v-on:click="deleteUser(user.userId)">delete</v-icon>
+                <i class="material-icons delete-user" v-on:click="deleteUser(user.userId)">delete</i>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-
     </section>
     <div class="alert-wrapper">
       <v-alert v-model="state.offline" class="alert" color="rgba(0, 0, 0, 0)">Please connect to the internet</v-alert>
@@ -55,9 +53,13 @@
 import Api from "@/services/Api";
 import handleError from "@/middleware/handleError";
 import validations from "@/services/validations";
+import InputField from "@/components/InputField";
 
 export default {
   name: "Products",
+  components: {
+    InputField
+  },
   data() {
     return {
       state: {
@@ -145,7 +147,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 form {
   margin-bottom: 3rem;
 }
@@ -155,7 +157,7 @@ form {
   height: 100%;
 }
 .current-admins {
-  margin-bottom: 1rem !important;
+  margin-bottom: 1rem;
   font-size: 1.2em;
 }
 .create-user-label {
@@ -165,8 +167,10 @@ form {
 .new-admin {
   width: 100%;
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-between;
+  > * {
+    width: 48%;
+  }
 }
 
 .new-admin > *:first-child {
@@ -227,5 +231,10 @@ th {
 }
 .first-child {
   padding-left: 1rem;
+}
+.create-user-button {
+  padding: 0rem 2rem;
+  color: white;
+  background-color: $secondary-color
 }
 </style>

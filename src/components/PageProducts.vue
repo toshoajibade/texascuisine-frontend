@@ -1,14 +1,12 @@
 <template>
   <div>
-    <div class="select-slot">
-      <select label="Category" v-model="selectedCategory" item-text="label" item-value="value" :options="categories"></select>
+    <div class="select-sort-wrapper">
+      <SelectField class="select-slot" :options="categories" :value="selectedCategory" @update="selectCategory" name="productCategory" label="Category" />
+      <SelectField class="select-slot" :options="statuses" :value="selectedStatus" @update="selectStatus" name="selectStatus" label="Status" />
+      <router-link to="createproduct" class="add-product-wrapper">
+        <button class="btn-secondary">ADD PRODUCT</button>
+      </router-link>
     </div>
-    <div class="select-slot">
-      <select label="Status" v-model="selectedStatus" item-text="label" item-value="value" :items="statuses"></select>
-    </div>
-    <router-link to="createproduct" class="add-product-wrapper">
-      <button class="btn-secondary">ADD PRODUCT</button>
-    </router-link>
     <div class="product-selection-list">
 
       <table class="table" v-if="state.products.length !== 0">
@@ -61,9 +59,13 @@
 <script>
 import Api from "@/services/Api";
 import handleError from "@/middleware/handleError";
+import SelectField from "@/components/SelectField";
 
 export default {
   name: "Products",
+  components: {
+    SelectField
+  },
   data() {
     return {
       categories: [
@@ -76,8 +78,8 @@ export default {
         { label: "INACTIVE", value: "inactive" },
         { label: "ALL", value: "all" }
       ],
-      selectedCategory: null,
-      selectedStatus: null,
+      selectedCategory: "",
+      selectedStatus: "",
       state: {
         products: [],
         allProducts: [],
@@ -129,10 +131,8 @@ export default {
       } catch (error) {
         this.handleError();
       }
-    }
-  },
-  watch: {
-    selectedStatus(result) {
+    },
+    selectStatus(result) {
       let products = [];
       this.state.products = this.state.allProducts;
       switch (true) {
@@ -152,7 +152,7 @@ export default {
           return;
       }
     },
-    selectedCategory(result) {
+    selectCategory(result) {
       let products = [];
       this.state.products = this.state.allProducts;
       switch (true) {
@@ -176,7 +176,11 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.select-sort-wrapper {
+  display: flex;
+  flex-direction: row;
+}
 .select-slot {
   width: 200px;
 }

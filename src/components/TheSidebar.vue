@@ -33,7 +33,12 @@
 <script>
 export default {
   name: "Sidebar",
-  props: ["getUser", "logout"],
+  props: {
+    getUser: {
+      type: String,
+      required: true
+    }
+  },
   watch: {
     $route(to, from) {
       if (window.innerWidth < 960) {

@@ -1,7 +1,7 @@
 <template>
   <div class="overall">
     <form class="create-product-page">
-      <input v-model="product.name" label="Product Name" :error-messages="state.errors.name" type="text" />
+        <InputField v-model="product.name" label="Product Name" name="productName" :error_message="state.errors.name" />
       <div class="product-name-price">
         <div class="select-first">
           <v-select :items="state.category" v-model="product.category" item-text="label" item-value="value" label="Category" :error-messages="state.errors.category" type="text" />
@@ -22,7 +22,7 @@
           <div class="image-upload">
             <div class="image-placeholder">
               <label for="editImage">
-                <v-icon class="edit-image-label">edit</v-icon>
+                <i class="material-icons edit-image-label">edit</i>
               </label>
               <input type="file" id="editImage" @change='uploadImage' class="upload-button">
               <img class="image-preview" :src="product.imageUrl" alt="" srcset="">
