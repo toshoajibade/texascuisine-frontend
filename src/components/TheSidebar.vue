@@ -49,7 +49,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang='scss'>
 .side-navigation-bar {
   padding-top: 50px;
   height: 100%;
@@ -87,9 +87,12 @@ export default {
   color: white;
 }
 .logout-button {
-  background-color: transparent !important;
-  color: white !important;
+  background-color: transparent;
+  color: white;
   border: 1px solid white;
+  &:active {
+    background-color: #940e0e;
+  }
 }
 @media (max-width: 960px) {
   .user-logout {

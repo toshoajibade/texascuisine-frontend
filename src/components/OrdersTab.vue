@@ -17,7 +17,7 @@
       <p v-else class="order-status">{{deliveryStatus}}</p>
     </div>
     <div class="print-button">
-      <i class="material-icons" v-on:click.stop="print">print</i>
+      <i class="material-icons print" v-on:click.stop="print">print</i>
     </div>
 
   </div>

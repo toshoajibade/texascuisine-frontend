@@ -2,7 +2,8 @@
   <div class="custom-select" v-click-outside="hide">
     <label :for="name">{{label}}</label>
     <input :id="name" :value="value.toUpperCase()" @click="showDropdown = true" readonly>
-    <div class="custom-select-options" v-show="showDropdown" @click="showDropdown = false" >
+    <i class="material-icons" @click="showDropdown = true" ></i>
+    <div class="custom-select-options" v-show="showDropdown" @click="showDropdown = false">
       <div v-for="option in options" :value="option.value" :key="option.value" @click="$emit('update', option.value)">{{option.value.toUpperCase()}}</div>
     </div>
   </div>
@@ -38,7 +39,7 @@ export default {
   },
   methods: {
     hide() {
-      this.showDropdown = false
+      this.showDropdown = false;
     }
   }
 };
@@ -49,27 +50,40 @@ export default {
   width: 100%;
   position: relative;
 }
+i {
+  &::after {
+    content: "arrow_drop_down";
+    position: absolute;
+    right: 0.25rem;
+    font-size: 1.5rem;
+    bottom: 0.5rem;
+  }
+}
 
 input {
   width: 100%;
   border-width: 0px 0px 0.5px 0px;
-  border-color: black;
-  height: 2rem;
+  border-color: #969696;
+  padding-bottom: 0.5rem;
+  margin-top: 0.5rem;
   outline: none;
-  :focus,
-  :active {
+  cursor: pointer;
+  &:focus,
+  &:active {
     outline: none;
+    border-color: black;
   }
 }
+
 .custom-select-options {
   display: block;
   position: absolute;
   width: 100%;
   background-color: white;
   z-index: 100;
-  top: 2rem;
+  top: 1.5rem;
   border-radius: 0.25rem;
-  box-shadow: 0px 0px 10px rgb(201, 201, 201);
+  box-shadow: 0px 0px 10px rgb(143, 143, 143);
   & > * {
     padding: 1rem;
     width: 100%;

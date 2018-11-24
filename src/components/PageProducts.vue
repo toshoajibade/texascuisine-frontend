@@ -1,10 +1,12 @@
 <template>
   <div>
-    <div class="select-sort-wrapper">
-      <SelectField class="select-slot" :options="categories" :value="selectedCategory" @update="selectCategory" name="productCategory" label="Category" />
-      <SelectField class="select-slot" :options="statuses" :value="selectedStatus" @update="selectStatus" name="selectStatus" label="Status" />
+    <div class="select-add-product-wrapper">
+      <div class="select-sort-wrapper">
+        <SelectField class="select-slot" :options="categories" :value="selectedCategory" @update="selectCategory" name="productCategory" label="Category" />
+        <SelectField class="select-slot" :options="statuses" :value="selectedStatus" @update="selectStatus" name="selectStatus" label="Status" />
+      </div>
       <router-link to="createproduct" class="add-product-wrapper">
-        <button class="btn-secondary">ADD PRODUCT</button>
+        <button class="btn-primary">ADD PRODUCT</button>
       </router-link>
     </div>
     <div class="product-selection-list">
@@ -35,7 +37,7 @@
             </td>
             <td v-if="product.status === 'active'">
               <p class="product-status" v-on:click="changeProductStatus(product.productId)">
-                <i class="material-icons" style="color:red">pause</i>PAUSE
+                <i class="material-icons" style="color:red">pause</i><span>PAUSE</span>
               </p>
             </td>
             <td v-else-if="product.status === 'inactive'">
@@ -48,17 +50,17 @@
       </table>
     </div>
     <div class="alert-wrapper">
-      <v-alert v-model="state.offline" class="alert" color="rgba(0, 0, 0, 0)">Please connect to the internet</v-alert>
+      <p v-show="state.offline" class="alert" color="rgba(0, 0, 0, 0)">Please connect to the internet</p>
     </div>
     <div class="alert-wrapper" v-if="state.postError">
-      <v-alert v-model="state.postError" class="alert" color="rgba(0, 0, 0, 0)">Error! Please try again</v-alert>
+      <p v-show="state.postError" class="alert" color="rgba(0, 0, 0, 0)">Error! Please try again</p>
     </div>
   </div>
 </template>
 
 <script>
 import Api from "@/services/Api";
-import handleError from "@/middleware/handleError";
+import handleError from "@/mixins/handleError";
 import SelectField from "@/components/SelectField";
 
 export default {
@@ -66,6 +68,7 @@ export default {
   components: {
     SelectField
   },
+  mixins: [handleError],
   data() {
     return {
       categories: [
@@ -78,14 +81,13 @@ export default {
         { label: "INACTIVE", value: "inactive" },
         { label: "ALL", value: "all" }
       ],
-      selectedCategory: "",
-      selectedStatus: "",
+      selectedCategory: "all",
+      selectedStatus: "all",
       state: {
         products: [],
         allProducts: [],
         offline: false,
-        postError: false,
-        isLoading: false
+        postError: false
       }
     };
   },
@@ -134,6 +136,7 @@ export default {
     },
     selectStatus(result) {
       let products = [];
+      this.selectedStatus = result;
       this.state.products = this.state.allProducts;
       switch (true) {
         case result === "inactive":
@@ -154,6 +157,7 @@ export default {
     },
     selectCategory(result) {
       let products = [];
+      this.selectedCategory = result;
       this.state.products = this.state.allProducts;
       switch (true) {
         case result === "food":
@@ -180,6 +184,9 @@ export default {
 .select-sort-wrapper {
   display: flex;
   flex-direction: row;
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
 }
 .select-slot {
   width: 200px;
@@ -187,14 +194,13 @@ export default {
 .select-slot:first-child {
   margin-right: 2rem;
 }
-.btn-secondary {
-  color: #00472e;
-  border: 1px solid #00472e;
-}
-.btn-secondary:hover {
-  background-color: #00472e !important;
+.btn-primary {
   color: white;
+  background-color: #00472e;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
 }
+
 .table-header {
   border-bottom: 1px solid black;
   height: 3rem;
@@ -271,6 +277,18 @@ td {
   }
   .add-product-wrapper {
     align-self: flex-start !important;
+  }
+}
+.add-product-wrapper {
+  align-self: flex-end;
+}
+
+.select-add-product-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  @media (max-width: 600px) {
+    flex-direction: column;
   }
 }
 </style>

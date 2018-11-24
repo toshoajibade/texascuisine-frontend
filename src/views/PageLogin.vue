@@ -44,7 +44,6 @@ export default {
         email: "",
         password: "",
         errors: {},
-        isLoading: false
       },
       loginError: ``
     };

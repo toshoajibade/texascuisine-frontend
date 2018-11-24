@@ -41,17 +41,17 @@
       </div>
     </section>
     <div class="alert-wrapper">
-      <v-alert v-model="state.offline" class="alert" color="rgba(0, 0, 0, 0)">Please connect to the internet</v-alert>
+      <p v-show="state.offline" class="alert" color="rgba(0, 0, 0, 0)">Please connect to the internet</p>
     </div>
     <div class="alert-wrapper" v-if="state.postError">
-      <v-alert v-model="state.postError" class="alert" color="rgba(0, 0, 0, 0)">Error! Please try again</v-alert>
+      <p v-show="state.postError" class="alert" color="rgba(0, 0, 0, 0)">Error! Please try again</p>
     </div>
   </div>
 </template>
 
 <script>
 import Api from "@/services/Api";
-import handleError from "@/middleware/handleError";
+import handleError from "@/mixins/handleError";
 import validations from "@/services/validations";
 import InputField from "@/components/InputField";
 
@@ -60,6 +60,7 @@ export default {
   components: {
     InputField
   },
+  mixins: [handleError],
   data() {
     return {
       state: {
@@ -67,8 +68,7 @@ export default {
         count: 0,
         errors: {},
         offline: false,
-        postError: false,
-        isLoading: false
+        postError: false
       },
       newUser: {
         lastName: "",
@@ -235,6 +235,6 @@ th {
 .create-user-button {
   padding: 0rem 2rem;
   color: white;
-  background-color: $secondary-color
+  background-color: $secondary-color;
 }
 </style>

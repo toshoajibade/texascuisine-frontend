@@ -59,19 +59,29 @@ export default {
   margin-bottom: 0;
 }
 .logout-button {
-  background-color: transparent !important;
-  color: white !important;
-  border: 1px solid white;
+  background-color: transparent;
+  color: white;
+  border: 1px solid transparent;
   padding: 0.25rem 0.75rem;
+  outline: none;
+  &:hover,
+  &:active {
+    background-color: #400000;
+    border: 1px solid white;
+    outline: none;
+  }
+  &:active {
+    transform: translateY(1px);
+  }
 }
 .show-sidebar-wrapper,
 .drop-down {
   display: none;
-  color: white !important;
+  color: white;
   cursor: pointer;
 }
 .show-sidebar {
-  color: white !important;
+  color: white;
 }
 .show-sidebar,
 .logo {

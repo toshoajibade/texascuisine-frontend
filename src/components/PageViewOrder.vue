@@ -1,69 +1,71 @@
 <template>
-    <div class="order-page">
-        <div class="update-status-tab">
-              <p class="delivery-status">Delivery Status: <span :class=order.status>{{order.status}}</span></p>
-              <div class="select">
-                <p>UPDATE TO</p>
-                  <v-select v-model="order.status" class="select-field-input" :items="deliveryStatus" item-text="label"  item-value="value"></v-select>
-              </div>
-              <i class="print-icon material-icons" @click="print">print</i>
-            </div>
-        <div class="delivery-details">
-            <div class="customer-details">
-                <p class="customer-heading">Customer Details</p>
-                <p>Pastor Andrew Okon</p>
-                <p>pastorandrew@gmail.com</p>
-                <p>08099565423</p>
-                <p>No 1, Gwarimpa Road, Aso Rock, Onike,Yaba, Kwara State</p>
-            </div>
-            <div class="order-details">
-                <p class="customer-heading">Order Details</p>
-                <p>Order#: <span class="order-number">F5HEU6HGUTUJHTY</span></p>
-                <p>Date Ordered: 21-08-2018</p>
-                <p class="payment-status">PAID</p>
-                
-            </div>
-        </div>
-        <div class="items-ordered-list">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="column" class="product-name-column">Product</th>
-                        <th scope="column" class="price-column">Price</th>
-                        <th scope="column" class="quantity-column">Quantity</th>
-                        <th scope="column" class="subtotal-column">Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <items-ordered class="first-child"></items-ordered>
-                     <items-ordered></items-ordered>
-                      <items-ordered></items-ordered>
-                    <items-ordered></items-ordered>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td>SHIPPING</td>
-                        <td>N500</td>
-                    </tr>
-                    <tr class="total">
-                        <td></td>
-                        <td></td>
-                        <td>TOTAL</td>
-                        <td>N6500</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+  <div class="order-page">
+    <div class="update-status-tab">
+      <p class="delivery-status">Delivery Status: <span :class=order.status>{{order.status}}</span></p>
+      <div class="select">
+        <p class="update-status">UPDATE TO:</p>
+        <SelectField :options="deliveryStatus" :value="order.status" @update="updateCategory" name="productCategory" />
+      </div>
+      <i class="print-icon material-icons" @click="print">print</i>
     </div>
+    <div class="delivery-details">
+      <div class="customer-details">
+        <p class="customer-heading">Customer Details</p>
+        <p>Pastor Andrew Okon</p>
+        <p>pastorandrew@gmail.com</p>
+        <p>08099565423</p>
+        <p>No 1, Gwarimpa Road, Aso Rock, Onike,Yaba, Kwara State</p>
+      </div>
+      <div class="order-details">
+        <p class="customer-heading">Order Details</p>
+        <p>Order#: <span class="order-number">F5HEU6HGUTUJHTY</span></p>
+        <p>Date Ordered: 21-08-2018</p>
+        <p class="payment-status">PAID</p>
+
+      </div>
+    </div>
+    <div class="items-ordered-list">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="column" class="product-name-column">Product</th>
+            <th scope="column" class="price-column">Price</th>
+            <th scope="column" class="quantity-column">Quantity</th>
+            <th scope="column" class="subtotal-column">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <items-ordered class="first-child"></items-ordered>
+          <items-ordered></items-ordered>
+          <items-ordered></items-ordered>
+          <items-ordered></items-ordered>
+          <tr>
+            <td></td>
+            <td></td>
+            <td>SHIPPING</td>
+            <td>N500</td>
+          </tr>
+          <tr class="total">
+            <td></td>
+            <td></td>
+            <td>TOTAL</td>
+            <td>N6500</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </template>
 
 <script>
 import ItemsOrdered from "@/components/ItemsOrdered";
+import SelectField from "@/components/SelectField";
 
 export default {
   name: "ViewOrder",
   components: {
-    ItemsOrdered
+    ItemsOrdered,
+    SelectField
   },
   data() {
     return {
@@ -80,13 +82,15 @@ export default {
     };
   },
   methods: {
-    print() {
-    }
+    updateCategory(value) {
+      this.order.status = value;
+    },
+    print() {}
   }
 };
 </script>
 
-<style scoped>
+<style lang='scss' scoped>
 .delivery-status {
   margin-right: 1rem;
   width: 250px;
@@ -95,6 +99,9 @@ export default {
   display: flex;
   flex-direction: row;
   margin-right: 1rem;
+  * {
+    vertical-align: top;
+  }
 }
 
 .price-column,
@@ -205,5 +212,8 @@ tbody > * {
   .print-icon {
     width: 3rem;
   }
+}
+.update-status {
+  width: 150px
 }
 </style>

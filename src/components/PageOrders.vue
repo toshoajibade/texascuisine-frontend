@@ -4,7 +4,7 @@
       <orders-tab :customerPhoneNumber="order.customerPhoneNumber" :orderNumber="order.orderNumber" :customerFirstName="order.customerFirstName" :customerLastName="order.customerLastName" :customerTitle="order.customerTitle" :products="order.products" :customerAddress="order.customerAddress" :deliveryStatus="order.deliveryStatus" />
     </div>
     <div class="alert-wrapper">
-      <v-alert v-model="state.offline" class="alert" color="rgba(0, 0, 0, 0)">Please connect to the internet</v-alert>
+      <p v-show="state.offline" class="alert" color="rgba(0, 0, 0, 0)">Please connect to the internet</p>
     </div>
   </div>
 </template>
@@ -22,7 +22,6 @@ export default {
       state: {
         orders: [],
         offline: false,
-        isLoading: false
       }
     };
   },

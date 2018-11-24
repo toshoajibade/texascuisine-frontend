@@ -1,22 +1,25 @@
 <template>
   <div class="overall">
     <form class="create-product-page">
-        <InputField v-model="product.name" label="Product Name" name="productName" :error_message="state.errors.name" />
+      <InputField v-model="product.name" label="Product Name" name="productName" :error_message="state.errors.name" />
       <div class="product-name-price">
         <div class="select-first">
-          <v-select :items="state.category" v-model="product.category" item-text="label" item-value="value" label="Category" :error-messages="state.errors.category" type="text" />
+          <SelectField :options="state.category" :value="product.category" @update="updateCategory" name="productCategory" label="Category" />
         </div>
         <div class="select-first">
-          <input v-model="product.price" label="Price" :error-messages="state.errors.price" type="number" /></div>
+          <InputField v-model="product.price" label="Price" :error_messages="state.errors.price" type="number" />
+        </div>
       </div>
       <div class="textarea-picture-container">
         <div class="textarea">
           <p>Description</p>
           <div class="textarea-field">
-            <textarea v-model="product.description" placeholder="Enter the product description here"> </textarea></div>
-          <p class="custom-error">{{state.errors.description}}</p>
+            <textarea v-model="product.description"> </textarea>
+          </div>
+          <div class="error-message">
+            <p>{{state.errors.description}}</p>
+          </div>
         </div>
-        <v-spacer></v-spacer>
         <div class="picture">
           <p>Picture</p>
           <div class="image-upload">
@@ -28,17 +31,19 @@
               <img class="image-preview" :src="product.imageUrl" alt="" srcset="">
             </div>
           </div>
-          <p class="custom-error">{{state.errors.image}}</p>
+          <div class="error-message">
+            <p>{{state.errors.image}}</p>
+          </div>
         </div>
       </div>
-      <button type="submit" v-on:click.prevent="editProduct" class="btn btn-primary">Submit</button>
-      <button type="submit" v-on:click.prevent="deleteProduct" class="delete-button">Delete</button>
+      <button type="submit" v-on:click.prevent="editProduct" class="btn-primary submit-button">Submit</button>
+      <button type="submit" v-on:click.prevent="deleteProduct" class="btn-primary delete-button">Delete</button>
     </form>
     <div class="alert-wrapper">
-      <v-alert v-model="state.offline" class="alert" color="rgba(0, 0, 0, 0)">Please connect to the internet</v-alert>
+      <p v-show="state.offline" class="alert" color="rgba(0, 0, 0, 0)">Please connect to the internet</p>
     </div>
     <div class="alert-wrapper" v-if="state.postError">
-      <v-alert v-model="state.postError" class="alert" color="rgba(0, 0, 0, 0)">Error! Please try again</v-alert>
+      <p v-show="state.postError" class="alert" color="rgba(0, 0, 0, 0)">Error! Please try again</p>
     </div>
   </div>
 </template>
@@ -46,12 +51,19 @@
 <script>
 import Api from "@/services/Api";
 import swal from "sweetalert2";
-import handleError from "@/middleware/handleError";
+import handleError from "@/mixins/handleError";
 import validations from "@/services/validations";
+import uploadImage from "@/mixins/uploadImage";
+import InputField from "@/components/InputField";
+import SelectField from "@/components/SelectField";
 
 export default {
   name: "Products",
-  mixins: [uploadImage],
+  components: {
+    InputField,
+    SelectField
+  },
+  mixins: [uploadImage, handleError],
   data() {
     return {
       state: {
@@ -92,6 +104,9 @@ export default {
   },
 
   methods: {
+    updateCategory(value) {
+      this.selectedCategory = value;
+    },
     async editProduct() {
       this.$Progress.start();
       this.state.errors = {};
@@ -164,7 +179,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang='scss' scoped>
 .create-product-page {
   width: 100%;
   height: 100%;
@@ -180,24 +195,28 @@ export default {
 .product-name {
   width: 100%;
 }
-.btn-primary {
-  margin-top: 3rem;
-  margin-bottom: 3rem;
-  background-color: #00472e;
-  height: 36px;
-}
+
 
 .picture-label {
   margin-bottom: 0.5rem;
 }
 .delete-button:hover {
-  background-color: #940e0e !important;
-  color: white !important;
+  background-color: #940e0e;
+  color: white;
 }
 .delete-button {
-  color: rgb(173, 8, 8) !important;
-  background-color: white !important;
+  color: rgb(173, 8, 8);
+  background-color: white;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
   border: 1px solid #940e0e;
+  margin-left: 2rem;
+}
+.submit-button {
+  color: white;
+  background-color: $secondary-color;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
 }
 .product-image {
   width: 100%;

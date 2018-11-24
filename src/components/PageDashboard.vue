@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="alert-wrapper">
-      <v-alert v-model="state.offline" class="alert" color="rgba(0, 0, 0, 0)">Please connect to the internet</v-alert>
+      <p v-show="state.offline" class="alert" color="rgba(0, 0, 0, 0)">Please connect to the internet</p>
     </div>
 
   </div>
@@ -40,7 +40,6 @@ export default {
       state: {
         orders: [],
         offline: false,
-        isLoading: false
       }
     };
   },
