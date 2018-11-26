@@ -212,9 +212,7 @@ th {
 .my-auto {
   margin-right: 0.5rem;
 }
-.btn-outline-secondary {
-  visibility: hidden;
-}
+
 .product-image {
   width: 150px;
   height: 100px;
@@ -242,14 +240,8 @@ td {
 .user-tab:hover {
   background-color: #f2f2f2;
 }
-.user-tab:hover .btn-outline-secondary {
-  border: 1px solid #00472e;
-  visibility: visible;
-}
-.btn-outline-secondary:hover {
-  color: white;
-  background-color: #00472e;
-}
+
+
 .product-status:hover {
   cursor: pointer;
 }
