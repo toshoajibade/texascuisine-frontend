@@ -5,7 +5,7 @@
         <div class="show-sidebar-wrapper" v-if="userIsLoggedIn" @click="$emit('showSidebar')">
           <i class="material-icons show-sidebar">menu</i>
         </div>
-        <p class="logo">Texas Cuisine</p>
+        <router-link to="/admin/dashboard"><p class="logo">Texas Cuisine</p></router-link>
         <p class="drop-down"></p>
         <div class="username-logout" v-if="userIsLoggedIn">
           <p class="username">{{getUser}}</p>
@@ -56,7 +56,6 @@ export default {
 .username {
   color: white;
   padding: 1rem;
-  margin-bottom: 0;
 }
 .logout-button {
   background-color: transparent;

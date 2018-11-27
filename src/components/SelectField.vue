@@ -18,7 +18,7 @@ export default {
     },
     label: {
       type: String,
-      required: true
+      required: false
     },
     options: {
       type: [Array, Number, String, Boolean, Object],
@@ -92,5 +92,8 @@ input {
       background-color: #0000000a;
     }
   }
+}
+label {
+  width: 100%;
 }
 </style>

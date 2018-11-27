@@ -1,26 +1,34 @@
 <template>
   <div class="order-page">
     <div class="update-status-tab">
-      <p class="delivery-status">Delivery Status: <span :class=order.status>{{order.status}}</span></p>
+      <p class="delivery-status">Delivery Status: <span :class=deliveryStatus>{{deliveryStatus}}</span></p>
       <div class="select">
-        <p class="update-status">UPDATE TO:</p>
-        <SelectField :options="deliveryStatus" :value="order.status" @update="updateCategory" name="productCategory" />
+        <SelectField
+          label="UPDATE TO: "
+          :options="deliveryOptions"
+          :value="deliveryStatus"
+          @update="updateCategory"
+          name="productCategory"
+        />
       </div>
-      <i class="print-icon material-icons" @click="print">print</i>
+      <i
+        class="print-icon material-icons"
+        @click="print"
+      >print</i>
     </div>
     <div class="delivery-details">
       <div class="customer-details">
         <p class="customer-heading">Customer Details</p>
-        <p>Pastor Andrew Okon</p>
-        <p>pastorandrew@gmail.com</p>
-        <p>08099565423</p>
-        <p>No 1, Gwarimpa Road, Aso Rock, Onike,Yaba, Kwara State</p>
+        <p>{{customerTitle}} {{customerFirstName}} {{customerLastName}}</p>
+        <p>{{customerEmailAddress}}</p>
+        <p>{{customerPhoneNumber}}</p>
+        <p>{{customerAddress}}</p>
       </div>
       <div class="order-details">
         <p class="customer-heading">Order Details</p>
-        <p>Order#: <span class="order-number">F5HEU6HGUTUJHTY</span></p>
-        <p>Date Ordered: 21-08-2018</p>
-        <p class="payment-status">PAID</p>
+        <p>Order#: <span class="order-number">{{orderNumber}}</span></p>
+        <p>{{formatedDate}}</p>
+        <p class="payment-status">{{paymentStatus.toUpperCase()}}</p>
 
       </div>
     </div>
@@ -28,28 +36,44 @@
       <table class="table">
         <thead>
           <tr>
-            <th scope="column" class="product-name-column">Product</th>
-            <th scope="column" class="price-column">Price</th>
-            <th scope="column" class="quantity-column">Quantity</th>
-            <th scope="column" class="subtotal-column">Total</th>
+            <th
+              scope="column"
+              class="product-name-column"
+            >Product</th>
+            <th
+              scope="column"
+              class="price-column"
+            >Price</th>
+            <th
+              scope="column"
+              class="quantity-column"
+            >Quantity</th>
+            <th
+              scope="column"
+              class="subtotal-column"
+            >Total</th>
           </tr>
         </thead>
         <tbody>
-          <items-ordered class="first-child"></items-ordered>
-          <items-ordered></items-ordered>
-          <items-ordered></items-ordered>
-          <items-ordered></items-ordered>
+          <items-ordered
+            v-for="product in products"
+            :key="product.productId"
+            class="first-child"
+            :name="product.name"
+            :price="product.price"
+            :quantity="Number(product.quantity)"
+          ></items-ordered>
           <tr>
             <td></td>
             <td></td>
             <td>SHIPPING</td>
-            <td>N500</td>
+            <td>N{{shippingFee}}</td>
           </tr>
           <tr class="total">
             <td></td>
             <td></td>
             <td>TOTAL</td>
-            <td>N6500</td>
+            <td>N{{total}}</td>
           </tr>
         </tbody>
       </table>
@@ -60,6 +84,7 @@
 <script>
 import ItemsOrdered from "@/components/ItemsOrdered";
 import SelectField from "@/components/SelectField";
+import Api from "@/services/Api";
 
 export default {
   name: "ViewOrder",
@@ -69,23 +94,67 @@ export default {
   },
   data() {
     return {
-      deliveryStatus: [
+      deliveryOptions: [
         { label: "Pending", value: "pending" },
         { label: "Shipped", value: "shipped" },
         { label: "Delivered", value: "delivered" },
         { label: "Failed", value: "failed" },
         { label: "Cancelled", value: "cancelled" }
       ],
-      order: {
-        status: `pending`
-      }
+      createdAt: "",
+      customerAddress: "",
+      customerEmailAddress: "",
+      customerFirstName: "",
+      customerLastName: "",
+      customerPhoneNumber: "",
+      customerTitle: "",
+      deliveryStatus: "",
+      id: null,
+      orderNumber: "",
+      paymentStatus: "",
+      products: [],
+      total: null,
+      shippingFee: 1000
     };
+  },
+  async mounted() {
+    let res = await Api.instance().post(
+      `order/${this.$route.params.orderNumber}`
+    );
+    Object.keys(res.data).map(item => {
+      if (Object.keys(this).includes(item)) {
+        this[item] = res.data[item];
+      }
+    });
+    let products = JSON.parse(this.products);
+    this.products = products;
+    this.total =
+      this.shippingFee +
+      products.reduce(
+        (accumulator, currentValue) =>
+          accumulator + currentValue.price * currentValue.quantity,
+        0
+      );
   },
   methods: {
     updateCategory(value) {
       this.order.status = value;
     },
-    print() {}
+    async print() {
+      let res = await Api.instance().post(`print/${this.orderNumber}`);
+      const linkSource = `data:application/pdf;base64,${res.data}`;
+      const downloadLink = document.createElement("a");
+      const fileName = "vct_illustration.pdf";
+      downloadLink.href = linkSource;
+      downloadLink.download = fileName;
+      downloadLink.click();
+    }
+  },
+  computed: {
+    formatedDate() {
+      let date = new Date(this.createdAt);
+      return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+    }
   }
 };
 </script>
@@ -93,6 +162,7 @@ export default {
 <style lang='scss' scoped>
 .delivery-status {
   margin-right: 1rem;
+  margin-top: 0px;
   width: 250px;
 }
 .select {
@@ -168,6 +238,12 @@ th {
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 2rem;
+  @media(max-width: 600px) {
+    flex-direction: column;
+    > * {
+      margin-bottom: 1rem;
+    }
+  }
 }
 .customer-heading {
   font-size: 1.2rem;
@@ -206,14 +282,11 @@ tbody > * {
     margin-right: 0px;
     margin-bottom: 1rem;
   }
-  .update-status-tab {
-    flex-direction: column;
-  }
   .print-icon {
     width: 3rem;
   }
 }
 .update-status {
-  width: 150px
+  width: 150px;
 }
 </style>

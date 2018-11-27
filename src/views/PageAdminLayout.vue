@@ -1,12 +1,26 @@
 <template>
   <div>
-    <TheNavbar @showSidebar="show" :userIsLoggedIn="userIsLoggedIn" @logout="logout" :getUser="getUser"></TheNavbar>
+    <TheNavbar
+      @showSidebar="show"
+      :userIsLoggedIn="userIsLoggedIn"
+      @logout="logout"
+      :getUser="getUser"
+    ></TheNavbar>
     <div class="homepage">
-      <transition name="slideLeft">
-        <TheSidebar class="sidebar" :getUser="getUser" @logout="logout" v-if="open"></TheSidebar>
+      <transition name="slide-fade">
+        <TheSidebar
+          class="sidebar"
+          :getUser="getUser"
+          @logout="logout"
+          v-if="open"
+        ></TheSidebar>
       </transition>
       <transition name="fade">
-        <p class="overlay" v-if="open" @click="hideSidebar"></p>
+        <p
+          class="overlay"
+          v-if="open"
+          @click="hideSidebar"
+        ></p>
       </transition>
       <div class="content-section">
         <router-view></router-view>
@@ -79,5 +93,23 @@ export default {
 </script>
 
 <style lang="scss">
+.slide-fade-enter-active {
+  transition: all 0.3s ease-in-out;
+}
+.slide-fade-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+.slide-fade-enter,
+.slide-fade-leave-to {
+  transform: translateX(-250px);
+}
 
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
 </style>

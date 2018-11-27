@@ -180,6 +180,9 @@ form {
 @media (max-width: 600px) {
   .new-admin {
     flex-direction: column;
+    > * {
+      width: 100%;
+    }
   }
   .new-admin > * {
     flex: 1 1 auto;

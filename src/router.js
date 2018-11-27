@@ -56,7 +56,7 @@ const router = new Router({
           component: Orders
         },
         {
-          path: "vieworder",
+          path: "vieworder/:orderNumber",
           name: "viewOrder",
           component: ViewOrder
         },

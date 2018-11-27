@@ -186,10 +186,16 @@ export default {
   flex-direction: row;
   @media (max-width: 600px) {
     flex-direction: column;
+    > * {
+      margin-bottom: 1.5rem;
+    }
   }
 }
 .select-slot {
   width: 200px;
+  @media (max-width: 900px) {
+    width: 150px
+  }
 }
 .select-slot:first-child {
   margin-right: 2rem;

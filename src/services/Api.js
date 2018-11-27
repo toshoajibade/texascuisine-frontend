@@ -4,7 +4,7 @@ import store from "../store";
 const Api = {
   instance() {
     const instance = axios.create({
-      baseURL: `https://shielded-brushlands-80745.herokuapp.com/`,
+      baseURL: `https://texascuisine.herokuapp.com/`,
       // baseURL: `http://localhost:3000/`,
       headers: {
         Authorization: `Bearer ${store.state.token}`
@@ -14,7 +14,7 @@ const Api = {
   },
   postPicture() {
     const postPicture = axios.create({
-      baseURL: `https://shielded-brushlands-80745.herokuapp.com/`,
+      baseURL: `https://texacuisine.herokuapp.com/`,
       // baseURL: `http://localhost:3000/`,
       headers: {
         Authorization: `Bearer ${store.state.token}`,

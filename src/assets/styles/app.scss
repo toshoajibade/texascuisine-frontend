@@ -39,7 +39,7 @@ a:focus {
   text-decoration: none;
 }
 p {
-  margin-bottom: 8px !important;
+  margin-bottom: 8px;
   margin-top: 8px;
 }
 
@@ -80,8 +80,8 @@ button {
 }
 .sidebar {
   flex: 0 0 250px;
-  height: 100%;
   z-index: 2;
+  height: 100%;
 }
 
 .overlay {
@@ -92,12 +92,6 @@ button {
   background-color: rgba(0, 0, 0, 0.637);
   display: none;
   margin: 0px;
-}
-.slideLeft-enter-active,
-.slideLeft-leave-active {
-  -webkit-animation-duration: 200ms;
-  -moz-animation-duration: 200ms;
-  animation-duration: 200ms;
 }
 .alert-wrapper {
   position: fixed;
@@ -141,7 +135,6 @@ button {
   .sidebar {
     position: absolute;
     width: 250px;
-    height: calc(100vh - 64px);
   }
 }
 input:-webkit-autofill {

@@ -1,8 +1,14 @@
 <template>
-  <div class="order-tab" v-on:click="viewOrder">
+  <div
+    class="order-tab"
+    v-on:click="viewOrder"
+  >
     <div class="order-details">
       <p>ORDER #: <span class="order-number">{{orderNumber}}</span> </p>
-      <p class="products">{{state.products}}</p>
+      <p
+        class="products"
+        style="white-space: pre-line;line-height: 1.5"
+      >{{orderSummary}}</p>
     </div>
     <div class="customer-details">
       <p class="customer-name">{{`${customerTitle} ${customerFirstName} ${customerLastName}`}}</p>
@@ -10,20 +16,39 @@
       <p>{{customerAddress}}</p>
     </div>
     <div class="order-status">
-      <p v-if="deliveryStatus == 'shipped'" class="shipped">{{deliveryStatus}}</p>
-      <p v-else-if="deliveryStatus == 'cancelled'" class="failed">{{deliveryStatus}}</p>
-      <p v-else-if="deliveryStatus == 'failed'" class="failed">{{deliveryStatus}}</p>
-      <p v-else-if="deliveryStatus == 'delivered'" class="delivered">{{deliveryStatus}}</p>
-      <p v-else class="order-status">{{deliveryStatus}}</p>
+      <p
+        v-if="deliveryStatus == 'shipped'"
+        class="shipped"
+      >{{deliveryStatus}}</p>
+      <p
+        v-else-if="deliveryStatus == 'cancelled'"
+        class="failed"
+      >{{deliveryStatus}}</p>
+      <p
+        v-else-if="deliveryStatus == 'failed'"
+        class="failed"
+      >{{deliveryStatus}}</p>
+      <p
+        v-else-if="deliveryStatus == 'delivered'"
+        class="delivered"
+      >{{deliveryStatus}}</p>
+      <p
+        v-else
+        class="order-status"
+      >{{deliveryStatus}}</p>
     </div>
     <div class="print-button">
-      <i class="material-icons print" v-on:click.stop="print">print</i>
+      <i
+        class="material-icons print"
+        v-on:click.stop="print"
+      >print</i>
     </div>
 
   </div>
 </template>
 
 <script>
+import Api from "@/services/Api";
 export default {
   name: "OrdersTab",
   props: {
@@ -64,27 +89,44 @@ export default {
       required: true
     }
   },
-  mounted() {
-    let products = this.products;
-    let productsOrdered = ``;
-    products.forEach(product => {
-      let productName = `${product.productName} ${product.productQuantity} `;
-      productsOrdered += productName;
-    });
-    this.state.products = productsOrdered;
-  },
   data() {
     return {
       state: {
         products: []
-      }
+      },
+      orderSummary: ""
     };
   },
+  mounted() {
+    let orderSummary = "";
+    let count = 0;
+    this.products.map((product, index) => {
+      if (index < 2) {
+        orderSummary = orderSummary.concat(
+          `${product.name} - ${product.quantity}\n`
+        );
+      } else {
+        count++;
+      }
+      count > 0
+        ? (this.orderSummary = `${orderSummary} and ${count} more.`)
+        : (this.orderSummary = `${orderSummary}`);
+    });
+  },
+
   methods: {
     viewOrder() {
-      this.$router.push(`vieworder`);
+      this.$router.push(`vieworder/${this.orderNumber}`);
     },
-    print() {}
+    async print() {
+      let res = await Api.instance().post(`print/${this.orderNumber}`);
+      const linkSource = `data:application/pdf;base64,${res.data}`;
+      const downloadLink = document.createElement("a");
+      const fileName = "vct_illustration.pdf";
+      downloadLink.href = linkSource;
+      downloadLink.download = fileName;
+      downloadLink.click();
+    }
   }
 };
 </script>
@@ -136,7 +178,6 @@ export default {
   display: flex;
   justify-content: center;
 }
-
 
 .customer-name {
   font-weight: normal;

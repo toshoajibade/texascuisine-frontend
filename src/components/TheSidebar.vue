@@ -26,7 +26,6 @@
       <p>{{getUser}}</p>
       <button class="logout-button" @click="$emit('logout')">LOG OUT</button>
     </div>
-
   </div>
 </template>
 
@@ -49,10 +48,9 @@ export default {
 };
 </script>
 
-<style lang='scss'>
+<style scoped lang='scss'>
 .side-navigation-bar {
   padding-top: 50px;
-  height: 100%;
   background-color: #940e0e;
   display: flex;
   justify-content: space-between;
@@ -90,6 +88,8 @@ export default {
   background-color: transparent;
   color: white;
   border: 1px solid white;
+  margin-top: 1rem;
+  padding: 0.5rem 0.75rem;
   &:active {
     background-color: #940e0e;
   }
@@ -99,5 +99,8 @@ export default {
     display: flex;
     margin-bottom: 4rem;
   }
+}
+.slide {
+
 }
 </style>
