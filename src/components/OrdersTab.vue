@@ -109,7 +109,7 @@ export default {
         count++;
       }
       count > 0
-        ? (this.orderSummary = `${orderSummary} and ${count} more.`)
+        ? (this.orderSummary = `${orderSummary} and ${count} more items.`)
         : (this.orderSummary = `${orderSummary}`);
     });
   },
@@ -122,7 +122,7 @@ export default {
       let res = await Api.instance().post(`print/${this.orderNumber}`);
       const linkSource = `data:application/pdf;base64,${res.data}`;
       const downloadLink = document.createElement("a");
-      const fileName = "vct_illustration.pdf";
+      const fileName = "invoice.pdf";
       downloadLink.href = linkSource;
       downloadLink.download = fileName;
       downloadLink.click();
