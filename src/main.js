@@ -19,8 +19,8 @@ unsync();
 Vue.config.productionTip = false;
 
 const options = {
-  color: "#bffaf3",
-  failedColor: "#fff",
+  color: "#ffffff",
+  failedColor: "#b00020",
   thickness: "2px",
   transition: {
     speed: "0.2s",
