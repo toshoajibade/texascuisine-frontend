@@ -9,6 +9,8 @@ $secondary-color: #00472e;
   color: rgb(43, 42, 42);
   font-size: 16px;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
 }
 html {
   overflow-y: hidden !important;
