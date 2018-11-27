@@ -126,11 +126,10 @@ export default {
         this[item] = res.data[item];
       }
     });
-    let products = JSON.parse(this.products);
-    this.products = products;
+
     this.total =
       this.shippingFee +
-      products.reduce(
+      this.products.reduce(
         (accumulator, currentValue) =>
           accumulator + currentValue.price * currentValue.quantity,
         0
@@ -238,7 +237,7 @@ th {
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 2rem;
-  @media(max-width: 600px) {
+  @media (max-width: 600px) {
     flex-direction: column;
     > * {
       margin-bottom: 1rem;

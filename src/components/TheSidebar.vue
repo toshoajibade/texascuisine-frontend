@@ -81,7 +81,8 @@ export default {
 }
 .navigation-tab > p {
   font-size: 1rem;
-  margin-bottom: 0;
+  margin-bottom: 8px;
+  margin-top: 8px;
   color: white;
 }
 .logout-button {
@@ -100,7 +101,5 @@ export default {
     margin-bottom: 4rem;
   }
 }
-.slide {
 
-}
 </style>
