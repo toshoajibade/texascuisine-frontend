@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-cloak>
     <form class="create-product-page">
       <p class="create-user-label" style="font-weight:bold">CREATE ADMIN</p>
       <p>Enter new admin details below</p>

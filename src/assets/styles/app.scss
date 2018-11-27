@@ -14,7 +14,6 @@ html {
   overflow-y: hidden !important;
 }
 
-
 .btn-primary {
   border: 1px solid #00472e;
   height: 36px;
@@ -340,4 +339,7 @@ textarea:focus {
 }
 i {
   cursor: pointer;
+}
+[v-cloak] {
+  display: none;
 }

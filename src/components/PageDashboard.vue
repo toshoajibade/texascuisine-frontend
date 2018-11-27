@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-cloak>
     <div class="sales-data">
       <div>
         <p class="data-label">PENDING ORDERS</p>

@@ -1,5 +1,5 @@
 <template>
-  <div class="overall">
+  <div class="overall" v-cloak>
     <form class="create-product-page">
       <InputField v-model="product.name" label="Product Name" name="productName" :error_message="product.errors.name" />
       <div class="product-name-price">

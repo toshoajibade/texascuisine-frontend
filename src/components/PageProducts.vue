@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-cloak>
     <div class="select-add-product-wrapper">
       <div class="select-sort-wrapper">
         <SelectField class="select-slot" :options="categories" :value="selectedCategory" @update="selectCategory" name="productCategory" label="Category" />

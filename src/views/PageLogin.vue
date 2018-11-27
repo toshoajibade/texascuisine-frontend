@@ -1,19 +1,39 @@
 <template>
-  <div>
+  <div v-cloak>
     <TheNavbar></TheNavbar>
     <section class="body">
       <div class="side-container">
       </div>
       <div class="login-form-container">
         <div class="login-form-inner-container">
-          <form autocomplete="off" class="form-container">
+          <form
+            autocomplete="off"
+            class="form-container"
+          >
             <p class="admin-text">Admin Login</p>
             <div class="login-error-container">
               <p class="login-error">{{loginError}}</p>
             </div>
-            <InputField v-model="state.email" label="Email address" name="email" :error_message="state.errors.email" type="email" />
-            <InputField v-model="state.password" label="Password" name="password" :error_message="state.errors.password" type="password" autocomplete="new-password" />
-            <button type="submit" class="btn-primary login-button" @click.prevent="login">Submit</button>
+            <InputField
+              v-model="state.email"
+              label="Email address"
+              name="email"
+              :error_message="state.errors.email"
+              type="email"
+            />
+            <InputField
+              v-model="state.password"
+              label="Password"
+              name="password"
+              :error_message="state.errors.password"
+              type="password"
+              autocomplete="new-password"
+            />
+            <button
+              type="submit"
+              class="btn-primary login-button"
+              @click.prevent="login"
+            >Submit</button>
           </form>
         </div>
       </div>
@@ -43,14 +63,13 @@ export default {
       state: {
         email: "",
         password: "",
-        errors: {},
+        errors: {}
       },
       loginError: ``
     };
   },
   methods: {
     async login() {
-      this.$Progress.start();
       try {
         this.state.errors = {};
         this.loginError = ``;
@@ -58,9 +77,9 @@ export default {
         const { isValid, errors } = await validations.validateInput(req);
         if (!isValid) {
           this.state.errors = errors;
-          this.$Progress.finish();
           return;
         }
+        this.$Progress.start();
         let email = this.state.email;
         let password = this.state.password;
         let res = await Api.instance().post(`user/login`, { email, password });
