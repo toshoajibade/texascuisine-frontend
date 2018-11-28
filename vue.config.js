@@ -8,7 +8,7 @@ module.exports = {
       skipWaiting: true,
       clientsClaim: true,
       swDest: "sw.js",
-      navigateFallback: "/index.html",
+      navigateFallback: "/",
       runtimeCaching: [
         {
           urlPattern: /^https:\/\/res\.cloudinary\.com/,

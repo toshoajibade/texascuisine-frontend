@@ -130,6 +130,9 @@ export default {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  @media (max-width: 600px) {
+    align-items: flex-start
+  }
 }
 .login-form-inner-container {
   width: 400px;
