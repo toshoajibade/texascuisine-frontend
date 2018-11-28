@@ -12,7 +12,6 @@ module.exports = {
       runtimeCaching: [
         {
           urlPattern: /^https:\/\/res\.cloudinary\.com/,
-          cacheName: "images",
           handler: "staleWhileRevalidate",
           options: {
             cacheableResponse: {
@@ -22,7 +21,6 @@ module.exports = {
         },
         {
           urlPattern: /^https:\/\/fonts\.googleapis\.com/,
-          cacheName: "fonts",
           handler: "cacheFirst",
           options: {
             cacheableResponse: {
