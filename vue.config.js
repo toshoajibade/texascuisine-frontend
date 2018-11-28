@@ -8,14 +8,33 @@ module.exports = {
       skipWaiting: true,
       clientsClaim: true,
       swDest: "sw.js",
+      navigateFallback: "/index.html",
       runtimeCaching: [
         {
           urlPattern: /^https:\/\/res\.cloudinary\.com/,
-          handler: "staleWhileRevalidate"
+          cacheName: "images",
+          handler: "staleWhileRevalidate",
+          options: {
+            cacheableResponse: {
+              statuses: [0, 200],
+              expiration: {
+                maxEntries: 30
+              }
+            }
+          }
         },
         {
           urlPattern: /^https:\/\/fonts\.googleapis\.com/,
-          handler: "staleWhileRevalidate"
+          cacheName: "fonts",
+          handler: "cacheFirst",
+          options: {
+            cacheableResponse: {
+              statuses: [0, 200],
+              expiration: {
+                maxEntries: 30
+              }
+            }
+          }
         }
       ]
     }

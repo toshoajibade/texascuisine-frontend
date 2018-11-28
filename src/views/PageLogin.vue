@@ -1,5 +1,5 @@
 <template>
-  <div v-cloak>
+  <div v-show="showPage" v-cloak>
     <TheNavbar></TheNavbar>
     <section class="body">
       <div class="side-container">
@@ -56,6 +56,8 @@ export default {
   beforeCreate() {
     if (this.$store.state.isUserLoggedIn === true) {
       this.$router.push("admin/dashboard");
+    } else {
+      this.showPage = true
     }
   },
   data() {
@@ -65,7 +67,8 @@ export default {
         password: "",
         errors: {}
       },
-      loginError: ``
+      loginError: ``,
+      showPage: false
     };
   },
   methods: {
