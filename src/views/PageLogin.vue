@@ -178,7 +178,7 @@ export default {
   background-color: #00472e;
   color: white;
   margin-top: 1rem;
-  margin-bottom: 8px;
+  margin-bottom: 1rem;
 }
 @media (max-width: 960px) {
   .side-container {
