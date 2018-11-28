@@ -53,11 +53,11 @@ export default {
     TheNavbar,
     InputField
   },
-  beforeCreate() {
-    if (this.$store.state.isUserLoggedIn === true) {
-      this.$router.push("admin/dashboard");
-    } else {
+  beforeMount() {
+    if (!this.$store.state.isUserLoggedIn) {
       this.showPage = true
+      } else {
+      this.$router.push("admin/dashboard");
     }
   },
   data() {
