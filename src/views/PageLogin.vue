@@ -141,7 +141,7 @@ export default {
 }
 .form-container {
   width: 100%;
-  padding: 3rem 2rem;
+  padding: 2rem 2rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -160,9 +160,13 @@ export default {
   padding: 0.5rem;
 }
 .login-error-container {
-  height: 1rem;
-  margin-bottom: 1rem;
-  margin-top: 0.5rem;
+  height: 1.5rem;
+  p {
+    font-size: 14px;
+  }
+  @media (max-width: 600px) {
+    height: 3rem;
+  }
 }
 .login-error {
   color: red;
@@ -171,7 +175,7 @@ export default {
 .login-button {
   background-color: #00472e;
   color: white;
-  margin-top: 1.5rem;
+  margin-top: 1rem;
 }
 @media (max-width: 960px) {
   .side-container {
