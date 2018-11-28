@@ -1,5 +1,8 @@
 <template>
-  <div v-show="showPage" v-cloak>
+  <div
+    v-show="showPage"
+    v-cloak
+  >
     <TheNavbar></TheNavbar>
     <section class="body">
       <div class="side-container">
@@ -56,8 +59,8 @@ export default {
   beforeMount() {
     if (this.$store.state.isUserLoggedIn === true) {
       this.$router.push("admin/dashboard");
-      } else {
-      this.showPage = true
+    } else {
+      this.showPage = true;
     }
   },
   data() {
@@ -131,7 +134,11 @@ export default {
   justify-content: space-around;
   align-items: center;
   @media (max-width: 600px) {
-    align-items: flex-start
+    align-items: flex-start;
+    width: 100%;
+    background-color: white;
+    display: flex;
+    justify-content: space-around;
   }
 }
 .login-form-inner-container {
@@ -186,13 +193,6 @@ export default {
 @media (max-width: 960px) {
   .side-container {
     display: none;
-  }
-  .login-form-container {
-    width: 100%;
-    background-color: white;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
   }
 }
 </style>
