@@ -25,7 +25,7 @@ export default {
       type: String
     },
     userIsLoggedIn: {
-      required: true,
+      required: false,
       type: Boolean
     }
   }

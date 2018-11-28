@@ -54,10 +54,10 @@ export default {
     InputField
   },
   beforeMount() {
-    if (!this.$store.state.isUserLoggedIn) {
-      this.showPage = true
-      } else {
+    if (this.$store.state.isUserLoggedIn === true) {
       this.$router.push("admin/dashboard");
+      } else {
+      this.showPage = true
     }
   },
   data() {
