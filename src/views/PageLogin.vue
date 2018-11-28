@@ -113,7 +113,6 @@ export default {
   width: 100%;
   min-height: calc(100vh - 64px);
   position: absolute;
-  height: 100%;
   top: 64px;
   display: flex;
   flex-direction: row;
@@ -125,12 +124,11 @@ export default {
 
 .login-form-container {
   width: 50%;
-  height: 100%;
   background-color: #f7f7f7;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  @media (max-width: 600px) {
+  @media (max-width: 960px) {
     align-items: flex-start;
     width: 100%;
     background-color: white;
