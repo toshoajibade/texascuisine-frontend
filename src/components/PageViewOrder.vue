@@ -1,5 +1,9 @@
 <template>
-  <div class="order-page" v-cloak>
+  <div>
+  <div v-show="state.showPage"
+    class="order-page"
+    v-cloak
+  >
     <div class="update-status-tab">
       <p class="delivery-status">Delivery Status: <span :class=deliveryStatus>{{deliveryStatus}}</span></p>
       <div class="select">
@@ -79,12 +83,20 @@
       </table>
     </div>
   </div>
+    <div class="alert-wrapper">
+      <p v-show="state.offline" class="alert" color="rgba(0, 0, 0, 0)">Please connect to the internet</p>
+    </div>
+    <div class="alert-wrapper" v-if="state.postError">
+      <p v-show="state.postError" class="alert" color="rgba(0, 0, 0, 0)">Error! Please try again</p>
+    </div>
+  </div>
 </template>
 
 <script>
 import ItemsOrdered from "@/components/ItemsOrdered";
 import SelectField from "@/components/SelectField";
 import Api from "@/services/Api";
+import handleError from "@/mixins/handleError";
 
 export default {
   name: "ViewOrder",
@@ -92,6 +104,7 @@ export default {
     ItemsOrdered,
     SelectField
   },
+  mixins: [handleError],
   data() {
     return {
       deliveryOptions: [
@@ -114,30 +127,42 @@ export default {
       paymentStatus: "",
       products: [],
       total: null,
-      shippingFee: 1000
+      shippingFee: 1000,
+      state: {
+        offline: false,
+        postError: false,
+        showPage: false
+      }
     };
   },
   async mounted() {
-    let res = await Api.instance().post(
-      `order/${this.$route.params.orderNumber}`
-    );
-    Object.keys(res.data).map(item => {
-      if (Object.keys(this).includes(item)) {
-        this[item] = res.data[item];
-      }
-    });
-
-    this.total =
-      this.shippingFee +
-      this.products.reduce(
-        (accumulator, currentValue) =>
-          accumulator + currentValue.price * currentValue.quantity,
-        0
+    try {
+      let res = await Api.instance().post(
+        `order/${this.$route.params.orderNumber}`
       );
+      if (res.status === 200) {
+        Object.keys(res.data).map(item => {
+          if (Object.keys(this).includes(item)) {
+            this[item] = res.data[item];
+          }
+        });
+  
+        this.total =
+          this.shippingFee +
+          this.products.reduce(
+            (accumulator, currentValue) =>
+              accumulator + currentValue.price * currentValue.quantity,
+            0
+          );
+          this.state.showPage = true
+      }
+    } catch (error) {
+      this.handleError()
+    }
   },
   methods: {
     updateCategory(value) {
-      this.order.status = value;
+      this.deliveryStatus = value;
     },
     async print() {
       let res = await Api.instance().post(`print/${this.orderNumber}`);
