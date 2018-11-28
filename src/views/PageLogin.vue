@@ -113,6 +113,7 @@ export default {
   width: 100%;
   min-height: calc(100vh - 64px);
   position: absolute;
+  height: 100%;
   top: 64px;
   display: flex;
   flex-direction: row;
@@ -124,6 +125,7 @@ export default {
 
 .login-form-container {
   width: 50%;
+  height: 100%;
   background-color: #f7f7f7;
   display: flex;
   justify-content: space-around;
@@ -176,6 +178,7 @@ export default {
   background-color: #00472e;
   color: white;
   margin-top: 1rem;
+  margin-bottom: 8px;
 }
 @media (max-width: 960px) {
   .side-container {
