@@ -2,12 +2,12 @@
 
 This is a website for a local restaurant. It is built with Vuejs on the frontend and Nodejs on the backend. It is a progressive webapp with a score
 of 100 for progressive web app when analyzed with Google light house. 
-The other scores are
-Performance - 100;
-Progressive Web App - 100
-Accessibily - 83
-Best Practices - 100
-S E O - 80.
+The other scores are:
+- Performance - 100;
+- Progressive Web App - 100
+- Accessibily - 83
+- Best Practices - 100
+- S E O - 80.
 ![Texas Cuisine](https://res.cloudinary.com/toshoajibade/image/upload/v1543415658/Screenshot_43.png)
 
 ## Functionalities
