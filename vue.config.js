@@ -16,10 +16,7 @@ module.exports = {
           handler: "staleWhileRevalidate",
           options: {
             cacheableResponse: {
-              statuses: [0, 200],
-              expiration: {
-                maxEntries: 30
-              }
+              statuses: [0, 200]
             }
           }
         },
@@ -29,10 +26,7 @@ module.exports = {
           handler: "cacheFirst",
           options: {
             cacheableResponse: {
-              statuses: [0, 200],
-              expiration: {
-                maxEntries: 30
-              }
+              statuses: [0, 200]
             }
           }
         }
