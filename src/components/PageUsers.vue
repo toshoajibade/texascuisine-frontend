@@ -154,7 +154,6 @@ form {
 
 .create-product-page {
   width: 100%;
-  height: 100%;
 }
 .current-admins {
   margin-bottom: 1rem;
