@@ -65,7 +65,6 @@ button {
   position: absolute;
   top: 64px;
   display: flex;
-  height: calc(100vh - 64px);
   flex-direction: row;
   width: 100%;
 }
@@ -77,10 +76,6 @@ button {
 }
 .content-section > * {
   padding-bottom: 3rem;
-}
-.sidebar {
-  flex: 0 0 250px;
-  z-index: 2;
 }
 
 .overlay {
@@ -137,6 +132,7 @@ button {
     top: 0px;
     left: 0px;
     bottom: 0px;
+    z-index: 2;
   }
 }
 input:-webkit-autofill {
@@ -342,4 +338,3 @@ textarea:focus {
 i {
   cursor: pointer;
 }
-
