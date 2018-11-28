@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-show="showPage"
-    v-cloak
-  >
+  <div v-show="showPage">
     <TheNavbar></TheNavbar>
     <section class="body">
       <div class="side-container">

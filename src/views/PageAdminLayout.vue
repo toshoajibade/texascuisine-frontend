@@ -1,5 +1,5 @@
 <template>
-  <div v-cloak>
+  <div>
     <TheNavbar
       @showSidebar="show"
       :userIsLoggedIn="userIsLoggedIn"

@@ -2,7 +2,7 @@
   <div>
   <div v-show="state.showPage"
     class="order-page"
-    v-cloak
+    
   >
     <div class="update-status-tab">
       <p class="delivery-status">Delivery Status: <span :class=deliveryStatus>{{deliveryStatus}}</span></p>
