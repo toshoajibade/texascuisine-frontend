@@ -12,10 +12,10 @@ $secondary-color: #00472e;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-tap-highlight-color: transparent;
 }
-html {
-  overflow-y: hidden !important;
-}
 
+html {
+  overflow-y: hidden;
+}
 .btn-primary {
   border: 1px solid #00472e;
   height: 36px;
@@ -65,13 +65,14 @@ button {
   display: flex;
   flex-direction: row;
   width: 100%;
+  height: calc(100vh - 64px);
 }
 
 .content-section {
   width: calc(100vw - 250px);
   margin-left: 250px;
   padding: 50px 5vw 0px 5vw;
-  overflow: auto;
+  overflow-y: scroll;
 }
 .content-section > * {
   padding-bottom: 3rem;
