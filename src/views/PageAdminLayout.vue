@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="layout">
     <TheNavbar
       @showSidebar="show"
       :userIsLoggedIn="userIsLoggedIn"
@@ -18,7 +18,7 @@
       <transition name="fade">
         <p
           class="overlay"
-          v-if="open"
+          v-if="open && windowWidth < 900"
           @click="hideSidebar"
         ></p>
       </transition>
@@ -46,6 +46,7 @@ export default {
     };
   },
   created() {
+    this.windowWidth = window.innerWidth
     if (window.innerWidth < 960) {
       this.open = false;
     }
@@ -55,6 +56,7 @@ export default {
   },
   methods: {
     onResize() {
+      this.windowWidth = window.innerWidth
       if (window.innerWidth > 960) {
         this.open = true;
       } else {
@@ -73,9 +75,9 @@ export default {
         this.open = false;
       }
     },
-    logout() {
+    async logout() {
+      await this.$router.push(`/`);
       this.$store.dispatch("logout");
-      this.$router.push(`/`);
     }
   },
 
@@ -111,5 +113,9 @@ export default {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+.layout {
+  display: flex;
+  flex-direction: column;
 }
 </style>

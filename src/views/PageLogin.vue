@@ -1,5 +1,5 @@
 <template>
-  <div v-show="showPage">
+  <div v-show="showPage" class="login-page">
     <TheNavbar></TheNavbar>
     <section class="body">
       <div class="side-container">
@@ -108,14 +108,17 @@ export default {
   margin: 0px;
   padding: 0px;
 }
+.login-page {
+  display: flex;
+  flex-direction: column;
+}
 
 .body {
   width: 100%;
-  min-height: calc(100vh - 64px);
-  position: absolute;
-  top: 64px;
+  height: calc(100vh - 64px);
   display: flex;
   flex-direction: row;
+  overflow-y: scroll;
 }
 .side-container {
   width: 50%;
@@ -124,6 +127,7 @@ export default {
 
 .login-form-container {
   width: 50%;
+  height: calc(100vh - 64px);
   background-color: #f7f7f7;
   display: flex;
   justify-content: space-around;

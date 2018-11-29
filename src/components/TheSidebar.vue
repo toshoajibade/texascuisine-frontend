@@ -23,7 +23,7 @@
       </router-link>
     </div>
     <div class="user-logout">
-      <p>{{getUser}}</p>
+      <p v-if="getUser">{{getUser}}</p>
       <button class="logout-button" @click="$emit('logout')">LOG OUT</button>
     </div>
   </div>
@@ -53,6 +53,10 @@ export default {
   padding-top: 50px;
   background-color: #940e0e;
   display: flex;
+  position: absolute;
+  top: 64px;
+  width: 250px;
+  height: calc(100vh - 64px);
   justify-content: space-between;
   flex-direction: column;
 }
