@@ -1,5 +1,5 @@
 <template>
-  <div v-show="showPage" v-cloak>
+  <div v-show="showPage" class="login-page">
     <TheNavbar></TheNavbar>
     <section class="body">
       <div class="side-container">
@@ -56,8 +56,8 @@ export default {
   beforeMount() {
     if (this.$store.state.isUserLoggedIn === true) {
       this.$router.push("admin/dashboard");
-      } else {
-      this.showPage = true
+    } else {
+      this.showPage = true;
     }
   },
   data() {
@@ -108,15 +108,17 @@ export default {
   margin: 0px;
   padding: 0px;
 }
+.login-page {
+  display: flex;
+  flex-direction: column;
+}
 
 .body {
   width: 100%;
-  min-height: calc(100vh - 64px);
-  position: absolute;
-  height: 100%;
-  top: 64px;
+  height: calc(100vh - 64px);
   display: flex;
   flex-direction: row;
+  overflow-y: scroll;
 }
 .side-container {
   width: 50%;
@@ -125,13 +127,17 @@ export default {
 
 .login-form-container {
   width: 50%;
-  height: 100%;
+  height: calc(100vh - 64px);
   background-color: #f7f7f7;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  @media (max-width: 600px) {
-    align-items: flex-start
+  @media (max-width: 960px) {
+    align-items: flex-start;
+    width: 100%;
+    background-color: white;
+    display: flex;
+    justify-content: space-around;
   }
 }
 .login-form-inner-container {
@@ -186,13 +192,6 @@ export default {
 @media (max-width: 960px) {
   .side-container {
     display: none;
-  }
-  .login-form-container {
-    width: 100%;
-    background-color: white;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
   }
 }
 </style>

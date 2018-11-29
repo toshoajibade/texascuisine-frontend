@@ -62,8 +62,6 @@ button {
 }
 
 .homepage {
-  position: absolute;
-  top: 64px;
   display: flex;
   height: calc(100vh - 64px);
   flex-direction: row;
@@ -72,6 +70,7 @@ button {
 
 .content-section {
   width: calc(100vw - 250px);
+  margin-left: 250px;
   padding: 50px 5vw 0px 5vw;
   overflow: auto;
 }
@@ -84,12 +83,13 @@ button {
 }
 
 .overlay {
-  position: absolute;
+  position: fixed;
+  top: 64px;
   width: 100vw;
   height: 100vh;
   z-index: 1;
   background-color: rgba(0, 0, 0, 0.637);
-  display: none;
+  display: block;
   margin: 0px;
 }
 .alert-wrapper {
@@ -119,6 +119,7 @@ button {
 @media (max-width: 960px) {
   .content-section {
     width: 100vw;
+    margin-left: 0px;
   }
   .progress-bar {
     left: 0px;
@@ -128,9 +129,6 @@ button {
     width: 100%;
   }
 
-  .overlay {
-    display: block;
-  }
   .sidebar {
     position: absolute;
     width: 250px;
@@ -342,6 +340,4 @@ textarea:focus {
 i {
   cursor: pointer;
 }
-[v-cloak] {
-  display: none;
-}
+
