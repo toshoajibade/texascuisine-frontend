@@ -28,4 +28,8 @@ affecting performance.
 ## Other information
 - This frontend is hosted on Netlify.
 - The back end is hosted on Heroku.
+
+## Login(This is a demo project and you can login with the following details)
+-toshoajibade@gmail.com
+-password: 1234567
  
