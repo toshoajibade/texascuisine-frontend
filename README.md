@@ -30,6 +30,7 @@ affecting performance.
 - The back end is hosted on Heroku.
 
 ## Login(This is a demo project and you can login with the following details)
--toshoajibade@gmail.com
--password: 1234567
+- email: toshoajibade@gmail.com
+- password: 1234567
+- Please note that this site is hosted on Heroku usind their free plan so the server sleeps after 30 mins of inactivity which can make the first call to the server slow.
  
